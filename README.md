@@ -1,38 +1,41 @@
 # SlidingIntroScreen
-This library simplifies the creation of introduction screens in Android apps. To give you an example of how easy it is to create an intro screen, [this activity](misc/example.gif) was created by subclassing one class and overriding two methods (see code [here](testapp/src/main/java/com/matthewtamlin/testapp/IntroTest.java)).
+A library to simplify the creation of introduction screens in Android apps. This library is simple to use, well documented and highly extensible. While default classes are propvided for all components, the framework allows custom implementations in case the defaults don't satisfy. [This example](exampleapp/example.gif) (gif) was created by subclassing one activity and overriding a few methods. See the example code [here](testapp/src/main/java/com/matthewtamlin/testapp/IntroTest.java).
 
+Please note that the 2.0.0 release of this library breaks backwards compatibility with previous versions. Almost every element of the library was overhauled so this was difficult to avoid.
 
 ## Installation
-To use this library, add `compile 'com.matthew-tamlin:sliding-intro-screen:1.1.0` to your gradle build file. Check the [maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen/view) to make sure this is the latest version.
+Releases are made available using gradle. Add `compile 'com.matthew-tamlin:sliding-intro-screen:2.0.0` to your gradle build file to use the latest version. Older version are available in the [maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen/view).
 
 
-## Usage
-There are only two classes you need to consider when using this library: [IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/IntroActivity.java) and [Page](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/Page.java). Both are abstract and must be subclassed to be used.
+## Quick start
+The main class in this library is [IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/IntroActivity.java). To use `IntroActivity` you must subclass it and override `generatePages()` and `generateFinalButtonBehaviour()`. These methods are called by `onCreate()` to define the appearance and behaviour of your activity. In `generatePages()` you initialise your pages and return them in a Collection. In `generateFinalButtonBehaviour()` you return the behaviour you want to be executed when the user presses the done button. A behaviour is just a runnable with a reference to the activity. The `IntroButton.ProgressToNextActivity` class is designed to simplify moving to the next activity, but if you prefer you can implement the `IntroButton.Behaviour` interface and do whatever you want.
 
-To use `IntroActivity` you must subclass it and override `generatePages()` and `progressToNextActivity()`. The former method is called by `onCreate(Bundle)`, and the later method is called when the user presses a "done" button. In `generatePages()` you initialise your pages and add them to the activity by calling `pages.add(Page)` or `pages.add(int, Page)`. In `progressToNextActivity()` you must release all resources and start the next activity. Although not necessary, you can add transition effects to the activity by overriding `onCreate()` and calling `viewPager.setPageTransformer(boolean, ViewPager.PageTransformer)`. An example of this class in use is shown [here](testapp/src/main/java/com/matthewtamlin/testapp/IntroTest.java). 
-
-To customise the pages of your intro screen, create subclasses of `Page`. A basic subclass of `Page` is included in this library [here](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/ParallaxPage.java), however to maximise the functionality of your intro screen you should create your own subclasses. 
-
+The javadoc of the IntroActivity class will give you a more in depth understanding of how to use the library. The other features of the library include:
+- Hiding/showing the status bar.
+- Easy customisation of the buttons, in terms of appearance and behaviour.
+- Locking the page to touch and/or programmatic commands.
+- Support for custom progress indicators.
 
 ## SelectionIndicator
-The [SelectionIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/SelectionIndicator.java) element can be used by itself if you wish to add a dot indicator to your app. To add a SelectionIndicator, add the following to your layout:
+The [DotIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/DotIndicator.java) class is provided for convenience and meets most needs, however the [SelectionIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/SelectionIndicator.java) interface makes it easy to implement your own custom progress indicator. If you only want to use the DotIndicator and don't care about the rest of the library, then add the following to your layout:
 
 ```java
-<com.matthewtamlin.sliding_intro_screen_library.SelectionIndicator
+<com.matthewtamlin.sliding_intro_screen_library.DotIndicator>
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:numberOfDots=YOUR_INT_HERE
-            app:activeItemIndex=YOUR_INT_HERE/>
+            app:selectedDotIndex=YOUR_INT_HERE/>
 ```
 
-The above code replicates the functionality of the dots on the Google Launcher homescreen, however if you want to further customise it then the following attributes can be added:
+The above code replicates the functionality of the dots in Google-made apps, however if you want to further customise it then the following attributes can be added:
 
-- app:inactiveDotDiameter and app:activeDotDiameter to set the diameters of the dots
-- app:inactiveDotColor and app:selectedDotColor to set the colors of the dots
-- app:dotTransitionDuration to set the time for animating the change from small to big (and back) 
+- `app:unselectedDotDiameter` and `app:selectedDotDiameter` to set the diameters of the dots
+- `app:unselectedDotColor` and `app:selectedDotColor `to set the colors of the dots
+- `app:dotTransitionDuration` to set the time for animating the change between selected and unselected 
+- `add:spacingBetweenDots` to change the distance between each dot
 
-Additionally, the view can be created programmatically by `SelectionIndicator si = new SelectionIndicator(context);`. Methods exist to modify the properties, similar to the aforementioned attributes. To update the page, just call method `si.setActiveItem(int, true)` from inside `ViewPager.OnPageChangeListener.onPageSelected(int)`.
+Alternatively, the indicator can be created programmatically with `DotIndicator i = new DotIndicator(context);`. Methods exist to modify the properties, similar to the aforementioned attributes. To update the page, just call method `i.setSelectedItem(int, true)` from inside `ViewPager.OnPageChangeListener.onPageSelected(int)`.
 
 
 ## Compatibility
-This library is compatible with Android 11 and up.
+This library is compatible with Android 11 and up. The 2.0.0 update breaks compatibility with pervious versions.
