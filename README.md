@@ -1,7 +1,7 @@
 # SlidingIntroScreen
-A library to simplify the creation of introduction screens in Android apps. This library is simple to use, well documented and highly extensible. While default classes are propvided for all components, the framework allows custom implementations in case the defaults don't satisfy. [This example](exampleapp/example.gif) (gif) was created by subclassing one activity and overriding a few methods. See the example code [here](testapp/src/main/java/com/matthewtamlin/testapp/IntroTest.java).
+A library to simplify the creation of introduction screens in Android apps. This library is simple to use, well documented and highly extensible. While default classes are propvided for all components, the framework allows custom implementations in case the defaults don't satisfy. [This example](exampleapp/example.gif) (gif) was created by subclassing one activity and overriding a few methods. See the example code [here](exampleapp/src/main/java/com/matthewtamlin/exampleapp/ExampleActivity.java).
 
-Please note that the 2.0.0 release of this library breaks backwards compatibility with previous versions. Almost every element of the library was overhauled so this was difficult to avoid.
+![Example of an intro](exampleapp/example.png)
 
 ## Installation
 Releases are made available using gradle. Add `compile 'com.matthew-tamlin:sliding-intro-screen:2.0.0` to your gradle build file to use the latest version. Older version are available in the [maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen/view).
