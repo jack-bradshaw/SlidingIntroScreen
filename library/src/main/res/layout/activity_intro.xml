@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/intro_activity_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray"
+    android:fitsSystemWindows="false">
+
+    <com.matthewtamlin.sliding_intro_screen_library.LockableViewPager
+        android:id="@+id/intro_activity_viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false"
+        tools:context="com.matthewtamlin.sliding_intro_screen_library.IntroActivity"/>
+
+    <RelativeLayout
+        android:id="@+id/intro_activity_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="false">
+
+        <com.matthewtamlin.sliding_intro_screen_library.IntroButton
+            android:id="@+id/intro_activity_leftButton"
+            style="?android:actionButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="center_vertical|start"
+            android:paddingEnd="40dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:paddingStart="40dp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"/>
+
+        <FrameLayout
+            android:id="@+id/intro_activity_progressIndicatorHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignTop="@id/intro_activity_leftButton"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignEnd="@+id/intro_activity_rightButton"
+            android:layout_alignRight="@id/intro_activity_rightButton">
+        </FrameLayout>
+
+        <com.matthewtamlin.sliding_intro_screen_library.IntroButton
+            android:id="@+id/intro_activity_rightButton"
+            style="?android:actionButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/intro_activity_leftButton"
+            android:gravity="center_vertical|end"
+            android:paddingEnd="40dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:paddingStart="40dp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"/>
+
+        <com.matthewtamlin.sliding_intro_screen_library.IntroButton
+            android:id="@+id/intro_activity_finalButton"
+            style="?android:actionButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/intro_activity_leftButton"
+            android:enabled="false"
+            android:gravity="center_vertical|end"
+            android:paddingEnd="40dp"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:paddingStart="40dp"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:visibility="invisible"/>
+
+        <View
+            android:id="@+id/intro_activity_horizontalDivider"
+            style="@style/HorizontalLine"
+            android:layout_alignTop="@id/intro_activity_leftButton"/>
+    </RelativeLayout>
+</RelativeLayout>

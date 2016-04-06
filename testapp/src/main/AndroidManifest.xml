@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    package="com.matthewtamlin.testapp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/appName"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".SelectorActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PostActivity"/>
+        <activity android:name=".TestDefaults"/>
+        <activity android:name=".TestSinglePageBehaviour"/>
+        <activity android:name=".TestMultiplePageBehaviour"/>
+        <activity android:name=".TestButtonConfig"/>
+        <activity android:name=".TestTransformer"/>
+        <activity android:name=".TestProgressIndicatorConfig"/>
+        <activity android:name=".TestPageChange"/>
+        <activity android:name=".TestHideStatusBar"/>
+        <activity android:name=".TestBehaviours"/>
+    </application>
+</manifest>

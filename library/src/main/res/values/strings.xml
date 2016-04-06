@@ -1,0 +1,7 @@
+<resources>
+    <string name="introActivity_defaultBackButtonText">BACK</string>
+    <string name="introActivity_defaultNextButtonText">NEXT</string>
+    <string name="introActivity_defaultLastButtonText">SKIP</string>
+    <string name="introActivity_defaultFinalButtonText">DONE</string>
+    <string name="introActivity_defaultFirstButtonText">RESTART</string>
+</resources>

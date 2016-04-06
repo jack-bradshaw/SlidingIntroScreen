@@ -1,0 +1,14 @@
+<resources>
+
+    <style name="HorizontalLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/divider_line_thickness</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
+    <style name="NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+</resources>

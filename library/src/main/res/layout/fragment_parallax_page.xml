@@ -1,0 +1,39 @@
+<FrameLayout
+    android:id="@+id/page_fragment_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:fitsSystemWindows="false"
+    tools:context=".ParallaxPage">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/page_fragment_imageHolderBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:adjustViewBounds="true"
+        android:fitsSystemWindows="false"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        tools:ignore="ContentDescription"/>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/page_fragment_imageHolderFront"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:adjustViewBounds="true"
+        android:fitsSystemWindows="false"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        tools:ignore="ContentDescription"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/page_fragment_textHolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fitsSystemWindows="false"/>
+</FrameLayout>

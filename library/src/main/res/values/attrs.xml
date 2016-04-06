@@ -1,0 +1,49 @@
+<resources>
+    <!-->Attributes for Dot<-->
+    <declare-styleable name="Dot">
+        <!-->The diameter of this Dot when inactive. This attribute defaults to 6dp.<-->
+        <attr name="inactiveDiameter" format="dimension"/>
+
+        <!-->The diameter of this Dot when active. This attribute defaults to 9dp.<-->
+        <attr name="activeDiameter" format="dimension"/>
+
+        <!-->The color of this Dot when inactive. This attribute defaults to opaque white (i.e. ARGB 0xFFFFFFFF).<-->
+        <attr name="inactiveColor" format="color"/>
+
+        <!-->The color of this Dot when active. This attribute defaults to opaque white (i.e. ARGB 0xFFFFFFFF).<-->
+        <attr name="activeColor" format="color"/>
+
+        <!-->The amount of time to use when animating this dot between active and inactive, measured in milliseconds. This attribute defaults to 200ms.<-->
+        <attr name="transitionDuration" format="integer"/>
+
+        <!-->Whether this dot should be active when created. This attribute defaults to false.<-->
+        <attr name="initiallyActive" format="boolean"/>
+    </declare-styleable>
+
+    <!-->Attributes for DotIndicator class<-->
+    <declare-styleable name="DotIndicator">
+        <!-->The total number of items represented by this widget. This attribute defaults to 1.<-->
+        <attr name="numberOfDots" format="integer"/>
+
+        <!-->The index of the currently selected item, between 0 and numberOfDots. This attribute defaults to 0.<-->
+        <attr name="selectedDotIndex" format="integer"/>
+
+        <!-->The diameter to use for each dot representing an unselected item. This attribute defaults to 6dp.<-->
+        <attr name="unselectedDotDiameter" format="dimension"/>
+
+        <!-->The diameter to use for the dot representing the selected item. This attribute defaults to 9dp.<-->
+        <attr name="selectedDotDiameter" format="dimension"/>
+
+        <!-->The colour to use for each dot representing an unselected item. This attribute defaults to opaque white (i.e. ARGB 0xFFFFFFFF).<-->
+        <attr name="unselectedDotColor" format="color"/>
+
+        <!-->The colour to use for the dot representing the selected item. This attribute defaults to opaque white (i.e. ARGB 0xFFFFFFFF).<-->
+        <attr name="selectedDotColor" format="color"/>
+
+        <!-->The spacing between the edges of consecutive unselected dots. This attribute defaults to 7dp.<-->
+        <attr name="spacingBetweenDots" format="dimension"/>
+
+        <!-->The length of time for transitioning a dot between selected and unselected, measured in milliseconds. This attribute defaults to 200ms.<-->
+        <attr name="dotTransitionDuration" format="integer"/>
+    </declare-styleable>
+</resources>
