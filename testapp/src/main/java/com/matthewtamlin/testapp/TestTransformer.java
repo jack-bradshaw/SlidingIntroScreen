@@ -18,7 +18,7 @@ package com.matthewtamlin.testapp;
 
 import android.os.Bundle;
 
-import com.matthewtamlin.sliding_intro_screen_library.ParallaxTransformer;
+import com.matthewtamlin.sliding_intro_screen_library.MultilayerParallaxTransformer;
 
 /**
  * Test the activity when a parallax page transformer is set. The activity should show three
@@ -29,6 +29,7 @@ public class TestTransformer extends ThreePageTestBase {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setPageTransformer(false, new ParallaxTransformer());
+		setPageTransformer(false, MultilayerParallaxTransformer.newInstance()
+				.withLayer(R.id.page_fragment_imageHolderFront, 0.5f));
 	}
 }
