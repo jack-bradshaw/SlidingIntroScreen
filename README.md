@@ -1,5 +1,5 @@
 # SlidingIntroScreen
-A library to simplify the creation of introduction screens in Android apps. This library is simple to use, well documented and highly extensible. While default classes are propvided for all components, the framework allows custom implementations in case the defaults don't satisfy. [This example](exampleapp/example.gif) (gif) was created by subclassing one activity and overriding a few methods. See the example code [here](exampleapp/src/main/java/com/matthewtamlin/exampleapp/ExampleActivity.java).
+A library to simplify the creation of introduction screens in Android apps. This library is simple to use, well documented and highly extensible. While default classes are provided for all components, the framework allows custom implementations in case the defaults don't satisfy. [This example](exampleapp/example.gif) (gif) was created by subclassing one activity and overriding a few methods. See the example code [here](exampleapp/src/main/java/com/matthewtamlin/exampleapp/ExampleActivity.java).
 
 ![Example of an intro](exampleapp/example.png)
 
