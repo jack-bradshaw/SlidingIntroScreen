@@ -30,7 +30,9 @@ import android.widget.TextView;
  * images are centred at the top the Page, such that the front image is drawn on top of the back
  * image. The text is drawn over both images. This class can be used in an {@link IntroActivity}
  * with a {@link ParallaxTransformer} to create a parallax scrolling effect, where the images
- * transition at different speeds.
+ * transition at different speeds. To allow the use of custom transformers, the resource ids of the
+ * views can be accessed using the {@link #getFrontImageHolderResId()}, {@link
+ * #getBackImageHolderResId()} and {@link #getTextHolderResId()} methods.
  */
 public class ParallaxPage extends Page {
 	/**
@@ -129,6 +131,13 @@ public class ParallaxPage extends Page {
 	}
 
 	/**
+	 * @return the resource id of the view which holds the front image
+	 */
+	public int getFrontImageHolderResId() {
+		return frontImageHolder.getId();
+	}
+
+	/**
 	 * Sets the back image of this ParallaxPage.
 	 *
 	 * @param backImage
@@ -147,6 +156,13 @@ public class ParallaxPage extends Page {
 	}
 
 	/**
+	 * @return the resource id of the view which holds the back image
+	 */
+	public int getBackImageHolderResId() {
+		return backImageHolder.getId();
+	}
+
+	/**
 	 * Sets and displays the text of this ParallaxPage.
 	 *
 	 * @param text
@@ -162,6 +178,13 @@ public class ParallaxPage extends Page {
 	 */
 	public CharSequence getText() {
 		return text;
+	}
+
+	/**
+	 * @return the resource id of the view which holds the text
+	 */
+	public int getTextHolderResId() {
+		return textHolder.getId();
 	}
 
 	/**
