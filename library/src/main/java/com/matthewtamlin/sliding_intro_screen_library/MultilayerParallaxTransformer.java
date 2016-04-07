@@ -18,13 +18,28 @@ package com.matthewtamlin.sliding_intro_screen_library;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.ImageView;
 
 import java.util.HashMap;
 
+/**
+ * A transformer for apply a custom parallax effect to the cachedViews in a ViewPager. Providing a
+ * resource id and a parallax factor causes every view in the view pager with that resource id to
+ * have the parallax effect applied to it. If any page does not contain that particular view, the
+ * effect is ignored on that page. This allows pages with different layouts to be transformed with
+ * this class.
+ */
 public class MultilayerParallaxTransformer implements ViewPager.PageTransformer {
-	private final HashMap<Integer, Float> layers = new HashMap<>();
-	private final HashMap<Integer, View> storedViews = new HashMap<>();
+	/**
+	 * Stores the resource id for each view to transform, and maps each id to a parallax effect
+	 * factor.
+	 */
+	private final HashMap<Integer, Float> parallaxFactors = new HashMap<>();
+
+	/**
+	 * Maps the root view of each page to a SavedViewUtility so that view references can be
+	 * efficiently retrieved.
+	 */
+	private final HashMap<View, SavedViewUtility> savedViews = new HashMap<>();
 
 	@Override
 	public void transformPage(final View page, final float position) {
@@ -34,45 +49,126 @@ public class MultilayerParallaxTransformer implements ViewPager.PageTransformer 
 		if (pageIsSelected) {
 			page.invalidate();
 		} else if (pageIsScrolling) {
-			for (Integer id : layers.keySet()) {
-				final View v = getView(page, id);
+			for (final Integer id : parallaxFactors.keySet()) {
+				final View viewToTransform = getViewToTransform(page, id);
 
-				if (v != null) {
-					v.setTranslationX(page.getWidth() * position * layers.get(id) / 2);
+				if (viewToTransform != null) {
+					final float parallaxFactor = parallaxFactors.get(id);
+					viewToTransform
+							.setTranslationX(page.getWidth() * position * parallaxFactor / 2);
 				}
 			}
 		}
 	}
 
+	/**
+	 * Constructs a new MultilayerParallaxTransformer instance.
+	 *
+	 * @return the new instance, not null
+	 */
 	public static MultilayerParallaxTransformer newInstance() {
 		return new MultilayerParallaxTransformer();
 	}
 
-	public static MultilayerParallaxTransformer newInstance(HashMap<Integer, Float> layers) {
-		final MultilayerParallaxTransformer transformer = new MultilayerParallaxTransformer();
-
-		for (Integer i : layers.keySet()) {
-			transformer.layers.put(i, layers.get(i));
-		}
-
-		return transformer;
-	}
-
-	public MultilayerParallaxTransformer withLayer(int id, float speed) {
-		layers.put(id, speed);
+	/**
+	 * Sets this MultilayerParallaxTransformer to apply a parallax effect to all cachedViews with the
+	 * provided resource id.
+	 *
+	 * @param id
+	 * 		the resource id of the view to apply the parallax effect to
+	 * @param parallaxFactor
+	 * 		determines how fast the view should scrol
+	 * @return this MultilayerParallaxTransformer
+	 */
+	public MultilayerParallaxTransformer withParallaxView(int id, float parallaxFactor) {
+		parallaxFactors.put(id, parallaxFactor);
 		return this;
 	}
 
-
-	//TODO refactor
-	private View getView(View rootView, int id) {
-		View view = storedViews.get(id);
-
-		if (view == null) {
-			view = rootView.findViewById(id);
-			storedViews.put(id, view);
+	/**
+	 * Returns a reference to the child view of {@code rootView} with the resource id of {@code id}.
+	 * Using this method is more efficient that frequent calls to {@link View#findViewById(int)}.
+	 *
+	 * @param rootView
+	 * 		the view to get the child view from, not null
+	 * @param id
+	 * 		the resource id of the child view
+	 * @return the child view of {@code rootView} with the resource id of {@code id}, or null if no
+	 * such child view exists
+	 */
+	public View getViewToTransform(View rootView, int id) {
+		if (rootView == null) {
+			throw new IllegalArgumentException("rootView cannot be null");
 		}
 
-		return view;
+		if (!savedViews.containsKey(rootView)) {
+			savedViews.put(rootView, new SavedViewUtility(rootView));
+		}
+
+		return savedViews.get(rootView).getChildView(id);
+	}
+
+}
+
+/**
+ * A utility for efficiently retrieving the children of a View. Using this class is more efficient
+ * that frequently calling {@link View#findViewById(int)}.
+ */
+class SavedViewUtility {
+	/**
+	 * The view to retrieve the children from.
+	 */
+	private final View rootView;
+
+	/**
+	 * Stores the child cachedViews of {@code view}. Each child view is mapped by its resource id.
+	 */
+	private final HashMap<Integer, View> cachedViews = new HashMap<>();
+
+	/**
+	 * Constructs a new SavedViewUtility instance. The View passed as an argument is set as the root
+	 * view of this utility.
+	 *
+	 * @param rootView
+	 * 		the View to get the children of with this utility, not null
+	 */
+	public SavedViewUtility(View rootView) {
+		if (rootView == null) {
+			throw new IllegalArgumentException("rootView cannot be null");
+		}
+
+		this.rootView = rootView;
+	}
+
+	/**
+	 * Provides efficient access to the child cachedViews of the root view of this utility.
+	 *
+	 * @param id
+	 * 		the resource id of the view to get
+	 * @return the child view which has the provided resource id, or null if no such child view
+	 * exists
+	 */
+	public final View getChildView(final int id) {
+		if (cachedViews.containsKey(id)) {
+			return cachedViews.get(id);
+		} else {
+			cachedViews.put(id, rootView.findViewById(id));
+			return cachedViews.get(id);
+		}
+	}
+
+	/**
+	 * @return the View which is queried to get the child cachedViews
+	 */
+	public View getRootView() {
+		return rootView;
+	}
+
+	/**
+	 * Calling this method will force each view to be retrieved using {@link View#findViewById(int)}
+	 * next time {@link #getChildView(int)} is called for that view.
+	 */
+	public void reset() {
+		cachedViews.clear();
 	}
 }
