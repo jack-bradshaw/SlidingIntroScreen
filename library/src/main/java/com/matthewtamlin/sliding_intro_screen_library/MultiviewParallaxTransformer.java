@@ -28,7 +28,7 @@ import java.util.HashMap;
  * effect is ignored on that page. This allows pages with different layouts to be transformed with
  * this class.
  */
-public class MultilayerParallaxTransformer implements ViewPager.PageTransformer {
+public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
 	/**
 	 * Stores the resource id for each view to transform, and maps each id to a parallax effect
 	 * factor.
@@ -62,25 +62,25 @@ public class MultilayerParallaxTransformer implements ViewPager.PageTransformer 
 	}
 
 	/**
-	 * Constructs a new MultilayerParallaxTransformer instance.
+	 * Constructs a new MultiviewParallaxTransformer instance.
 	 *
 	 * @return the new instance, not null
 	 */
-	public static MultilayerParallaxTransformer newInstance() {
-		return new MultilayerParallaxTransformer();
+	public static MultiviewParallaxTransformer newInstance() {
+		return new MultiviewParallaxTransformer();
 	}
 
 	/**
-	 * Sets this MultilayerParallaxTransformer to apply a parallax effect to all cachedViews with the
+	 * Sets this MultiviewParallaxTransformer to apply a parallax effect to all cachedViews with the
 	 * provided resource id.
 	 *
 	 * @param id
 	 * 		the resource id of the view to apply the parallax effect to
 	 * @param parallaxFactor
 	 * 		determines how fast the view should scrol
-	 * @return this MultilayerParallaxTransformer
+	 * @return this MultiviewParallaxTransformer
 	 */
-	public MultilayerParallaxTransformer withParallaxView(int id, float parallaxFactor) {
+	public MultiviewParallaxTransformer withParallaxView(int id, float parallaxFactor) {
 		parallaxFactors.put(id, parallaxFactor);
 		return this;
 	}
