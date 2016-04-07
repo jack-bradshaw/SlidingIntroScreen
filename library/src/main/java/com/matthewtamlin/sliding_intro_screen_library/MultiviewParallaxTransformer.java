@@ -22,7 +22,7 @@ import android.view.View;
 import java.util.HashMap;
 
 /**
- * A transformer for apply a custom parallax effect to the cachedViews in a ViewPager. Providing a
+ * A transformer for apply a custom parallax effect to the Views in a ViewPager. Providing a
  * resource id and a parallax factor causes every view in the view pager with that resource id to
  * have the parallax effect applied to it. If any page does not contain that particular view, the
  * effect is ignored on that page. This allows pages with different layouts to be transformed with
@@ -71,7 +71,7 @@ public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
 	}
 
 	/**
-	 * Sets this MultiviewParallaxTransformer to apply a parallax effect to all cachedViews with the
+	 * Sets this MultiviewParallaxTransformer to apply a parallax effect to all Views with the
 	 * provided resource id.
 	 *
 	 * @param id
@@ -82,6 +82,19 @@ public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
 	 */
 	public MultiviewParallaxTransformer withParallaxView(int id, float parallaxFactor) {
 		parallaxFactors.put(id, parallaxFactor);
+		savedViews.clear(); // Recache all views to be safe
+		return this;
+	}
+
+	/**
+	 * Removes a parallax effect from all Views with the provided resource id.
+	 *
+	 * @param id
+	 * 		the resource if of the Views to remove the effect from
+	 * @return this MultiviewParallaxTransformer
+	 */
+	public MultiviewParallaxTransformer withoutParallaxView(int id) {
+		parallaxFactors.remove(id);
 		return this;
 	}
 
@@ -121,7 +134,7 @@ class SavedViewUtility {
 	private final View rootView;
 
 	/**
-	 * Stores the child cachedViews of {@code view}. Each child view is mapped by its resource id.
+	 * Stores the child Views of {@code view}. Each child view is mapped by its resource id.
 	 */
 	private final HashMap<Integer, View> cachedViews = new HashMap<>();
 
@@ -141,7 +154,7 @@ class SavedViewUtility {
 	}
 
 	/**
-	 * Provides efficient access to the child cachedViews of the root view of this utility.
+	 * Provides efficient access to the child Views of the root view of this utility.
 	 *
 	 * @param id
 	 * 		the resource id of the view to get
@@ -158,7 +171,7 @@ class SavedViewUtility {
 	}
 
 	/**
-	 * @return the View which is queried to get the child cachedViews
+	 * @return the View which is queried to get the child Views
 	 */
 	public View getRootView() {
 		return rootView;
