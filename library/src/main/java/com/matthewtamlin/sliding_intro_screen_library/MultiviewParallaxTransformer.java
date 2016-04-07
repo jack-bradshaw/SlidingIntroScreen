@@ -77,7 +77,7 @@ public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
 	 * @param id
 	 * 		the resource id of the view to apply the parallax effect to
 	 * @param parallaxFactor
-	 * 		determines how fast the view should scrol
+	 * 		determines how fast the view should scroll, generally a value around 0.5f
 	 * @return this MultiviewParallaxTransformer
 	 */
 	public MultiviewParallaxTransformer withParallaxView(int id, float parallaxFactor) {
