@@ -17,8 +17,11 @@
 package com.matthewtamlin.testapp;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
-import com.matthewtamlin.sliding_intro_screen_library.ParallaxTransformer;
+import com.matthewtamlin.sliding_intro_screen_library.MultiviewParallaxTransformer;
 
 /**
  * Test the activity when a parallax page transformer is set. The activity should show three
@@ -26,9 +29,56 @@ import com.matthewtamlin.sliding_intro_screen_library.ParallaxTransformer;
  * faster than the other page elements.
  */
 public class TestTransformer extends ThreePageTestBase {
+	private final MultiviewParallaxTransformer transformer = new MultiviewParallaxTransformer();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setPageTransformer(false, new ParallaxTransformer());
+
+		setPageTransformer(false, transformer);
+
+		LinearLayout layout = new LinearLayout(this);
+		layout.setOrientation(LinearLayout.VERTICAL);
+		getRootView().addView(layout);
+
+		Button addFrontImage = new Button(this);
+		layout.addView(addFrontImage);
+		addFrontImage.setText("Add front image parallax");
+		addFrontImage.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				transformer.withParallaxView(R.id.page_fragment_imageHolderFront, 0.5f);
+			}
+		});
+
+		Button addBackImage = new Button(this);
+		layout.addView(addBackImage);
+		addBackImage.setText("Add back image parallax");
+		addBackImage.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				transformer.withParallaxView(R.id.page_fragment_imageHolderBack, 1f);
+			}
+		});
+
+		Button removeFrontImage = new Button(this);
+		layout.addView(removeFrontImage);
+		removeFrontImage.setText("Remove front image parallax");
+		removeFrontImage.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				transformer.withoutParallaxView(R.id.page_fragment_imageHolderFront);
+			}
+		});
+
+		Button removeBackImage = new Button(this);
+		layout.addView(removeBackImage);
+		removeBackImage.setText("Remove back image parallax");
+		removeBackImage.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				transformer.withoutParallaxView(R.id.page_fragment_imageHolderBack);
+			}
+		});
 	}
 }
