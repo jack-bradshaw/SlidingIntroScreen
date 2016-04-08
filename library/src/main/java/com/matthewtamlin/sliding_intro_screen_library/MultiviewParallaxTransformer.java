@@ -22,11 +22,18 @@ import android.view.View;
 import java.util.HashMap;
 
 /**
- * A transformer for apply a custom parallax effect to the Views in a ViewPager. Providing a
- * resource id and a parallax factor causes every view in the view pager with that resource id to
- * have the parallax effect applied to it. If any page does not contain that particular view, the
- * effect is ignored on that page. This allows pages with different layouts to be transformed with
- * this class.
+ * A ViewPager transformer which allows custom parallax effects to be applied to some or all of the
+ * Views displayed in the pages. Parallax effects are assigned by mapping parallax factors to
+ * resource IDs. A parallax factor is a scale factor, which determines how Views are positioned
+ * compared to the drag position.
+ * <p/>
+ * For example, if a parallax factor of 1.2 is provided for the resource ID {@code R.id.myview},
+ * then all Views with that resource ID will have a 20% parallax effect. This means that when the
+ * page is scrolled in some direction by some number of pixels (call this variable x), then the
+ * affected views will be scrolled 1.2*x pixels in the same direction.
+ * <p/>
+ * This class can safely be used with ViewPager instances where not all pages have the same
+ * views/layout.
  */
 public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
 	/**
@@ -57,7 +64,7 @@ public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
 					final float pageDisplacementFromCentrePixels = (page.getWidth() / 2) * position;
 
 					viewToTransform.setTranslationX(
-							pageDisplacementFromCentrePixels * parallaxFactor);
+							pageDisplacementFromCentrePixels * (parallaxFactor - 1));
 				}
 			}
 		}
@@ -74,12 +81,19 @@ public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
 
 	/**
 	 * Sets this MultiviewParallaxTransformer to apply a parallax effect to all Views with the
-	 * provided resource id.
+	 * provided resource id. The parallax factor determines how fast the affected views are
+	 * translated, relative to the normal scrolling speed. For example, consider a parallax factor
+	 * of 1.2, and a ViewPager which has been dragged to the left by 100 pixels. Any views with this
+	 * parallax factor will translate 120 pixels to the left.
+	 * <p/>
+	 * It is strongly recommended that parallax factors less than 1 not be used. Most
+	 * implementations of ViewPager will clip any affected Views since they will translate slower
+	 * than the boundaries of the pages. This recommendation is not enforced.
 	 *
 	 * @param id
-	 * 		the resource id of the view to apply the parallax effect to
+	 * 		the resource id of the views to apply the parallax effect to
 	 * @param parallaxFactor
-	 * 		determines how fast the view should scroll, generally a value around 0.5f
+	 * 		determines how fast
 	 * @return this MultiviewParallaxTransformer
 	 */
 	public MultiviewParallaxTransformer withParallaxView(int id, float parallaxFactor) {
