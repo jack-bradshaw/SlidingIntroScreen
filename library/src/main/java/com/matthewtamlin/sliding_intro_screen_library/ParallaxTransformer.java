@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import java.util.HashMap;
 
 /**
- * This class is deprecated, use {@link MultiviewParallaxTransformer} instead.
+ * This class is deprecated, use {@link MultiViewParallaxTransformer} instead.
  * <p/>
  * Transforms a ParallaxPage by translating its views left and right when scrolling. Front images
  * are translated faster than back images, which creates a parallax scrolling effect. This class is

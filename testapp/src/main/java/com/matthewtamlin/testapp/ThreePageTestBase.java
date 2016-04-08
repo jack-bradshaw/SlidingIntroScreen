@@ -81,10 +81,10 @@ public abstract class ThreePageTestBase extends IntroActivity {
 		final int screenHeight = ScreenSizeHelper.getScreenHeight(getWindowManager());
 
 		final Bitmap frontDots = BitmapHelper
-				.decodeSampledBitmapFromResource(getResources(), R.raw.front, screenWidth,
+				.decodeSampledBitmapFromResource(getResources(), R.raw.lines, screenWidth,
 						screenHeight);
 		final Bitmap backDots = BitmapHelper
-				.decodeSampledBitmapFromResource(getResources(), R.raw.back, screenWidth,
+				.decodeSampledBitmapFromResource(getResources(), R.raw.lines, screenWidth,
 						screenHeight);
 
 		for (int color : colors) {
