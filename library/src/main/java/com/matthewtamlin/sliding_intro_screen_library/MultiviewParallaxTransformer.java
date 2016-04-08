@@ -35,7 +35,7 @@ import java.util.HashMap;
  * This class can safely be used with ViewPager instances where not all pages have the same
  * views/layout.
  */
-public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
+public class MultiViewParallaxTransformer implements ViewPager.PageTransformer {
 	/**
 	 * Stores the resource ID for each view to transform, and maps each ID to a parallax effect
 	 * factor.
@@ -71,16 +71,16 @@ public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
 	}
 
 	/**
-	 * Constructs a new MultiviewParallaxTransformer instance.
+	 * Constructs a new MultiViewParallaxTransformer instance.
 	 *
 	 * @return the new instance, not null
 	 */
-	public static MultiviewParallaxTransformer newInstance() {
-		return new MultiviewParallaxTransformer();
+	public static MultiViewParallaxTransformer newInstance() {
+		return new MultiViewParallaxTransformer();
 	}
 
 	/**
-	 * Sets this MultiviewParallaxTransformer to apply a parallax effect to all Views with the
+	 * Sets this MultiViewParallaxTransformer to apply a parallax effect to all Views with the
 	 * provided resource id. The parallax factor determines how fast the affected views are
 	 * translated, relative to the normal scrolling speed. For example, consider a parallax factor
 	 * of 1.2, and a ViewPager which has been dragged to the left by 100 pixels. Any views with this
@@ -94,9 +94,9 @@ public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
 	 * 		the resource ID of the views to apply the parallax effect to
 	 * @param parallaxFactor
 	 * 		determines how fast
-	 * @return this MultiviewParallaxTransformer
+	 * @return this MultiViewParallaxTransformer
 	 */
-	public MultiviewParallaxTransformer withParallaxView(int id, float parallaxFactor) {
+	public MultiViewParallaxTransformer withParallaxView(int id, float parallaxFactor) {
 		parallaxFactors.put(id, parallaxFactor);
 		savedViews.clear(); // Recache all views to be safe
 		return this;
@@ -107,9 +107,9 @@ public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
 	 *
 	 * @param id
 	 * 		the resource if of the Views to remove the effect from
-	 * @return this MultiviewParallaxTransformer
+	 * @return this MultiViewParallaxTransformer
 	 */
-	public MultiviewParallaxTransformer withoutParallaxView(int id) {
+	public MultiViewParallaxTransformer withoutParallaxView(int id) {
 		parallaxFactors.remove(id);
 		return this;
 	}

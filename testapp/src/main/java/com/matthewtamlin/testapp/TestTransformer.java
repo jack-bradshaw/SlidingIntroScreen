@@ -21,7 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.matthewtamlin.sliding_intro_screen_library.MultiviewParallaxTransformer;
+import com.matthewtamlin.sliding_intro_screen_library.MultiViewParallaxTransformer;
 
 /**
  * Test the activity when a parallax page transformer is set. The activity should show three
@@ -29,7 +29,7 @@ import com.matthewtamlin.sliding_intro_screen_library.MultiviewParallaxTransform
  * faster than the other page elements.
  */
 public class TestTransformer extends ThreePageTestBase {
-	private final MultiviewParallaxTransformer transformer = new MultiviewParallaxTransformer();
+	private final MultiViewParallaxTransformer transformer = new MultiViewParallaxTransformer();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class TestTransformer extends ThreePageTestBase {
 		addFrontImage.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				transformer.withParallaxView(R.id.page_fragment_imageHolderFront, 0.5f);
+				transformer.withParallaxView(R.id.page_fragment_imageHolderFront, 1.2f);
 			}
 		});
 
