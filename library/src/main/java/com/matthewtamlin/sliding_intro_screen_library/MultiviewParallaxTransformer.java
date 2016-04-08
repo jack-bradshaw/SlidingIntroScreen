@@ -54,8 +54,10 @@ public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
 
 				if (viewToTransform != null) {
 					final float parallaxFactor = parallaxFactors.get(id);
-					viewToTransform
-							.setTranslationX(page.getWidth() * position * parallaxFactor / 2);
+					final float pageDisplacementFromCentrePixels = (page.getWidth() / 2) * position;
+
+					viewToTransform.setTranslationX(
+							pageDisplacementFromCentrePixels * parallaxFactor);
 				}
 			}
 		}
