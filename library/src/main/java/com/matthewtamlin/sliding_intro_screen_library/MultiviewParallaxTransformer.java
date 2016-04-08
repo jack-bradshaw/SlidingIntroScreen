@@ -37,7 +37,7 @@ import java.util.HashMap;
  */
 public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
 	/**
-	 * Stores the resource id for each view to transform, and maps each id to a parallax effect
+	 * Stores the resource ID for each view to transform, and maps each ID to a parallax effect
 	 * factor.
 	 */
 	private final HashMap<Integer, Float> parallaxFactors = new HashMap<>();
@@ -91,7 +91,7 @@ public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
 	 * than the boundaries of the pages. This recommendation is not enforced.
 	 *
 	 * @param id
-	 * 		the resource id of the views to apply the parallax effect to
+	 * 		the resource ID of the views to apply the parallax effect to
 	 * @param parallaxFactor
 	 * 		determines how fast
 	 * @return this MultiviewParallaxTransformer
@@ -115,14 +115,14 @@ public class MultiviewParallaxTransformer implements ViewPager.PageTransformer {
 	}
 
 	/**
-	 * Returns a reference to the child view of {@code rootView} with the resource id of {@code id}.
+	 * Returns a reference to the child view of {@code rootView} with the resource ID of {@code id}.
 	 * Using this method is more efficient that frequent calls to {@link View#findViewById(int)}.
 	 *
 	 * @param rootView
 	 * 		the view to get the child view from, not null
 	 * @param id
-	 * 		the resource id of the child view
-	 * @return the child view of {@code rootView} with the resource id of {@code id}, or null if no
+	 * 		the resource ID of the child view
+	 * @return the child view of {@code rootView} with the resource ID of {@code id}, or null if no
 	 * such child view exists
 	 */
 	public View getViewToTransform(View rootView, int id) {
@@ -173,7 +173,7 @@ class SavedViewUtility {
 	 * Provides efficient access to the child Views of the root view of this utility.
 	 *
 	 * @param id
-	 * 		the resource id of the view to get
+	 * 		the resource ID of the view to get
 	 * @return the child view which has the provided resource id, or null if no such child view
 	 * exists
 	 */
