@@ -682,7 +682,7 @@ public class IntroButton extends Button implements OnClickListener {
 	 * that the request result can be received.
 	 */
 	@TargetApi(23)
-	public static abstract class RequestPermissions extends BehaviourAdapter {
+	public static class RequestPermissions extends BehaviourAdapter {
 		/**
 		 * The permissions to request when this Behaviour is run.
 		 */
