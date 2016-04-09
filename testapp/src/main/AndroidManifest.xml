@@ -3,6 +3,9 @@
     package="com.matthewtamlin.testapp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
