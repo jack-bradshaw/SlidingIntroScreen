@@ -22,10 +22,10 @@ The other components of this library you should be aware of are:
 - [DotIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/DotIndicator.java) and [SelectionIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/SelectionIndicator.java)
 
 ### Page
-The `Page` class extends `Fragment` and is used to display the content of your intro screen. Each page contains a color it would like to have drawn behind it, and the hosting `IntroActivity` blends these colors together when scrolling to create a continuous color effect. The `ParallaxPage` class is provided to simplify bilding an interface with parallax effects. Should you desire custom page layouts and behaviours, just subclass `Page` and use your subclass in `IntroActivity`.
+The `Page` class extends `Fragment` and is used to display the content of your intro screen. Each page contains a color it would like to have drawn behind it, and the hosting `IntroActivity` blends these colors together when scrolling to create a continuous color effect. The `ParallaxPage` class is provided to simplify building an interface with parallax effects. Should you desire custom page layouts and behaviours, just subclass `Page` and use your subclass in `IntroActivity`.
 
 ### IntroButton
-The `IntroButton` class differs from te Android framework button in a few ways. An `IntroButton` has two properties called Appearance and Behaviour which define how the button looks and how it functions when it is pressed.
+The `IntroButton` class differs from the Android framework button in a few ways. An `IntroButton` has two properties called Appearance and Behaviour which define how the button looks and how it functions when it is pressed.
 
 The Appearance of an `IntroButton` defines how the text in the button is positioned relative to any icon in it. The appearance can be set to show only text, show only an icon, show both with the icon to the left of the text, or show both with the icon to the right of the text. Using the appearance property to change the icon/text relationship is better than manually setting the text and icon each time the apperarance needs to change, because it allows the `IntroButton` to manage the data internally and you don't have to worry about loading drawables each time you change the button. 
 
@@ -42,7 +42,7 @@ In addition to these concrete classes, the most useful class is the `ProgressToN
 
 If the above implementations are not sufficient for your purposes, you can either implement the `Behaviour` interface or subclass the `IntroButton.BehaviourAdapter` class. The adapter contains a simple getter/setter combo for `getActivity()` and `setActivity()`, and declares `run()` as abstract. This removes the need to write the same getter/setter boilerplate code for each `Behaviour` you define.
 
-## DotIndicator and SelectionIndicator
+### DotIndicator and SelectionIndicator
 At the bottom of `IntroActivity`, a `SelectionIndicator` displays the user's current progress through the activity. This library provides one concrete implementation of the `SelectionIndicator` interface called `DotIndicator`. By default, all `IntroActivity` instances have a `DotIndicator`. The methods of the `IntroActivity` provide a mechanism for setting a new indicator and modifying the existing one. Have a look into the Javadoc of `DotIndicator` to see the ways in which it can be customised. 
 
 The `DotIndicator` class can be used in other contexts as well and isn't limited to this library. To create a `DotIndicator` in your custom layout, add:
@@ -68,4 +68,4 @@ Alternatively, the indicator can be created programmatically with `DotIndicator 
 This library is licenced under the Apache v2.0 licence. Have a look at [the license](LICENSE) for details.
 
 ## Compatibility
-This library is compatible with Android 11 and up. The 2.0.0 update breaks compatibility with pervious versions of the library.
+This library is compatible with Android 11 and up. The 2.0.0 update breaks compatibility with previous versions of the library.
