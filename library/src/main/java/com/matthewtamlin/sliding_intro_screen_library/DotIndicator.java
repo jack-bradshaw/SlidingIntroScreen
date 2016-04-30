@@ -19,6 +19,7 @@ package com.matthewtamlin.sliding_intro_screen_library;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
@@ -255,12 +256,16 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 				dot.setInactive(false);
 			}
 
-			int maxDim = Math.max(selectedDotDiameterPx, unselectedDotDiameterPx);
-			int leftMargin = i * (spacingBetweenDotsPx + unselectedDotDiameterPx);
-			LayoutParams params = new LayoutParams(maxDim, maxDim);
-			params.setMargins(leftMargin, 0, 0, 0);
-			dot.setLayoutParams(params);
+			int maxDiameterDimension = Math.max(selectedDotDiameterPx, unselectedDotDiameterPx);
+			int startMargin = i * (spacingBetweenDotsPx + unselectedDotDiameterPx);
+			LayoutParams params = new LayoutParams(maxDiameterDimension, maxDiameterDimension);
+			params.setMargins(startMargin, 0, 0, 0);
 
+			if (Build.VERSION.SDK_INT >= 17) {
+				params.setMarginStart(startMargin);
+			}
+
+			dot.setLayoutParams(params);
 			dots.add(i, dot);
 			addView(dot);
 		}
