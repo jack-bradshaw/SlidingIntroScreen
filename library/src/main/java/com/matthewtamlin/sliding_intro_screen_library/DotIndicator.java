@@ -255,10 +255,10 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 				dot.setInactive(false);
 			}
 
-			int maxDim = Math.max(selectedDotDiameterPx, unselectedDotDiameterPx);
-			int leftMargin = i * (spacingBetweenDotsPx + unselectedDotDiameterPx);
-			LayoutParams params = new LayoutParams(maxDim, maxDim);
-			params.setMargins(leftMargin, 0, 0, 0);
+			int maxDiameterDimension = Math.max(selectedDotDiameterPx, unselectedDotDiameterPx);
+			int endMargin = i * (spacingBetweenDotsPx + unselectedDotDiameterPx);
+			LayoutParams params = new LayoutParams(maxDiameterDimension, maxDiameterDimension);
+			params.setMargins(endMargin, 0, 0, 0);
 			dot.setLayoutParams(params);
 
 			dots.add(i, dot);
