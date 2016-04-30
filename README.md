@@ -43,7 +43,7 @@ In addition to these concrete classes, the most useful class is the `ProgressToN
 If the above implementations are not sufficient for your purposes, you can either implement the `Behaviour` interface or subclass the `IntroButton.BehaviourAdapter` class. The adapter contains a simple getter/setter combo for `getActivity()` and `setActivity()`, and declares `run()` as abstract. This removes the need to write the same getter/setter boilerplate code for each `Behaviour` you define.
 
 ### DotIndicator and SelectionIndicator
-At the bottom of `IntroActivity`, a `SelectionIndicator` displays the user's current progress through the activity. This library provides one concrete implementation of the `SelectionIndicator` interface called `DotIndicator`. By default, all `IntroActivity` instances have a `DotIndicator`. The methods of the `IntroActivity` provide a mechanism for setting a new indicator and modifying the existing one. Have a look into the Javadoc of `DotIndicator` to see the ways in which it can be customised. 
+At the bottom of each `IntroActivity` is a `SelectionIndicator` which displays the current progress through the activity. This library provides one concrete implementation of the `SelectionIndicator` interface called `DotIndicator`. By default, all `IntroActivity` instances have a `DotIndicator`. The methods of the `IntroActivity` provide a mechanism for setting a new indicator and modifying the existing one. Have a look into the Javadoc of `DotIndicator` to see the ways in which it can be customised. 
 
 The `DotIndicator` class can be used in other contexts as well and isn't limited to this library. To create a `DotIndicator` in your custom layout, add:
 
