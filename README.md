@@ -4,7 +4,7 @@ A library to simplify the creation of introduction screens in Android apps. This
 ![Example of an intro](exampleapp/example.png)
 
 ## Installation
-Add `compile 'com.matthew-tamlin:sliding-intro-screen:2.1.1'` to your gradle build file to use the latest version. Older version are available in the [maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen/view).
+Add `compile 'com.matthew-tamlin:sliding-intro-screen:2.1.2'` to your gradle build file to use the latest version. Older version are available in the [maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen/view).
 
 ## Quick start
 The main class in this library is [IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/IntroActivity.java). To use `IntroActivity` you must subclass it and override `generatePages()` and `generateFinalButtonBehaviour()`. These methods are called by `onCreate()` to define the appearance and behaviour of your activity. In `generatePages()` you initialise your pages and return them in a Collection. In `generateFinalButtonBehaviour()` you return the behaviour you want to be executed when the user presses the done button. A behaviour is just a runnable with a reference to the activity. The `IntroButton.ProgressToNextActivity` class is designed to simplify moving to the next activity, but if you prefer you can implement the `IntroButton.Behaviour` interface and do whatever you want.
