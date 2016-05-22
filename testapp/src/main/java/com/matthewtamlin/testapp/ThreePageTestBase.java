@@ -18,6 +18,7 @@ package com.matthewtamlin.testapp;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -77,8 +78,8 @@ public abstract class ThreePageTestBase extends IntroActivity {
 	}
 
 	@Override
-	protected Collection<Page> generatePages(Bundle savedInstanceState) {
-		ArrayList<Page> pages = new ArrayList<>();
+	protected Collection<Fragment> generatePages(Bundle savedInstanceState) {
+		ArrayList<Fragment> pages = new ArrayList<>();
 
 		final int screenWidth = ScreenSizeHelper.getScreenWidth(getWindowManager());
 		final int screenHeight = ScreenSizeHelper.getScreenHeight(getWindowManager());
@@ -92,7 +93,6 @@ public abstract class ThreePageTestBase extends IntroActivity {
 
 		for (int color : colors) {
 			final ParallaxPage newPage = ParallaxPage.newInstance();
-			newPage.setDesiredBackgroundColor(color);
 			newPage.setFrontImage(frontDots);
 			newPage.setBackImage(backDots);
 			pages.add(newPage);
