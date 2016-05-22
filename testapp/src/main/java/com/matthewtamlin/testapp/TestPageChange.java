@@ -16,21 +16,13 @@
 
 package com.matthewtamlin.testapp;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.matthewtamlin.android_utilities_library.helpers.BitmapHelper;
-import com.matthewtamlin.android_utilities_library.helpers.ScreenSizeHelper;
 import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager;
-import com.matthewtamlin.sliding_intro_screen_library.pages.Page;
-import com.matthewtamlin.sliding_intro_screen_library.pages.ParallaxPage;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -42,7 +34,7 @@ public class TestPageChange extends ThreePageTestBase {
 	/**
 	 * The index of the page to go to.
 	 */
-	private static final int GO_TO_PAGE_INDEX = 3;
+	private static final int GO_TO_PAGE_INDEX = 1;
 
 	/**
 	 * Used to identify this class during testing.
@@ -59,33 +51,6 @@ public class TestPageChange extends ThreePageTestBase {
 		initialiseLayouts();
 		initialiseControlButtons();
 		initialiseLockButtons();
-	}
-
-	@Override
-	protected Collection<Page> generatePages(Bundle savedInstanceState) {
-		ArrayList<Page> pages = new ArrayList<>();
-
-		final int screenWidth = ScreenSizeHelper.getScreenWidth(getWindowManager());
-		final int screenHeight = ScreenSizeHelper.getScreenHeight(getWindowManager());
-
-		final Bitmap frontDots = BitmapHelper
-				.decodeSampledBitmapFromResource(getResources(), R.raw.front, screenWidth,
-						screenHeight);
-		final Bitmap backDots = BitmapHelper
-				.decodeSampledBitmapFromResource(getResources(), R.raw.back, screenWidth,
-						screenHeight);
-
-		for (int i = 0; i < 2; i++) {
-			for (int color : getColors()) {
-				final ParallaxPage newPage = ParallaxPage.newInstance();
-				newPage.setDesiredBackgroundColor(color);
-				newPage.setFrontImage(frontDots);
-				newPage.setBackImage(backDots);
-				pages.add(newPage);
-			}
-		}
-
-		return pages;
 	}
 
 	private void initialiseLayouts() {
@@ -222,10 +187,19 @@ public class TestPageChange extends ThreePageTestBase {
 		});
 	}
 
-
+	/**
+	 * Checks that the page has changed only if the locking conditions allow. An assertion exception
+	 * is thrown if the conditions are violated.
+	 *
+	 * @param originalPage
+	 * 		the index of the page which was active before the change page request
+	 * @param triedChangingTo
+	 * 		the index of the page the change attempted to move to
+	 */
 	private void validateLockingConditions(final int originalPage, final int triedChangingTo) {
 		final boolean didChange = (originalPage != getIndexOfCurrentPage());
 		final boolean shouldHaveChanged;
+
 
 		if (triedChangingTo != originalPage) {
 			shouldHaveChanged = getPagingLockMode().allowsCommands();

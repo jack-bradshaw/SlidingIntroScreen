@@ -208,7 +208,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 
 		Button toggleLeftVisibility = new Button(this);
 		layout.addView(toggleLeftVisibility);
-		toggleLeftVisibility.setText("Toggle left visibility");
+		toggleLeftVisibility.setText("Show/hide left on last page");
 		toggleLeftVisibility.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
