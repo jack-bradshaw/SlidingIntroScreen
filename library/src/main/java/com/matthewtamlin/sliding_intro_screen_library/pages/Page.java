@@ -21,13 +21,17 @@ import android.support.v4.app.Fragment;
 
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
 
+
 /**
- * A single page to display in an {@link IntroActivity}. Each page stores a color it would prefer to
- * have drawn behind it when displayed, which allows the background color of the hosting
- * IntroActivity to be transitioned as its pages are scrolled. Subclass this class to define the
- * appearance and behaviour of your pages. To disable this behaviour, set the actually background
- * color as usual.
+ * This class is deprecated. Any Fragment can now be used in an {@link IntroActivity}.
+ *
+  * A single page to display in an {@link IntroActivity}. Each page stores a color it would prefer to
+  * have drawn behind it when displayed, which allows the background color of the hosting
+  * IntroActivity to be transitioned as its pages are scrolled. Subclass this class to define the
+  * appearance and behaviour of your pages. To disable this behaviour, set the actually background
+  * color as usual.
  */
+@Deprecated
 public class Page extends Fragment {
 	/**
 	 * Used to identify this class during debugging.

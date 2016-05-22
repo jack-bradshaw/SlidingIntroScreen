@@ -18,6 +18,7 @@ package com.matthewtamlin.sliding_intro_screen_library.pages;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ import com.matthewtamlin.sliding_intro_screen_library.R;
  * views can be accessed using the {@link #getFrontImageHolderResId()}, {@link
  * #getBackImageHolderResId()} and {@link #getTextHolderResId()} methods.
  */
-public class ParallaxPage extends Page {
+public class ParallaxPage extends Fragment {
 	/**
 	 * Used to identify this class during debugging.
 	 */

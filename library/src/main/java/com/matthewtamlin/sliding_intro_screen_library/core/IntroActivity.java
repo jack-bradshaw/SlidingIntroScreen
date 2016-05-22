@@ -20,6 +20,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -37,7 +38,6 @@ import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Behaviour
 import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager.LockMode;
 import com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator;
 import com.matthewtamlin.sliding_intro_screen_library.indicators.SelectionIndicator;
-import com.matthewtamlin.sliding_intro_screen_library.pages.Page;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -52,7 +52,7 @@ import java.util.Collections;
  * prevent the user from navigating back to this activity once finished. <p> To use this class,
  * subclass it and implement {@link #generatePages(Bundle)} and {@link
  * #generateFinalButtonBehaviour()}. {@link #generatePages(Bundle)} is called by {@link
- * #onCreate(Bundle)} to generate the {@link Page} elements to display in the activity. The method
+ * #onCreate(Bundle)} to generate the pages (i.e. Fragments) to display in the activity. The method
  * must return a collection, it cannot return null. Pages cannot be added or removed from the
  * activity after this method returns. {@link #generateFinalButtonBehaviour()} is called by {@link
  * #onCreate(Bundle)} to generate the behaviour to assign to the final button. The method must
@@ -169,7 +169,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	/**
 	 * The pages to display in {@code viewPager}.
 	 */
-	private final ArrayListWithCallbacks<Page> pages = new ArrayListWithCallbacks<>();
+	private final ArrayListWithCallbacks<Fragment> pages = new ArrayListWithCallbacks<>();
 
 	/**
 	 * Adapts the elements of {@code pages} to {@code viewPager}.
@@ -225,8 +225,8 @@ public abstract class IntroActivity extends AppCompatActivity
 		registerListeners();
 
 		// Copy the returned pages to prevent external changes to the main collection
-		for (final Page p : generatePages(savedInstanceState)) {
-			pages.add(p);
+		for (final Fragment f : generatePages(savedInstanceState)) {
+			pages.add(f);
 		}
 
 		initialiseNavigationButtons();
@@ -431,9 +431,9 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * 		if this activity is being re-initialized after previously being shut down, then this Bundle
 	 * 		contains the data this activity most recently saved in {@link
 	 * 		#onSaveInstanceState(Bundle)}, otherwise null
-	 * @return the collection of Page elements to display, not null
+	 * @return the collection of pages to display, not null
 	 */
-	protected abstract Collection<Page> generatePages(Bundle savedInstanceState);
+	protected abstract Collection<Fragment> generatePages(Bundle savedInstanceState);
 
 	/**
 	 * Called by {@link #onCreate(Bundle)} to generate the behaviour of the final button. This
@@ -494,7 +494,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	 *
 	 * @return the pages of this activity
 	 */
-	public final Collection<Page> getPages() {
+	public final Collection<Fragment> getPages() {
 		return Collections.unmodifiableCollection(pages);
 	}
 
@@ -507,28 +507,28 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * @throws IndexOutOfBoundsException
 	 * 		if the index exceeds the size of the page dataset
 	 */
-	public final Page getPage(int pageIndex) {
+	public final Fragment getPage(int pageIndex) {
 		return pages.get(pageIndex);
 	}
 
 	/**
-	 * @return the Page currently being displayed
+	 * @return the page currently being displayed
 	 */
-	public final Page getCurrentPage() {
+	public final Fragment getCurrentPage() {
 		return pages.get(viewPager.getCurrentItem());
 	}
 
 	/**
-	 * @return the first Page of this activity
+	 * @return the first page of this activity
 	 */
-	public final Page getFirstPage() {
+	public final Fragment getFirstPage() {
 		return pages.get(0);
 	}
 
 	/**
-	 * @return the last Page of this activity
+	 * @return the last page of this activity
 	 */
-	public final Page getLastPage() {
+	public final Fragment getLastPage() {
 		return pages.get(pages.size() - 1);
 	}
 
@@ -536,10 +536,10 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * Returns the index of the specified page, or -1 if the page is not in this activity.
 	 *
 	 * @param page
-	 * 		the Page to get the index of
+	 * 		the page to get the index of
 	 * @return the index of {@code page}, counting from zero
 	 */
-	public final int getIndexOfPage(Page page) {
+	public final int getIndexOfPage(Fragment page) {
 		return pages.indexOf(page);
 	}
 
