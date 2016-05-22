@@ -44,18 +44,20 @@ import java.util.Collections;
 
 /**
  * Displays an introduction screen to the user, consisting of a series of pages and a navigation
- * bar. The pages display the content of the introduction, and the navigation bar displays the
- * user's progress through the activity. The navigation bar also provides buttons for moving between
- * pages and advancing to the next activity. To use this class, subclass it and implement {@link
- * #generatePages(Bundle)} and {@link #generateFinalButtonBehaviour()}. It is recommended that the
- * manifest entry declare {@code android:noHistory="true"} to prevent the user from navigating back
- * to this activity once finished. <p> {@link #generatePages(Bundle)} is called by {@link
+ * bar. The pages display the content of the introduction screen, and the navigation bar displays
+ * the user's progress through the activity. By default, a simple {@link DotIndicator} is shown in
+ * the navigation bar, however the methods of the activity allow custom SelectionIndicators to be
+ * set. The navigation bar also provides buttons for moving between pages and advancing to the next
+ * activity.  It is recommended that the manifest entry declare {@code android:noHistory="true"} to
+ * prevent the user from navigating back to this activity once finished. <p> To use this class,
+ * subclass it and implement {@link #generatePages(Bundle)} and {@link
+ * #generateFinalButtonBehaviour()}. {@link #generatePages(Bundle)} is called by {@link
  * #onCreate(Bundle)} to generate the {@link Page} elements to display in the activity. The method
  * must return a collection, it cannot return null. Pages cannot be added or removed from the
  * activity after this method returns. {@link #generateFinalButtonBehaviour()} is called by {@link
  * #onCreate(Bundle)} to generate the behaviour to assign to the final button. The method must
  * return a Behaviour, it cannot return null. The behaviour of the button defines what happens when
- * the button is pressed. The {@link IntroButton .ProgressToNextActivity} abstract class is designed
+ * the button is pressed. The {@link IntroButton.ProgressToNextActivity} abstract class is designed
  * to facilitate validation conditions to check that the activity should finish, and it provides a
  * mechanism for setting a shared preferences flag to prevent the user from being shown the intro
  * screen again. <p> The navigation bar contains three buttons: a left button, a right button and a
@@ -68,7 +70,11 @@ import java.util.Collections;
  * be changed using the respective 'set behaviour' method. The appearance of each button can also be
  * changed using the respective 'set appearance' method. These methods make it easy to display text,
  * an icon, or both in each button. The other methods of this activity allow finer control over the
- * appearance of each button. <p> The methods of this activity also provide the following
+ * appearance of each button. <p> The background of an IntroActivity can be changed in two ways:
+ * manually changing the root View (using {@link #getRootView()}, or supplying a BackgroundManager
+ * to {@link #setBackgroundManager(BackgroundManager)}. For static backgrounds, the former method is
+ * simpler and less error prone. To make dynamic backgrounds which change as the user scrolls, a
+ * BackgroundManager is needed. <p> The methods of this activity also provide the following
  * customisation options: <li>Hiding/showing the status bar.</li> <li>Programmatically changing the
  * page.</li> <li>Locking the page to prevent touch events and/or commands (e.g. button presses)
  * from changing the page.</li> <li>Modifying/replacing the progress indicator.</li>
