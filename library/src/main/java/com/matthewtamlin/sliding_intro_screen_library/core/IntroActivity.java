@@ -623,10 +623,13 @@ public abstract class IntroActivity extends AppCompatActivity
 	}
 
 	/**
-	 * Sets the background manager to use when scrolling through pages.
+	 * Sets the background manager to use when scrolling through pages. The {@link
+	 * BackgroundManager#updateBackground(View, int, float)} method of the supplied manager will be
+	 * invoked whenever the user scrolls. Note that the BackgroundManager draws behind the pages,
+	 * therefore all pages should have a transparent background when using a BackgroundManager.
 	 *
 	 * @param backgroundManager
-	 * 		the backgroundManager to use, null to use no backgroundManager
+	 * 		the backgroundManager to use, null to use none
 	 */
 	public final void setBackgroundManager(BackgroundManager backgroundManager) {
 		this.backgroundManager = backgroundManager;
