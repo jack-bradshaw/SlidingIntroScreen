@@ -224,7 +224,6 @@ public abstract class IntroActivity extends AppCompatActivity
 		regenerateProgressIndicator();
 	}
 
-
 	@Override
 	protected void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -245,6 +244,50 @@ public abstract class IntroActivity extends AppCompatActivity
 		}
 	}
 
+	@Override
+	public void onPageScrolled(final int position, final float positionOffset,
+			final int positionOffsetPixels) {
+		updateBackground(position, positionOffset);
+	}
+
+	@Override
+	public void onPageSelected(final int position) {
+		updateButtonVisibilities();
+		if (progressIndicator != null) {
+			progressIndicator.setSelectedItem(position, progressIndicatorAnimationsEnabled);
+		}
+	}
+
+	@Override
+	public void onPageScrollStateChanged(final int state) {
+		// Forced to implement this method with onPageSelected(int)
+	}
+
+	@Override
+	public void onItemAdded(final ArrayListWithCallbacks list, final Object itemAdded,
+			final int index) {
+		if (list == pages) {
+			updateButtonVisibilities();
+			regenerateProgressIndicator();
+		}
+	}
+
+	@Override
+	public void onItemRemoved(final ArrayListWithCallbacks list, final Object itemRemoved,
+			final int index) {
+		if (list == pages) {
+			updateButtonVisibilities();
+			regenerateProgressIndicator();
+		}
+	}
+
+	@Override
+	public void onListCleared(final ArrayListWithCallbacks list) {
+		if (list == pages) {
+			updateButtonVisibilities();
+			regenerateProgressIndicator();
+		}
+	}
 
 	/**
 	 * Binds the View elements used in this activity to member variables.
@@ -1238,51 +1281,5 @@ public abstract class IntroActivity extends AppCompatActivity
 	 */
 	public final boolean finalButtonIsDisabled() {
 		return finalButtonDisabled;
-	}
-
-
-	@Override
-	public void onPageScrolled(final int position, final float positionOffset,
-			final int positionOffsetPixels) {
-		updateBackground(position, positionOffset);
-	}
-
-	@Override
-	public void onPageSelected(final int position) {
-		updateButtonVisibilities();
-		if (progressIndicator != null) {
-			progressIndicator.setSelectedItem(position, progressIndicatorAnimationsEnabled);
-		}
-	}
-
-	@Override
-	public void onPageScrollStateChanged(final int state) {
-		// Forced to implement this method with onPageSelected(int)
-	}
-
-	@Override
-	public void onItemAdded(final ArrayListWithCallbacks list, final Object itemAdded,
-			final int index) {
-		if (list == pages) {
-			updateButtonVisibilities();
-			regenerateProgressIndicator();
-		}
-	}
-
-	@Override
-	public void onItemRemoved(final ArrayListWithCallbacks list, final Object itemRemoved,
-			final int index) {
-		if (list == pages) {
-			updateButtonVisibilities();
-			regenerateProgressIndicator();
-		}
-	}
-
-	@Override
-	public void onListCleared(final ArrayListWithCallbacks list) {
-		if (list == pages) {
-			updateButtonVisibilities();
-			regenerateProgressIndicator();
-		}
 	}
 }
