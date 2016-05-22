@@ -57,7 +57,7 @@ public class TestTransformer extends ThreePageTestBase {
 		addBackImage.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				transformer.withParallaxView(R.id.page_fragment_imageHolderBack, 1f);
+				transformer.withParallaxView(R.id.page_fragment_imageHolderBack, 1.5f);
 			}
 		});
 
