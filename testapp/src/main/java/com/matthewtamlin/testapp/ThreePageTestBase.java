@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 
 import com.matthewtamlin.android_utilities_library.helpers.BitmapHelper;
 import com.matthewtamlin.android_utilities_library.helpers.ScreenSizeHelper;
+import com.matthewtamlin.sliding_intro_screen_library.background.ColorBlender;
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton;
 import com.matthewtamlin.sliding_intro_screen_library.pages.Page;
@@ -71,6 +72,8 @@ public abstract class ThreePageTestBase extends IntroActivity {
 				Log.d(TAG, "[on click] [final button]");
 			}
 		});
+		
+		setBackgroundManager(new ColorBlender(colors));
 	}
 
 	@Override
