@@ -224,6 +224,7 @@ public abstract class IntroActivity extends AppCompatActivity
 		bindViews();
 		registerListeners();
 
+		// Copy the returned pages to prevent external changes to the main collection
 		for (final Page p : generatePages(savedInstanceState)) {
 			pages.add(p);
 		}
