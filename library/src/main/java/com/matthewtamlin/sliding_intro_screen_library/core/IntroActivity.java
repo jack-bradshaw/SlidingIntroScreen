@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package com.matthewtamlin.sliding_intro_screen_library;
+package com.matthewtamlin.sliding_intro_screen_library.core;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -30,44 +31,53 @@ import android.widget.RelativeLayout;
 import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks;
 import com.matthewtamlin.android_utilities_library.helpers.ColorHelper;
 import com.matthewtamlin.android_utilities_library.helpers.StatusBarHelper;
-import com.matthewtamlin.sliding_intro_screen_library.IntroButton.Appearance;
-import com.matthewtamlin.sliding_intro_screen_library.IntroButton.Behaviour;
-import com.matthewtamlin.sliding_intro_screen_library.LockableViewPager.LockMode;
+import com.matthewtamlin.sliding_intro_screen_library.R;
+import com.matthewtamlin.sliding_intro_screen_library.background.BackgroundManager;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Appearance;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Behaviour;
+import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager.LockMode;
+import com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator;
+import com.matthewtamlin.sliding_intro_screen_library.indicators.SelectionIndicator;
 
 import java.util.Collection;
 import java.util.Collections;
 
 /**
  * Displays an introduction screen to the user, consisting of a series of pages and a navigation
- * bar. The pages display the content of the introduction, and the navigation bar displays the
- * user's progress through the activity. The navigation bar also provides buttons for moving between
- * pages and advancing to the next activity. To use this class, subclass it and implement {@link
- * #generatePages(Bundle)} and {@link #generateFinalButtonBehaviour()}. It is recommended that the
- * manifest entry declare {@code android:noHistory="true"} to prevent the user from navigating back
- * to this activity once finished. <p> {@link #generatePages(Bundle)} is called by {@link
- * #onCreate(Bundle)} to generate the {@link Page} elements to display in the activity. The method
+ * bar. The pages display the content of the introduction screen, and the navigation bar displays
+ * the user's progress through the activity. By default, a simple {@link DotIndicator} is shown in
+ * the navigation bar, however the methods of the activity allow custom SelectionIndicators to be
+ * set. The navigation bar also provides buttons for moving between pages and advancing to the next
+ * activity.  It is recommended that the manifest entry declare {@code android:noHistory="true"} to
+ * prevent the user from navigating back to this activity once finished. <p> To use this class,
+ * subclass it and implement {@link #generatePages(Bundle)} and {@link
+ * #generateFinalButtonBehaviour()}. {@link #generatePages(Bundle)} is called by {@link
+ * #onCreate(Bundle)} to generate the pages (i.e. Fragments) to display in the activity. The method
  * must return a collection, it cannot return null. Pages cannot be added or removed from the
  * activity after this method returns. {@link #generateFinalButtonBehaviour()} is called by {@link
  * #onCreate(Bundle)} to generate the behaviour to assign to the final button. The method must
  * return a Behaviour, it cannot return null. The behaviour of the button defines what happens when
- * the button is pressed. The {@link com.matthewtamlin.sliding_intro_screen_library.IntroButton
- * .ProgressToNextActivity} abstract class is designed to facilitate validation conditions to check
- * that the activity should finish, and it provides a mechanism for setting a shared preferences
- * flag to prevent the user from being shown the intro screen again. <p> The navigation bar contains
- * three buttons: a left button, a right button and a final button. The left button is present on
- * all pages, but by default it is not displayed on the last page. The button can be shown on the
- * last page by calling {@link #hideLeftButtonOnLastPage (boolean)}. The right button is present on
- * all pages but the last, and this cannot be changed as the final button replaces the right button
- * on the last page. By default, the left button skips ahead to the last page and the right button
- * moves to the next page. The behaviour of the final button is generated in {@link
- * #generateFinalButtonBehaviour()}. The behaviour of each button can be changed using the
- * respective 'set behaviour' method. The appearance of each button can also be changed using the
- * respective 'set appearance' method. These methods make it easy to display text, an icon, or both
- * in each button. The other methods of this activity allow finer control over the appearance of
- * each button. <p> The methods of this activity also provide the following customisation options:
- * <li>Hiding/showing the status bar.</li> <li>Programmatically changing the page.</li> <li>Locking
- * the page to prevent touch events and/or commands (e.g. button presses) from changing the
- * page.</li> <li>Modifying/replacing the progress indicator.</li>
+ * the button is pressed. The {@link IntroButton.ProgressToNextActivity} abstract class is designed
+ * to facilitate validation conditions to check that the activity should finish, and it provides a
+ * mechanism for setting a shared preferences flag to prevent the user from being shown the intro
+ * screen again. <p> The navigation bar contains three buttons: a left button, a right button and a
+ * final button. The left button is present on all pages, but by default it is not displayed on the
+ * last page. The button can be shown on the last page by calling {@link #hideLeftButtonOnLastPage
+ * (boolean)}. The right button is present on all pages but the last, and this cannot be changed as
+ * the final button replaces the right button on the last page. By default, the left button skips
+ * ahead to the last page and the right button moves to the next page. The behaviour of the final
+ * button is generated in {@link #generateFinalButtonBehaviour()}. The behaviour of each button can
+ * be changed using the respective 'set behaviour' method. The appearance of each button can also be
+ * changed using the respective 'set appearance' method. These methods make it easy to display text,
+ * an icon, or both in each button. The other methods of this activity allow finer control over the
+ * appearance of each button. <p> The background of an IntroActivity can be changed in two ways:
+ * manually changing the root View (using {@link #getRootView()}, or supplying a BackgroundManager
+ * to {@link #setBackgroundManager(BackgroundManager)}. For static backgrounds, the former method is
+ * simpler and less error prone. To make dynamic backgrounds which change as the user scrolls, a
+ * BackgroundManager is needed. <p> The methods of this activity also provide the following
+ * customisation options: <li>Hiding/showing the status bar.</li> <li>Programmatically changing the
+ * page.</li> <li>Locking the page to prevent touch events and/or commands (e.g. button presses)
+ * from changing the page.</li> <li>Modifying/replacing the progress indicator.</li>
  */
 public abstract class IntroActivity extends AppCompatActivity
 		implements ViewPager.OnPageChangeListener, ArrayListWithCallbacks.OnListChangedListener {
@@ -159,12 +169,17 @@ public abstract class IntroActivity extends AppCompatActivity
 	/**
 	 * The pages to display in {@code viewPager}.
 	 */
-	private final ArrayListWithCallbacks<Page> pages = new ArrayListWithCallbacks<>();
+	private final ArrayListWithCallbacks<Fragment> pages = new ArrayListWithCallbacks<>();
 
 	/**
 	 * Adapts the elements of {@code pages} to {@code viewPager}.
 	 */
-	private final PageAdapter adapter = new PageAdapter(getSupportFragmentManager(), pages);
+	private final IntroAdapter adapter = new IntroAdapter(getSupportFragmentManager(), pages);
+
+	/**
+	 * Responsible for updating the background as the pages scroll.
+	 */
+	private BackgroundManager backgroundManager = null;
 
 
 	/**
@@ -209,8 +224,9 @@ public abstract class IntroActivity extends AppCompatActivity
 		bindViews();
 		registerListeners();
 
-		for (final Page p : generatePages(savedInstanceState)) {
-			pages.add(p);
+		// Copy the returned pages to prevent external changes to the main collection
+		for (final Fragment f : generatePages(savedInstanceState)) {
+			pages.add(f);
 		}
 
 		initialiseNavigationButtons();
@@ -219,7 +235,6 @@ public abstract class IntroActivity extends AppCompatActivity
 		progressIndicator = new DotIndicator(this);
 		regenerateProgressIndicator();
 	}
-
 
 	@Override
 	protected void onSaveInstanceState(final Bundle outState) {
@@ -241,6 +256,53 @@ public abstract class IntroActivity extends AppCompatActivity
 		}
 	}
 
+	@Override
+	public void onPageScrolled(final int position, final float positionOffset,
+			final int positionOffsetPixels) {
+		// Background change is handled entirely by the background manager
+		if (backgroundManager != null) {
+			backgroundManager.updateBackground(rootView, position, positionOffset);
+		}
+	}
+
+	@Override
+	public void onPageSelected(final int position) {
+		updateButtonVisibilities();
+		if (progressIndicator != null) {
+			progressIndicator.setSelectedItem(position, progressIndicatorAnimationsEnabled);
+		}
+	}
+
+	@Override
+	public void onPageScrollStateChanged(final int state) {
+		// Forced to implement this method with onPageSelected(int)
+	}
+
+	@Override
+	public void onItemAdded(final ArrayListWithCallbacks list, final Object itemAdded,
+			final int index) {
+		if (list == pages) {
+			updateButtonVisibilities();
+			regenerateProgressIndicator();
+		}
+	}
+
+	@Override
+	public void onItemRemoved(final ArrayListWithCallbacks list, final Object itemRemoved,
+			final int index) {
+		if (list == pages) {
+			updateButtonVisibilities();
+			regenerateProgressIndicator();
+		}
+	}
+
+	@Override
+	public void onListCleared(final ArrayListWithCallbacks list) {
+		if (list == pages) {
+			updateButtonVisibilities();
+			regenerateProgressIndicator();
+		}
+	}
 
 	/**
 	 * Binds the View elements used in this activity to member variables.
@@ -279,7 +341,10 @@ public abstract class IntroActivity extends AppCompatActivity
 
 		viewPager.setAdapter(adapter);
 		viewPager.setCurrentItem(index);
-		updateBackground(0, 1);
+
+		if (backgroundManager != null) {
+			backgroundManager.updateBackground(rootView, 0, 1);
+		}
 	}
 
 	/**
@@ -357,33 +422,6 @@ public abstract class IntroActivity extends AppCompatActivity
 	}
 
 	/**
-	 * Updates the background of the root view to show either the desired color of the selected
-	 * page, or a blend of the desired colors when transitioning between two pages.
-	 *
-	 * @param leftIndex
-	 * 		the index of the left most page that is currently visible
-	 * @param offset
-	 * 		a value between 0 and 1, which indicates the proportion of the right most page which is
-	 * 		currently visible
-	 */
-	private void updateBackground(final int leftIndex, final float offset) {
-		if (pages.size() > 0) {
-			final int color1 = pages.get(leftIndex).getDesiredBackgroundColor();
-
-			// Cannot use next page if the current page is the last page
-			final boolean isFinalPage = (leftIndex == (pages.size() - 1));
-			final int color2 = isFinalPage ? pages.get(leftIndex).getDesiredBackgroundColor() :
-					pages.get(leftIndex + 1).getDesiredBackgroundColor();
-
-			// Update background with a blend of color1 and color2
-			rootView.setBackgroundColor(ColorHelper.blendColors(color1, color2, 1f - offset));
-		} else {
-			rootView.setBackgroundColor(Color.GRAY);
-		}
-	}
-
-
-	/**
 	 * Called by {@link #onCreate(Bundle)} to generate the pages to display in this activity. The
 	 * returned collection is copied, so further changes to the collection will have no effect after
 	 * this method returns. The natural ordering of the returned collection is used for the order of
@@ -393,15 +431,14 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * 		if this activity is being re-initialized after previously being shut down, then this Bundle
 	 * 		contains the data this activity most recently saved in {@link
 	 * 		#onSaveInstanceState(Bundle)}, otherwise null
-	 * @return the collection of Page elements to display, not null
+	 * @return the collection of pages to display, not null
 	 */
-	protected abstract Collection<Page> generatePages(Bundle savedInstanceState);
+	protected abstract Collection<Fragment> generatePages(Bundle savedInstanceState);
 
 	/**
 	 * Called by {@link #onCreate(Bundle)} to generate the behaviour of the final button. This
 	 * behaviour can be changed later using {@link #setFinalButtonBehaviour(Behaviour)}. The {@link
-	 * com.matthewtamlin.sliding_intro_screen_library.IntroButton.ProgressToNextActivity} class is
-	 * designed to simplify the implementation.
+	 * IntroButton.ProgressToNextActivity} class is designed to simplify the implementation.
 	 *
 	 * @return the behaviour to use for the final button, not null
 	 */
@@ -451,12 +488,13 @@ public abstract class IntroActivity extends AppCompatActivity
 		viewPager.setPageTransformer(reverseDrawingOrder, transformer);
 	}
 
+
 	/**
 	 * Returns a reference to the pages of this activity, as an unmodifiable collection.
 	 *
 	 * @return the pages of this activity
 	 */
-	public final Collection<Page> getPages() {
+	public final Collection<Fragment> getPages() {
 		return Collections.unmodifiableCollection(pages);
 	}
 
@@ -469,28 +507,28 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * @throws IndexOutOfBoundsException
 	 * 		if the index exceeds the size of the page dataset
 	 */
-	public final Page getPage(int pageIndex) {
+	public final Fragment getPage(int pageIndex) {
 		return pages.get(pageIndex);
 	}
 
 	/**
-	 * @return the Page currently being displayed
+	 * @return the page currently being displayed
 	 */
-	public final Page getCurrentPage() {
+	public final Fragment getCurrentPage() {
 		return pages.get(viewPager.getCurrentItem());
 	}
 
 	/**
-	 * @return the first Page of this activity
+	 * @return the first page of this activity
 	 */
-	public final Page getFirstPage() {
+	public final Fragment getFirstPage() {
 		return pages.get(0);
 	}
 
 	/**
-	 * @return the last Page of this activity
+	 * @return the last page of this activity
 	 */
-	public final Page getLastPage() {
+	public final Fragment getLastPage() {
 		return pages.get(pages.size() - 1);
 	}
 
@@ -498,10 +536,10 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * Returns the index of the specified page, or -1 if the page is not in this activity.
 	 *
 	 * @param page
-	 * 		the Page to get the index of
+	 * 		the page to get the index of
 	 * @return the index of {@code page}, counting from zero
 	 */
-	public final int getIndexOfPage(Page page) {
+	public final int getIndexOfPage(Fragment page) {
 		return pages.indexOf(page);
 	}
 
@@ -586,6 +624,27 @@ public abstract class IntroActivity extends AppCompatActivity
 	}
 
 	/**
+	 * Sets the background manager to use when scrolling through pages. The {@link
+	 * BackgroundManager#updateBackground(View, int, float)} method of the supplied manager will be
+	 * invoked whenever the user scrolls. Note that the BackgroundManager draws behind the pages,
+	 * therefore all pages should have a transparent background when using a BackgroundManager.
+	 *
+	 * @param backgroundManager
+	 * 		the backgroundManager to use, null to use none
+	 */
+	public final void setBackgroundManager(BackgroundManager backgroundManager) {
+		this.backgroundManager = backgroundManager;
+	}
+
+	/**
+	 * @return the current BackgroundManager, may be null
+	 */
+	public final BackgroundManager getBackgroundManager() {
+		return backgroundManager;
+	}
+
+
+	/**
 	 * Sets the selection indicator to show the user's progress through the activity. The provides
 	 * selection indicator must be a subclass of {@link View}.
 	 *
@@ -634,8 +693,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * behaviours are provided in the {@link IntroButton} class, however custom behaviours are
 	 * accepted. To use a custom behaviour, implement {@link Behaviour} and pass an instance of the
 	 * implementation to this method. Alternatively, subclassing {@link
-	 * com.matthewtamlin.sliding_intro_screen_library.IntroButton.BehaviourAdapter} simplifies the
-	 * implementation and eliminates boilerplate code.
+	 * IntroButton.BehaviourAdapter} simplifies the implementation and eliminates boilerplate code.
 	 *
 	 * @param behaviour
 	 * 		the behaviour to use when left button is pressed, not null
@@ -845,14 +903,14 @@ public abstract class IntroActivity extends AppCompatActivity
 		return hideLeftButtonOnLastPage;
 	}
 
+
 	/**
 	 * Sets the behaviour of the right button when clicked. This is distinct from the on-click
 	 * behaviour, which can be set using {@link #setRightButtonOnClickListener(OnClickListener)}.
 	 * Predefined behaviours are provided in the {@link IntroButton} class, however custom
 	 * behaviours are accepted. To use a custom behaviour, implement {@link Behaviour} and pass an
 	 * instance of the implementation to this method. Alternatively, subclassing {@link
-	 * com.matthewtamlin.sliding_intro_screen_library.IntroButton.BehaviourAdapter} simplifies the
-	 * implementation and eliminates boilerplate code.
+	 * IntroButton.BehaviourAdapter} simplifies the implementation and eliminates boilerplate code.
 	 *
 	 * @param behaviour
 	 * 		the behaviour to use when the right button is pressed, not null
@@ -1047,8 +1105,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * behaviours are provided in the {@link IntroButton} class, however custom behaviours are
 	 * accepted. To use a custom behaviour, implement {@link Behaviour} and pass an instance of the
 	 * implementation to this method. Alternatively, subclassing {@link
-	 * com.matthewtamlin.sliding_intro_screen_library.IntroButton.BehaviourAdapter} simplifies the
-	 * implementation and eliminates boilerplate code.
+	 * IntroButton.BehaviourAdapter} simplifies the implementation and eliminates boilerplate code.
 	 *
 	 * @param behaviour
 	 * 		the behaviour to use when left button is pressed, not null
@@ -1234,51 +1291,5 @@ public abstract class IntroActivity extends AppCompatActivity
 	 */
 	public final boolean finalButtonIsDisabled() {
 		return finalButtonDisabled;
-	}
-
-
-	@Override
-	public void onPageScrolled(final int position, final float positionOffset,
-			final int positionOffsetPixels) {
-		updateBackground(position, positionOffset);
-	}
-
-	@Override
-	public void onPageSelected(final int position) {
-		updateButtonVisibilities();
-		if (progressIndicator != null) {
-			progressIndicator.setSelectedItem(position, progressIndicatorAnimationsEnabled);
-		}
-	}
-
-	@Override
-	public void onPageScrollStateChanged(final int state) {
-		// Forced to implement this method with onPageSelected(int)
-	}
-
-	@Override
-	public void onItemAdded(final ArrayListWithCallbacks list, final Object itemAdded,
-			final int index) {
-		if (list == pages) {
-			updateButtonVisibilities();
-			regenerateProgressIndicator();
-		}
-	}
-
-	@Override
-	public void onItemRemoved(final ArrayListWithCallbacks list, final Object itemRemoved,
-			final int index) {
-		if (list == pages) {
-			updateButtonVisibilities();
-			regenerateProgressIndicator();
-		}
-	}
-
-	@Override
-	public void onListCleared(final ArrayListWithCallbacks list) {
-		if (list == pages) {
-			updateButtonVisibilities();
-			regenerateProgressIndicator();
-		}
 	}
 }

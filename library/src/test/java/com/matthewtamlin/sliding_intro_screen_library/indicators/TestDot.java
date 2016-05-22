@@ -1,10 +1,11 @@
-package com.matthewtamlin.sliding_intro_screen_library;
+package com.matthewtamlin.sliding_intro_screen_library.indicators;
 
 import android.content.Context;
 import android.graphics.Color;
 
 import com.matthewtamlin.android_utilities_library.helpers.DimensionHelper;
-import com.matthewtamlin.sliding_intro_screen_library.Dot.State;
+import com.matthewtamlin.sliding_intro_screen_library.BuildConfig;
+import com.matthewtamlin.sliding_intro_screen_library.indicators.Dot.State;
 
 import org.junit.Before;
 import org.junit.Test;

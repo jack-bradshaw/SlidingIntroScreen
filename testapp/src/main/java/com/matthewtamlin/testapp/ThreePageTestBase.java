@@ -18,16 +18,18 @@ package com.matthewtamlin.testapp;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.matthewtamlin.android_utilities_library.helpers.BitmapHelper;
 import com.matthewtamlin.android_utilities_library.helpers.ScreenSizeHelper;
-import com.matthewtamlin.sliding_intro_screen_library.IntroActivity;
-import com.matthewtamlin.sliding_intro_screen_library.IntroButton;
-import com.matthewtamlin.sliding_intro_screen_library.Page;
-import com.matthewtamlin.sliding_intro_screen_library.ParallaxPage;
+import com.matthewtamlin.sliding_intro_screen_library.background.ColorBlender;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton;
+import com.matthewtamlin.sliding_intro_screen_library.pages.Page;
+import com.matthewtamlin.sliding_intro_screen_library.pages.ParallaxPage;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,11 +73,13 @@ public abstract class ThreePageTestBase extends IntroActivity {
 				Log.d(TAG, "[on click] [final button]");
 			}
 		});
+		
+		setBackgroundManager(new ColorBlender(colors));
 	}
 
 	@Override
-	protected Collection<Page> generatePages(Bundle savedInstanceState) {
-		ArrayList<Page> pages = new ArrayList<>();
+	protected Collection<Fragment> generatePages(Bundle savedInstanceState) {
+		ArrayList<Fragment> pages = new ArrayList<>();
 
 		final int screenWidth = ScreenSizeHelper.getScreenWidth(getWindowManager());
 		final int screenHeight = ScreenSizeHelper.getScreenHeight(getWindowManager());
@@ -89,7 +93,6 @@ public abstract class ThreePageTestBase extends IntroActivity {
 
 		for (int color : colors) {
 			final ParallaxPage newPage = ParallaxPage.newInstance();
-			newPage.setDesiredBackgroundColor(color);
 			newPage.setFrontImage(frontDots);
 			newPage.setBackImage(backDots);
 			pages.add(newPage);

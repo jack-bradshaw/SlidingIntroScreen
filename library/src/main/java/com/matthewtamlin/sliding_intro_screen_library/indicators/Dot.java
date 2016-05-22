@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.matthewtamlin.sliding_intro_screen_library;
+package com.matthewtamlin.sliding_intro_screen_library.indicators;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -33,6 +33,7 @@ import android.widget.RelativeLayout;
 
 import com.matthewtamlin.android_utilities_library.helpers.ColorHelper;
 import com.matthewtamlin.android_utilities_library.helpers.DimensionHelper;
+import com.matthewtamlin.sliding_intro_screen_library.R;
 
 /**
  * A Dot is a {@code View} which shows a solid circular shape. Each Dot has two configurations,

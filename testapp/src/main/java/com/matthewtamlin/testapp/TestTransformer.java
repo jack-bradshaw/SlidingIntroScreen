@@ -21,7 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.matthewtamlin.sliding_intro_screen_library.MultiViewParallaxTransformer;
+import com.matthewtamlin.sliding_intro_screen_library.transformers.MultiViewParallaxTransformer;
 
 /**
  * Test the activity when a parallax page transformer is set. The activity should show three

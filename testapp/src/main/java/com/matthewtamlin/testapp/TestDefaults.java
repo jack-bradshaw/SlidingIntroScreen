@@ -18,10 +18,11 @@ package com.matthewtamlin.testapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
-import com.matthewtamlin.sliding_intro_screen_library.IntroActivity;
-import com.matthewtamlin.sliding_intro_screen_library.IntroButton;
-import com.matthewtamlin.sliding_intro_screen_library.Page;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton;
+import com.matthewtamlin.sliding_intro_screen_library.pages.Page;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +41,7 @@ public class TestDefaults extends IntroActivity {
 	private static final String TAG = "[TestDefaults]";
 
 	@Override
-	protected Collection<Page> generatePages(Bundle savedInstanceState) {
+	protected Collection<Fragment> generatePages(Bundle savedInstanceState) {
 		// Return empty collection so that default behaviour may be tested
 		return new ArrayList<>();
 	}

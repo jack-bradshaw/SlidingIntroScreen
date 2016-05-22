@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package com.matthewtamlin.sliding_intro_screen_library;
+package com.matthewtamlin.sliding_intro_screen_library.pages;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
+import com.matthewtamlin.sliding_intro_screen_library.transformers.ParallaxTransformer;
+import com.matthewtamlin.sliding_intro_screen_library.R;
 
 /**
  * An {@link Page} with three elements: a front image, a back image and text. The front and back
@@ -34,7 +39,7 @@ import android.widget.TextView;
  * views can be accessed using the {@link #getFrontImageHolderResId()}, {@link
  * #getBackImageHolderResId()} and {@link #getTextHolderResId()} methods.
  */
-public class ParallaxPage extends Page {
+public class ParallaxPage extends Fragment {
 	/**
 	 * Used to identify this class during debugging.
 	 */
