@@ -174,7 +174,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	/**
 	 * Adapts the elements of {@code pages} to {@code viewPager}.
 	 */
-	private final PageAdapter adapter = new PageAdapter(getSupportFragmentManager(), pages);
+	private final IntroAdapter adapter = new IntroAdapter(getSupportFragmentManager(), pages);
 
 	/**
 	 * Responsible for updating the background as the pages scroll.

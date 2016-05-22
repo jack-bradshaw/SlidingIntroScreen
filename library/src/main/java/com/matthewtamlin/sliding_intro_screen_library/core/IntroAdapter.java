@@ -21,34 +21,33 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks;
-import com.matthewtamlin.sliding_intro_screen_library.pages.Page;
 
 /**
- * Adapts a collection of {@link Page} elements so that they can be displayed in an {@link
+ * Adapts a collection of pages so that they can be displayed in an {@link
  * android.support.v4.view.ViewPager ViewPager}. Instances of this class automatically listen for
  * changes to the dataset.
  */
-public class PageAdapter extends FragmentPagerAdapter
+public class IntroAdapter extends FragmentPagerAdapter
 		implements ArrayListWithCallbacks.OnListChangedListener {
 	/**
 	 * Used to identify this class during debugging.
 	 */
-	private static final String TAG = "[PageAdapter]";
+	private static final String TAG = "[IntroAdapter]";
 
 	/**
 	 * The dataset of this adapter.
 	 */
-	private final ArrayListWithCallbacks<Page> pages;
+	private final ArrayListWithCallbacks<Fragment> pages;
 
 	/**
-	 * Constructs a new PageAdapter instance.
+	 * Constructs a new IntroAdapter instance.
 	 *
 	 * @param fm
 	 * 		the FragmentManager for the Context this adapter is operating in
 	 * @param pages
-	 * 		the dataset of Page elements to adapt, null for an empty dataset
+	 * 		the dataset of pages to adapt, null for an empty dataset
 	 */
-	public PageAdapter(final FragmentManager fm, final ArrayListWithCallbacks<Page> pages) {
+	public IntroAdapter(final FragmentManager fm, final ArrayListWithCallbacks<Fragment> pages) {
 		super(fm);
 
 		if (pages == null) {
@@ -65,7 +64,7 @@ public class PageAdapter extends FragmentPagerAdapter
 	/**
 	 * @return the dataset of this adapter, not null
 	 */
-	public ArrayListWithCallbacks<Page> getPages() {
+	public ArrayListWithCallbacks<Fragment> getPages() {
 		return pages;
 	}
 
