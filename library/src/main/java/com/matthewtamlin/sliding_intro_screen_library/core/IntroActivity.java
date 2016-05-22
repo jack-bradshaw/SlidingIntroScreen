@@ -340,7 +340,10 @@ public abstract class IntroActivity extends AppCompatActivity
 
 		viewPager.setAdapter(adapter);
 		viewPager.setCurrentItem(index);
-		updateBackground(0, 1);
+
+		if (backgroundManager != null) {
+			backgroundManager.updateBackground(rootView, 0, 1);
+		}
 	}
 
 	/**
