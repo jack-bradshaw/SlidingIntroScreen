@@ -30,10 +30,10 @@ import android.widget.RelativeLayout;
 import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks;
 import com.matthewtamlin.android_utilities_library.helpers.ColorHelper;
 import com.matthewtamlin.android_utilities_library.helpers.StatusBarHelper;
+import com.matthewtamlin.sliding_intro_screen_library.R;
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Appearance;
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Behaviour;
 import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager.LockMode;
-import com.matthewtamlin.sliding_intro_screen_library.R;
 import com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator;
 import com.matthewtamlin.sliding_intro_screen_library.indicators.SelectionIndicator;
 import com.matthewtamlin.sliding_intro_screen_library.pages.Page;
@@ -54,24 +54,23 @@ import java.util.Collections;
  * activity after this method returns. {@link #generateFinalButtonBehaviour()} is called by {@link
  * #onCreate(Bundle)} to generate the behaviour to assign to the final button. The method must
  * return a Behaviour, it cannot return null. The behaviour of the button defines what happens when
- * the button is pressed. The {@link IntroButton
- * .ProgressToNextActivity} abstract class is designed to facilitate validation conditions to check
- * that the activity should finish, and it provides a mechanism for setting a shared preferences
- * flag to prevent the user from being shown the intro screen again. <p> The navigation bar contains
- * three buttons: a left button, a right button and a final button. The left button is present on
- * all pages, but by default it is not displayed on the last page. The button can be shown on the
- * last page by calling {@link #hideLeftButtonOnLastPage (boolean)}. The right button is present on
- * all pages but the last, and this cannot be changed as the final button replaces the right button
- * on the last page. By default, the left button skips ahead to the last page and the right button
- * moves to the next page. The behaviour of the final button is generated in {@link
- * #generateFinalButtonBehaviour()}. The behaviour of each button can be changed using the
- * respective 'set behaviour' method. The appearance of each button can also be changed using the
- * respective 'set appearance' method. These methods make it easy to display text, an icon, or both
- * in each button. The other methods of this activity allow finer control over the appearance of
- * each button. <p> The methods of this activity also provide the following customisation options:
- * <li>Hiding/showing the status bar.</li> <li>Programmatically changing the page.</li> <li>Locking
- * the page to prevent touch events and/or commands (e.g. button presses) from changing the
- * page.</li> <li>Modifying/replacing the progress indicator.</li>
+ * the button is pressed. The {@link IntroButton .ProgressToNextActivity} abstract class is designed
+ * to facilitate validation conditions to check that the activity should finish, and it provides a
+ * mechanism for setting a shared preferences flag to prevent the user from being shown the intro
+ * screen again. <p> The navigation bar contains three buttons: a left button, a right button and a
+ * final button. The left button is present on all pages, but by default it is not displayed on the
+ * last page. The button can be shown on the last page by calling {@link #hideLeftButtonOnLastPage
+ * (boolean)}. The right button is present on all pages but the last, and this cannot be changed as
+ * the final button replaces the right button on the last page. By default, the left button skips
+ * ahead to the last page and the right button moves to the next page. The behaviour of the final
+ * button is generated in {@link #generateFinalButtonBehaviour()}. The behaviour of each button can
+ * be changed using the respective 'set behaviour' method. The appearance of each button can also be
+ * changed using the respective 'set appearance' method. These methods make it easy to display text,
+ * an icon, or both in each button. The other methods of this activity allow finer control over the
+ * appearance of each button. <p> The methods of this activity also provide the following
+ * customisation options: <li>Hiding/showing the status bar.</li> <li>Programmatically changing the
+ * page.</li> <li>Locking the page to prevent touch events and/or commands (e.g. button presses)
+ * from changing the page.</li> <li>Modifying/replacing the progress indicator.</li>
  */
 public abstract class IntroActivity extends AppCompatActivity
 		implements ViewPager.OnPageChangeListener, ArrayListWithCallbacks.OnListChangedListener {
@@ -420,8 +419,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	/**
 	 * Called by {@link #onCreate(Bundle)} to generate the behaviour of the final button. This
 	 * behaviour can be changed later using {@link #setFinalButtonBehaviour(Behaviour)}. The {@link
-	 * IntroButton.ProgressToNextActivity} class is
-	 * designed to simplify the implementation.
+	 * IntroButton.ProgressToNextActivity} class is designed to simplify the implementation.
 	 *
 	 * @return the behaviour to use for the final button, not null
 	 */
@@ -654,8 +652,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * behaviours are provided in the {@link IntroButton} class, however custom behaviours are
 	 * accepted. To use a custom behaviour, implement {@link Behaviour} and pass an instance of the
 	 * implementation to this method. Alternatively, subclassing {@link
-	 * IntroButton.BehaviourAdapter} simplifies the
-	 * implementation and eliminates boilerplate code.
+	 * IntroButton.BehaviourAdapter} simplifies the implementation and eliminates boilerplate code.
 	 *
 	 * @param behaviour
 	 * 		the behaviour to use when left button is pressed, not null
@@ -871,8 +868,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * Predefined behaviours are provided in the {@link IntroButton} class, however custom
 	 * behaviours are accepted. To use a custom behaviour, implement {@link Behaviour} and pass an
 	 * instance of the implementation to this method. Alternatively, subclassing {@link
-	 * IntroButton.BehaviourAdapter} simplifies the
-	 * implementation and eliminates boilerplate code.
+	 * IntroButton.BehaviourAdapter} simplifies the implementation and eliminates boilerplate code.
 	 *
 	 * @param behaviour
 	 * 		the behaviour to use when the right button is pressed, not null
@@ -1067,8 +1063,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * behaviours are provided in the {@link IntroButton} class, however custom behaviours are
 	 * accepted. To use a custom behaviour, implement {@link Behaviour} and pass an instance of the
 	 * implementation to this method. Alternatively, subclassing {@link
-	 * IntroButton.BehaviourAdapter} simplifies the
-	 * implementation and eliminates boilerplate code.
+	 * IntroButton.BehaviourAdapter} simplifies the implementation and eliminates boilerplate code.
 	 *
 	 * @param behaviour
 	 * 		the behaviour to use when left button is pressed, not null
