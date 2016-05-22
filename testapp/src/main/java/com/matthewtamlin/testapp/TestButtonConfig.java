@@ -27,9 +27,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.matthewtamlin.android_utilities_library.helpers.DimensionHelper;
-import com.matthewtamlin.sliding_intro_screen_library.IntroButton;
-import com.matthewtamlin.sliding_intro_screen_library.IntroButton.Appearance;
-import com.matthewtamlin.sliding_intro_screen_library.IntroButton.Behaviour;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Appearance;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Behaviour;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 

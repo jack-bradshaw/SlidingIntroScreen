@@ -23,7 +23,7 @@ limitations under the License.
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:fitsSystemWindows="false"
-    tools:context=".ParallaxPage">
+    tools:context=".pages.ParallaxPage">
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/page_fragment_imageHolderBack"

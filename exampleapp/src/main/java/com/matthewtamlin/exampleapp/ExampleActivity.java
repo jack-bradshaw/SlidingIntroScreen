@@ -23,11 +23,11 @@ import android.os.Bundle;
 
 import com.matthewtamlin.android_utilities_library.helpers.BitmapHelper;
 import com.matthewtamlin.android_utilities_library.helpers.ScreenSizeHelper;
-import com.matthewtamlin.sliding_intro_screen_library.IntroActivity;
-import com.matthewtamlin.sliding_intro_screen_library.IntroButton;
-import com.matthewtamlin.sliding_intro_screen_library.Page;
-import com.matthewtamlin.sliding_intro_screen_library.ParallaxPage;
-import com.matthewtamlin.sliding_intro_screen_library.ParallaxTransformer;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton;
+import com.matthewtamlin.sliding_intro_screen_library.pages.Page;
+import com.matthewtamlin.sliding_intro_screen_library.pages.ParallaxPage;
+import com.matthewtamlin.sliding_intro_screen_library.transformers.ParallaxTransformer;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package com.matthewtamlin.sliding_intro_screen_library;
+package com.matthewtamlin.sliding_intro_screen_library.pages;
 
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
+
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
 
 /**
  * A single page to display in an {@link IntroActivity}. Each page stores a color it would prefer to

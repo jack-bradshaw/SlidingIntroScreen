@@ -19,7 +19,7 @@ The javadoc of the IntroActivity class will give you a more in depth understandi
 The other components of this library you should be aware of are:
 - [Page](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/Page.java)
 - [IntroButton](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/IntroButton.java)
-- [DotIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/DotIndicator.java) and [SelectionIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/SelectionIndicator.java)
+- [DotIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/indicators/DotIndicator.java) and [SelectionIndicator](library/src/main/java/com/matthewtamlin/indicators/sliding_intro_screen_library/SelectionIndicator.java)
 
 ### Page
 The `Page` class extends `Fragment` and is used to display the content of your intro screen. Each page contains a color it would like to have drawn behind it, and the hosting `IntroActivity` blends these colors together when scrolling to create a continuous color effect. The `ParallaxPage` class is provided to simplify building an interface with parallax effects. Should you desire custom page layouts and behaviours, just subclass `Page` and use your subclass in `IntroActivity`.
@@ -48,7 +48,7 @@ At the bottom of each `IntroActivity` is a `SelectionIndicator` which displays t
 The `DotIndicator` class can be used in other contexts as well and isn't limited to this library. To create a `DotIndicator` in your custom layout, add:
 
 ```java
-<com.matthewtamlin.sliding_intro_screen_library.DotIndicator>
+<com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator>
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:numberOfDots=YOUR_INT_HERE

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.matthewtamlin.sliding_intro_screen_library;
+package com.matthewtamlin.sliding_intro_screen_library.core;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -30,9 +30,13 @@ import android.widget.RelativeLayout;
 import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks;
 import com.matthewtamlin.android_utilities_library.helpers.ColorHelper;
 import com.matthewtamlin.android_utilities_library.helpers.StatusBarHelper;
-import com.matthewtamlin.sliding_intro_screen_library.IntroButton.Appearance;
-import com.matthewtamlin.sliding_intro_screen_library.IntroButton.Behaviour;
-import com.matthewtamlin.sliding_intro_screen_library.LockableViewPager.LockMode;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Appearance;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Behaviour;
+import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager.LockMode;
+import com.matthewtamlin.sliding_intro_screen_library.R;
+import com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator;
+import com.matthewtamlin.sliding_intro_screen_library.indicators.SelectionIndicator;
+import com.matthewtamlin.sliding_intro_screen_library.pages.Page;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -50,7 +54,7 @@ import java.util.Collections;
  * activity after this method returns. {@link #generateFinalButtonBehaviour()} is called by {@link
  * #onCreate(Bundle)} to generate the behaviour to assign to the final button. The method must
  * return a Behaviour, it cannot return null. The behaviour of the button defines what happens when
- * the button is pressed. The {@link com.matthewtamlin.sliding_intro_screen_library.IntroButton
+ * the button is pressed. The {@link IntroButton
  * .ProgressToNextActivity} abstract class is designed to facilitate validation conditions to check
  * that the activity should finish, and it provides a mechanism for setting a shared preferences
  * flag to prevent the user from being shown the intro screen again. <p> The navigation bar contains
@@ -400,7 +404,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	/**
 	 * Called by {@link #onCreate(Bundle)} to generate the behaviour of the final button. This
 	 * behaviour can be changed later using {@link #setFinalButtonBehaviour(Behaviour)}. The {@link
-	 * com.matthewtamlin.sliding_intro_screen_library.IntroButton.ProgressToNextActivity} class is
+	 * IntroButton.ProgressToNextActivity} class is
 	 * designed to simplify the implementation.
 	 *
 	 * @return the behaviour to use for the final button, not null
@@ -634,7 +638,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * behaviours are provided in the {@link IntroButton} class, however custom behaviours are
 	 * accepted. To use a custom behaviour, implement {@link Behaviour} and pass an instance of the
 	 * implementation to this method. Alternatively, subclassing {@link
-	 * com.matthewtamlin.sliding_intro_screen_library.IntroButton.BehaviourAdapter} simplifies the
+	 * IntroButton.BehaviourAdapter} simplifies the
 	 * implementation and eliminates boilerplate code.
 	 *
 	 * @param behaviour
@@ -851,7 +855,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * Predefined behaviours are provided in the {@link IntroButton} class, however custom
 	 * behaviours are accepted. To use a custom behaviour, implement {@link Behaviour} and pass an
 	 * instance of the implementation to this method. Alternatively, subclassing {@link
-	 * com.matthewtamlin.sliding_intro_screen_library.IntroButton.BehaviourAdapter} simplifies the
+	 * IntroButton.BehaviourAdapter} simplifies the
 	 * implementation and eliminates boilerplate code.
 	 *
 	 * @param behaviour
@@ -1047,7 +1051,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * behaviours are provided in the {@link IntroButton} class, however custom behaviours are
 	 * accepted. To use a custom behaviour, implement {@link Behaviour} and pass an instance of the
 	 * implementation to this method. Alternatively, subclassing {@link
-	 * com.matthewtamlin.sliding_intro_screen_library.IntroButton.BehaviourAdapter} simplifies the
+	 * IntroButton.BehaviourAdapter} simplifies the
 	 * implementation and eliminates boilerplate code.
 	 *
 	 * @param behaviour

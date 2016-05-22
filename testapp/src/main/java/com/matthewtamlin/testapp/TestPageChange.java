@@ -25,9 +25,9 @@ import android.widget.LinearLayout;
 
 import com.matthewtamlin.android_utilities_library.helpers.BitmapHelper;
 import com.matthewtamlin.android_utilities_library.helpers.ScreenSizeHelper;
-import com.matthewtamlin.sliding_intro_screen_library.LockableViewPager;
-import com.matthewtamlin.sliding_intro_screen_library.Page;
-import com.matthewtamlin.sliding_intro_screen_library.ParallaxPage;
+import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager;
+import com.matthewtamlin.sliding_intro_screen_library.pages.Page;
+import com.matthewtamlin.sliding_intro_screen_library.pages.ParallaxPage;
 
 import java.util.ArrayList;
 import java.util.Collection;
