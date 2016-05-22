@@ -31,6 +31,7 @@ import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCall
 import com.matthewtamlin.android_utilities_library.helpers.ColorHelper;
 import com.matthewtamlin.android_utilities_library.helpers.StatusBarHelper;
 import com.matthewtamlin.sliding_intro_screen_library.R;
+import com.matthewtamlin.sliding_intro_screen_library.background.BackgroundManager;
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Appearance;
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Behaviour;
 import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager.LockMode;
@@ -169,6 +170,11 @@ public abstract class IntroActivity extends AppCompatActivity
 	 */
 	private final PageAdapter adapter = new PageAdapter(getSupportFragmentManager(), pages);
 
+	/**
+	 * Responsible for updating the background as the pages scroll.
+	 */
+	private BackgroundManager backgroundManager = null;
+
 
 	/**
 	 * Whether or not changes in the progress indicator should be animated.
@@ -246,7 +252,10 @@ public abstract class IntroActivity extends AppCompatActivity
 	@Override
 	public void onPageScrolled(final int position, final float positionOffset,
 			final int positionOffsetPixels) {
-		//TODO
+		// Background change is handled entirely by the background manager
+		if (backgroundManager != null) {
+			backgroundManager.updateBackground(rootView, position, positionOffset);
+		}
 	}
 
 	@Override
@@ -469,6 +478,7 @@ public abstract class IntroActivity extends AppCompatActivity
 		viewPager.setPageTransformer(reverseDrawingOrder, transformer);
 	}
 
+
 	/**
 	 * Returns a reference to the pages of this activity, as an unmodifiable collection.
 	 *
@@ -602,6 +612,24 @@ public abstract class IntroActivity extends AppCompatActivity
 	public final LockMode getPagingLockMode() {
 		return viewPager.getLockMode();
 	}
+
+	/**
+	 * Sets the background manager to use when scrolling through pages.
+	 *
+	 * @param backgroundManager
+	 * 		the backgroundManager to use, null to use no backgroundManager
+	 */
+	public final void setBackgroundManager(BackgroundManager backgroundManager) {
+		this.backgroundManager = backgroundManager;
+	}
+
+	/**
+	 * @return the current BackgroundManager, may be null
+	 */
+	public final BackgroundManager getBackgroundManager() {
+		return backgroundManager;
+	}
+
 
 	/**
 	 * Sets the selection indicator to show the user's progress through the activity. The provides
@@ -861,6 +889,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	public final boolean leftButtonIsHiddenOnLastPage() {
 		return hideLeftButtonOnLastPage;
 	}
+
 
 	/**
 	 * Sets the behaviour of the right button when clicked. This is distinct from the on-click
