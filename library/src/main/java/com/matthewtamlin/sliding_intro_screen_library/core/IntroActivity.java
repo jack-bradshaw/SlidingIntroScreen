@@ -247,7 +247,7 @@ public abstract class IntroActivity extends AppCompatActivity
 	@Override
 	public void onPageScrolled(final int position, final float positionOffset,
 			final int positionOffsetPixels) {
-		updateBackground(position, positionOffset);
+		//TODO
 	}
 
 	@Override
@@ -402,33 +402,6 @@ public abstract class IntroActivity extends AppCompatActivity
 			}
 		}
 	}
-
-	/**
-	 * Updates the background of the root view to show either the desired color of the selected
-	 * page, or a blend of the desired colors when transitioning between two pages.
-	 *
-	 * @param leftIndex
-	 * 		the index of the left most page that is currently visible
-	 * @param offset
-	 * 		a value between 0 and 1, which indicates the proportion of the right most page which is
-	 * 		currently visible
-	 */
-	private void updateBackground(final int leftIndex, final float offset) {
-		if (pages.size() > 0) {
-			final int color1 = pages.get(leftIndex).getDesiredBackgroundColor();
-
-			// Cannot use next page if the current page is the last page
-			final boolean isFinalPage = (leftIndex == (pages.size() - 1));
-			final int color2 = isFinalPage ? pages.get(leftIndex).getDesiredBackgroundColor() :
-					pages.get(leftIndex + 1).getDesiredBackgroundColor();
-
-			// Update background with a blend of color1 and color2
-			rootView.setBackgroundColor(ColorHelper.blendColors(color1, color2, 1f - offset));
-		} else {
-			rootView.setBackgroundColor(Color.GRAY);
-		}
-	}
-
 
 	/**
 	 * Called by {@link #onCreate(Bundle)} to generate the pages to display in this activity. The
