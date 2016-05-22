@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package com.matthewtamlin.sliding_intro_screen_library;
+package com.matthewtamlin.sliding_intro_screen_library.core;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks;
+import com.matthewtamlin.sliding_intro_screen_library.pages.Page;
 
 /**
  * Adapts a collection of {@link Page} elements so that they can be displayed in an {@link

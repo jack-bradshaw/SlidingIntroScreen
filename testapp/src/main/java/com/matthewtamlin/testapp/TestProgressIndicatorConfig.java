@@ -24,8 +24,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.matthewtamlin.android_utilities_library.helpers.DimensionHelper;
-import com.matthewtamlin.sliding_intro_screen_library.DotIndicator;
-import com.matthewtamlin.sliding_intro_screen_library.SelectionIndicator;
+import com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator;
+import com.matthewtamlin.sliding_intro_screen_library.indicators.SelectionIndicator;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 

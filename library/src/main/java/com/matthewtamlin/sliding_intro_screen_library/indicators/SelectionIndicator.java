@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.matthewtamlin.sliding_intro_screen_library;
+package com.matthewtamlin.sliding_intro_screen_library.indicators;
 
 /**
  * A selection indicator is a visual representation of the selected item in a finite collection.

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.matthewtamlin.sliding_intro_screen_library;
+package com.matthewtamlin.sliding_intro_screen_library.core;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -29,13 +29,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.matthewtamlin.android_utilities_library.helpers.PermissionsHelper;
+import com.matthewtamlin.sliding_intro_screen_library.R;
 
 import java.util.HashMap;
 
 /**
  * An IntroButton is a Button designed to manipulate an IntroActivity. Each button has a behaviour
  * and an appearance. The behaviour of each button is an implementation of the {@link
- * com.matthewtamlin.sliding_intro_screen_library.IntroButton.Behaviour} interface, and is used to
+ * IntroButton.Behaviour} interface, and is used to
  * perform some action when the button is pressed. Each button may also have an OnClickListener
  * independent of its behaviour. The appearance determines how the button is displayed, and can be
  * set to any of the predefined appearances in {@link com.matthewtamlin.sliding_intro_screen_library
@@ -214,7 +215,7 @@ public class IntroButton extends Button implements OnClickListener {
 	 * Sets the behaviour of this IntroButton. The behaviour will be executed when the button is
 	 * clicked. See {@link com.matthewtamlin .sliding_intro_screen_library.IntroButton.Behaviour}.
 	 * This method does not accept null; instead consider passing an instance of {@link
-	 * com.matthewtamlin.sliding_intro_screen_library.IntroButton.DoNothing}.
+	 * IntroButton.DoNothing}.
 	 *
 	 * @param behaviour
 	 * 		the Behaviour to use, not null

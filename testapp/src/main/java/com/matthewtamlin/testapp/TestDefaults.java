@@ -19,9 +19,9 @@ package com.matthewtamlin.testapp;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.matthewtamlin.sliding_intro_screen_library.IntroActivity;
-import com.matthewtamlin.sliding_intro_screen_library.IntroButton;
-import com.matthewtamlin.sliding_intro_screen_library.Page;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton;
+import com.matthewtamlin.sliding_intro_screen_library.pages.Page;
 
 import java.util.ArrayList;
 import java.util.Collection;

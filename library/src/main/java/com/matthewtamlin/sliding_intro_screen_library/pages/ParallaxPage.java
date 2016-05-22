@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.matthewtamlin.sliding_intro_screen_library;
+package com.matthewtamlin.sliding_intro_screen_library.pages;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -24,6 +24,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
+import com.matthewtamlin.sliding_intro_screen_library.transformers.ParallaxTransformer;
+import com.matthewtamlin.sliding_intro_screen_library.R;
 
 /**
  * An {@link Page} with three elements: a front image, a back image and text. The front and back

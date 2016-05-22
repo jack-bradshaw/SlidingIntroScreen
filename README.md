@@ -7,7 +7,7 @@ A library to simplify the creation of introduction screens in Android apps. This
 Add `compile 'com.matthew-tamlin:sliding-intro-screen:2.1.2'` to your gradle build file to use the latest version. Older version are available in the [maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen/view).
 
 ## Quick start
-The main class in this library is [IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/IntroActivity.java). To use `IntroActivity` you must subclass it and override `generatePages()` and `generateFinalButtonBehaviour()`. These methods are called by `onCreate()` to define the appearance and behaviour of your activity. In `generatePages()` you initialise your pages and return them in a Collection. In `generateFinalButtonBehaviour()` you return the behaviour you want to be executed when the user presses the done button. A behaviour is just a runnable with a reference to the activity. The `IntroButton.ProgressToNextActivity` class is designed to simplify moving to the next activity, but if you prefer you can implement the `IntroButton.Behaviour` interface and do whatever you want.
+The main class in this library is [IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/core/IntroActivity.java). To use `IntroActivity` you must subclass it and override `generatePages()` and `generateFinalButtonBehaviour()`. These methods are called by `onCreate()` to define the appearance and behaviour of your activity. In `generatePages()` you initialise your pages and return them in a Collection. In `generateFinalButtonBehaviour()` you return the behaviour you want to be executed when the user presses the done button. A behaviour is just a runnable with a reference to the activity. The `IntroButton.ProgressToNextActivity` class is designed to simplify moving to the next activity, but if you prefer you can implement the `IntroButton.Behaviour` interface and do whatever you want.
 
 The javadoc of the IntroActivity class will give you a more in depth understanding of how to use the library. The other features of the library include:
 - Hiding/showing the status bar.
@@ -17,9 +17,9 @@ The javadoc of the IntroActivity class will give you a more in depth understandi
 
 ## Other classes
 The other components of this library you should be aware of are:
-- [Page](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/Page.java)
-- [IntroButton](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/IntroButton.java)
-- [DotIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/DotIndicator.java) and [SelectionIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/SelectionIndicator.java)
+- [Page](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/pages/Page.java)
+- [IntroButton](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/core/IntroButton.java)
+- [DotIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/indicators/DotIndicator.java) and [SelectionIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/indicators/SelectionIndicator.java)
 
 ### Page
 The `Page` class extends `Fragment` and is used to display the content of your intro screen. Each page contains a color it would like to have drawn behind it, and the hosting `IntroActivity` blends these colors together when scrolling to create a continuous color effect. The `ParallaxPage` class is provided to simplify building an interface with parallax effects. Should you desire custom page layouts and behaviours, just subclass `Page` and use your subclass in `IntroActivity`.
@@ -48,7 +48,7 @@ At the bottom of each `IntroActivity` is a `SelectionIndicator` which displays t
 The `DotIndicator` class can be used in other contexts as well and isn't limited to this library. To create a `DotIndicator` in your custom layout, add:
 
 ```java
-<com.matthewtamlin.sliding_intro_screen_library.DotIndicator>
+<com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator>
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:numberOfDots=YOUR_INT_HERE

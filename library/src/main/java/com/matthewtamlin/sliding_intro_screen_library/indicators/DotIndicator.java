@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.matthewtamlin.sliding_intro_screen_library;
+package com.matthewtamlin.sliding_intro_screen_library.indicators;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -25,6 +25,7 @@ import android.view.Gravity;
 import android.widget.RelativeLayout;
 
 import com.matthewtamlin.android_utilities_library.helpers.DimensionHelper;
+import com.matthewtamlin.sliding_intro_screen_library.R;
 
 import java.util.ArrayList;
 
