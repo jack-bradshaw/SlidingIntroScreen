@@ -20,12 +20,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import com.matthewtamlin.android_utilities_library.helpers.BitmapHelper;
 import com.matthewtamlin.android_utilities_library.helpers.ScreenSizeHelper;
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton;
-import com.matthewtamlin.sliding_intro_screen_library.pages.Page;
 import com.matthewtamlin.sliding_intro_screen_library.pages.ParallaxPage;
 import com.matthewtamlin.sliding_intro_screen_library.transformers.ParallaxTransformer;
 
@@ -85,12 +85,12 @@ public class ExampleActivity extends IntroActivity {
 	 * 		if this activity is being re-initialized after previously being shut down, then this Bundle
 	 * 		contains the data this activity most recently saved in {@link
 	 * 		#onSaveInstanceState(Bundle)}, otherwise null
-	 * @return the collection of Page elements to display, not null
+	 * @return the collection of pages to display, not null
 	 */
 	@Override
-	protected Collection<Page> generatePages(Bundle savedInstanceState) {
+	protected Collection<Fragment> generatePages(Bundle savedInstanceState) {
 		// This variable holds the pages while we create them
-		final ArrayList<Page> pages = new ArrayList<>();
+		final ArrayList<Fragment> pages = new ArrayList<>();
 
 		// Load some bitmaps into memory efficiently
 		final int screenWidth = ScreenSizeHelper.getScreenWidth(getWindowManager());
@@ -105,7 +105,6 @@ public class ExampleActivity extends IntroActivity {
 		// Create the pages
 		for (int color : COLORS) {
 			final ParallaxPage newPage = ParallaxPage.newInstance();
-			newPage.setDesiredBackgroundColor(color);
 			newPage.setFrontImage(frontDots);
 			newPage.setBackImage(backDots);
 			pages.add(newPage);
@@ -117,8 +116,9 @@ public class ExampleActivity extends IntroActivity {
 
 	/**
 	 * Called by {@link #onCreate(Bundle)} to generate the behaviour of the final button. This
-	 * behaviour can be changed later using {@link #setFinalButtonBehaviour(Behaviour)}. The {@link
-	 * IntroButton.ProgressToNextActivity} class is designed to simplify the implementation.
+	 * behaviour can be changed later using {@link #setFinalButtonBehaviour(IntroButton.Behaviour)}.
+	 * The {@link IntroButton.ProgressToNextActivity} class is designed to simplify the
+	 * implementation.
 	 *
 	 * @return the behaviour to use for the final button, not null
 	 */
