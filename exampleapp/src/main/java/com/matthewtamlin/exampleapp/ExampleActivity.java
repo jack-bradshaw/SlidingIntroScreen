@@ -25,7 +25,7 @@ import android.support.v4.app.Fragment;
 import com.matthewtamlin.android_utilities_library.helpers.BitmapHelper;
 import com.matthewtamlin.android_utilities_library.helpers.ScreenSizeHelper;
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
-import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
 import com.matthewtamlin.sliding_intro_screen_library.pages.ParallaxPage;
 import com.matthewtamlin.sliding_intro_screen_library.transformers.ParallaxTransformer;
 

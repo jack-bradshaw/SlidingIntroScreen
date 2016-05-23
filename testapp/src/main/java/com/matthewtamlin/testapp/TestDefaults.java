@@ -21,8 +21,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
-import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton;
-import com.matthewtamlin.sliding_intro_screen_library.pages.Page;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -40,7 +40,7 @@ limitations under the License.
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="false">
 
-        <com.matthewtamlin.sliding_intro_screen_library.core.IntroButton
+        <com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton
             android:id="@+id/intro_activity_leftButton"
             style="?android:actionButtonStyle"
             android:layout_width="wrap_content"
@@ -70,7 +70,7 @@ limitations under the License.
             android:layout_alignRight="@id/intro_activity_rightButton">
         </FrameLayout>
 
-        <com.matthewtamlin.sliding_intro_screen_library.core.IntroButton
+        <com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton
             android:id="@+id/intro_activity_rightButton"
             style="?android:actionButtonStyle"
             android:layout_width="wrap_content"
@@ -87,7 +87,7 @@ limitations under the License.
             android:textColor="@android:color/white"
             android:textSize="16sp"/>
 
-        <com.matthewtamlin.sliding_intro_screen_library.core.IntroButton
+        <com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton
             android:id="@+id/intro_activity_finalButton"
             style="?android:actionButtonStyle"
             android:layout_width="wrap_content"

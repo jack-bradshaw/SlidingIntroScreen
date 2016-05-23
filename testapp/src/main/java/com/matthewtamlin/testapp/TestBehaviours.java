@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
 
 /**
  * Tests the ability to set behaviours, and tests the behaviours themselves.
