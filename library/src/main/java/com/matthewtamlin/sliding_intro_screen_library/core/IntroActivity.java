@@ -139,7 +139,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	private final Behaviour DEFAULT_RIGHT_BUTTON_BEHAVIOUR = new IntroButton.GoToNextPage();
 
 
-	// View handles
+	// Miscellaneous View handles
 
 	/**
 	 * The root view of this activity.
@@ -151,10 +151,21 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 */
 	private LockableViewPager viewPager;
 
+
+	// Progress indicator variables
+
 	/**
 	 * Holds the selection indicator.
 	 */
 	private FrameLayout progressIndicatorHelper;
+
+	/**
+	 * Displays the user's progress through the intro screen.
+	 */
+	private SelectionIndicator progressIndicator;
+
+
+	// Button variables
 
 	/**
 	 * An IntroButton which is displayed at the bottom left of the navigation bar. This button is
@@ -174,12 +185,6 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * only displayed on the last page.
 	 */
 	private IntroButton finalButton;
-
-	/**
-	 * Displays the user's progress through the intro screen.
-	 */
-	private SelectionIndicator progressIndicator;
-
 
 	// Dataset related variables
 
@@ -687,7 +692,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 		return backgroundManager;
 	}
 
-	
+
 	// Methods relating to the progress indicator
 
 	/**
