@@ -26,6 +26,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -43,6 +44,7 @@ import com.matthewtamlin.sliding_intro_screen_library.indicators.SelectionIndica
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * Displays an introduction screen to the user, consisting of a series of pages and a navigation
@@ -185,6 +187,13 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * only displayed on the last page.
 	 */
 	private IntroButton finalButton;
+
+	/**
+	 * Maps each button to the animation which is currently acting on it. This allows animations to
+	 * be cancelled if necessary. If a button is not currently being animated, then the button does
+	 * not exist in the keyset.
+	 */
+	private final HashMap<IntroButton, Animation> buttonFadingAnimations = new HashMap<>();
 
 	// Dataset related variables
 
