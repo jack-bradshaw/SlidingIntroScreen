@@ -16,6 +16,7 @@
 
 package com.matthewtamlin.sliding_intro_screen_library.core;
 
+import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -26,7 +27,6 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -36,8 +36,9 @@ import com.matthewtamlin.android_utilities_library.helpers.ColorHelper;
 import com.matthewtamlin.android_utilities_library.helpers.StatusBarHelper;
 import com.matthewtamlin.sliding_intro_screen_library.R;
 import com.matthewtamlin.sliding_intro_screen_library.background.BackgroundManager;
-import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Appearance;
-import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Behaviour;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Appearance;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Behaviour;
 import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager.LockMode;
 import com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator;
 import com.matthewtamlin.sliding_intro_screen_library.indicators.SelectionIndicator;
@@ -190,10 +191,10 @@ public abstract class IntroActivity extends AppCompatActivity {
 
 	/**
 	 * Maps each button to the animation which is currently acting on it. This allows animations to
-	 * be cancelled if necessary. If a button is not currently being animated, then the button does
-	 * not exist in the keyset.
+	 * be cancelled if another is requested. If a button is not currently being animated, then that
+	 * button does not exist in the keyset.
 	 */
-	private final HashMap<IntroButton, Animation> buttonFadingAnimations = new HashMap<>();
+	private final HashMap<IntroButton, ValueAnimator> buttonAnimations = new HashMap<>();
 
 	// Dataset related variables
 

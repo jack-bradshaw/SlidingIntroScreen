@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.matthewtamlin.sliding_intro_screen_library.core;
+package com.matthewtamlin.sliding_intro_screen_library.buttons;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -30,6 +30,7 @@ import android.widget.Button;
 
 import com.matthewtamlin.android_utilities_library.helpers.PermissionsHelper;
 import com.matthewtamlin.sliding_intro_screen_library.R;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
 
 import java.util.HashMap;
 
