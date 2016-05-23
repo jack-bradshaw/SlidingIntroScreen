@@ -22,6 +22,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +30,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks;
+import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks.OnListChangedListener;
 import com.matthewtamlin.android_utilities_library.helpers.ColorHelper;
 import com.matthewtamlin.android_utilities_library.helpers.StatusBarHelper;
 import com.matthewtamlin.sliding_intro_screen_library.R;
@@ -79,32 +81,29 @@ import java.util.Collections;
  * page.</li> <li>Locking the page to prevent touch events and/or commands (e.g. button presses)
  * from changing the page.</li> <li>Modifying/replacing the progress indicator.</li>
  */
-public abstract class IntroActivity extends AppCompatActivity
-		implements ViewPager.OnPageChangeListener, ArrayListWithCallbacks.OnListChangedListener {
+public abstract class IntroActivity extends AppCompatActivity {
+	// Static constants for debugging
+
 	/**
 	 * Used to identify this class during debugging.
 	 */
 	private static final String TAG = "[IntroActivity]";
+
+
+	// Static constants for state restoration
 
 	/**
 	 * Constant used to save and restore the current page on configuration changes.
 	 */
 	private static final String STATE_KEY_CURRENT_PAGE_INDEX = "current page index";
 
+
+	// Static default constants
+
 	/**
 	 * The default current page index to be used when there is no state to restore.
 	 */
-	private static final int DEFAULT_CURRENT_PAGE_INDEX = 0;
-
-	/**
-	 * The Behaviour to use for the left button until it is explicitly set.
-	 */
-	private final Behaviour DEFAULT_LEFT_BUTTON_BEHAVIOUR = new IntroButton.GoToLastPage();
-
-	/**
-	 * The Behaviour to use for the right button until it is explicitly set.
-	 */
-	private final Behaviour DEFAULT_RIGHT_BUTTON_BEHAVIOUR = new IntroButton.GoToNextPage();
+	private final static int DEFAULT_CURRENT_PAGE_INDEX = 0;
 
 	/**
 	 * The Appearance to use for the left button until it is explicitly set.
@@ -125,6 +124,22 @@ public abstract class IntroActivity extends AppCompatActivity
 	 * The text to display in the final button until it is explicitly set.
 	 */
 	private static final CharSequence DEFAULT_FINAL_BUTTON_TEXT = "DONE";
+
+
+	// Non-static default constants
+
+	/**
+	 * The Behaviour to use for the left button until it is explicitly set.
+	 */
+	private final Behaviour DEFAULT_LEFT_BUTTON_BEHAVIOUR = new IntroButton.GoToLastPage();
+
+	/**
+	 * The Behaviour to use for the right button until it is explicitly set.
+	 */
+	private final Behaviour DEFAULT_RIGHT_BUTTON_BEHAVIOUR = new IntroButton.GoToNextPage();
+
+
+	// View handles
 
 	/**
 	 * The root view of this activity.
@@ -166,6 +181,8 @@ public abstract class IntroActivity extends AppCompatActivity
 	private SelectionIndicator progressIndicator;
 
 
+	// Dataset related variables
+
 	/**
 	 * The pages to display in {@code viewPager}.
 	 */
@@ -176,11 +193,16 @@ public abstract class IntroActivity extends AppCompatActivity
 	 */
 	private final IntroAdapter adapter = new IntroAdapter(getSupportFragmentManager(), pages);
 
+
+	// Background manager related variables
+
 	/**
 	 * Responsible for updating the background as the pages scroll.
 	 */
 	private BackgroundManager backgroundManager = null;
 
+
+	// Configuration variables
 
 	/**
 	 * Whether or not changes in the progress indicator should be animated.
@@ -208,6 +230,69 @@ public abstract class IntroActivity extends AppCompatActivity
 	private boolean hideLeftButtonOnLastPage = true;
 
 
+	// Listener delegates
+
+	/**
+	 * Page change events from {@code viewPager} are delegated to this receiver. Using a delegate as
+	 * the receiver is better than using the public class, since this approach groups common code
+	 * and hides the internal implementation from the public class signature.
+	 */
+	private final OnPageChangeListener pageChangeListenerDelegate = new OnPageChangeListener() {
+		@Override
+		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			if (backgroundManager != null) {
+				backgroundManager.updateBackground(rootView, position, positionOffset);
+			}
+		}
+
+		@Override
+		public void onPageSelected(int position) {
+			updateButtonVisibilities();
+
+			if (progressIndicator != null) {
+				progressIndicator.setSelectedItem(position, progressIndicatorAnimationsEnabled);
+			}
+		}
+
+		@Override
+		public void onPageScrollStateChanged(int state) {
+			// Forced to implement this method, just do nothing
+		}
+	};
+
+	/**
+	 * List change events from {@code pages} are delegated to this receiver. Using a delegate as the
+	 * receiver is better than using the public class, since this approach groups common code and
+	 * hides the internal implementation from the public class signature.
+	 */
+	private final OnListChangedListener listChangeListenerDelegate = new OnListChangedListener() {
+		@Override
+		public void onItemAdded(ArrayListWithCallbacks list, Object itemAdded, int index) {
+			commonUpdateTask();
+		}
+
+		@Override
+		public void onItemRemoved(ArrayListWithCallbacks list, Object itemRemoved, int index) {
+			commonUpdateTask();
+		}
+
+		@Override
+		public void onListCleared(ArrayListWithCallbacks list) {
+			commonUpdateTask();
+		}
+
+		/**
+		 * Common tasks for all three callback methods. Updates the UI.
+		 */
+		private void commonUpdateTask() {
+			updateButtonVisibilities();
+			regenerateProgressIndicator();
+		}
+	};
+
+
+	// Overridden methods
+
 	/**
 	 * Initialises the UI and behaviour of this activity. This method calls {@link
 	 * #generatePages(Bundle)} to create the pages to display in this activity.
@@ -223,12 +308,7 @@ public abstract class IntroActivity extends AppCompatActivity
 		setContentView(R.layout.activity_intro);
 		bindViews();
 		registerListeners();
-
-		// Copy the returned pages to prevent external changes to the main collection
-		for (final Fragment f : generatePages(savedInstanceState)) {
-			pages.add(f);
-		}
-
+		pages.addAll(generatePages(savedInstanceState)); // Copying avoids external changes to pages
 		initialiseNavigationButtons();
 		initialiseViewPager(savedInstanceState);
 		updateButtonVisibilities();
@@ -256,53 +336,8 @@ public abstract class IntroActivity extends AppCompatActivity
 		}
 	}
 
-	@Override
-	public void onPageScrolled(final int position, final float positionOffset,
-			final int positionOffsetPixels) {
-		// Background change is handled entirely by the background manager
-		if (backgroundManager != null) {
-			backgroundManager.updateBackground(rootView, position, positionOffset);
-		}
-	}
 
-	@Override
-	public void onPageSelected(final int position) {
-		updateButtonVisibilities();
-		if (progressIndicator != null) {
-			progressIndicator.setSelectedItem(position, progressIndicatorAnimationsEnabled);
-		}
-	}
-
-	@Override
-	public void onPageScrollStateChanged(final int state) {
-		// Forced to implement this method with onPageSelected(int)
-	}
-
-	@Override
-	public void onItemAdded(final ArrayListWithCallbacks list, final Object itemAdded,
-			final int index) {
-		if (list == pages) {
-			updateButtonVisibilities();
-			regenerateProgressIndicator();
-		}
-	}
-
-	@Override
-	public void onItemRemoved(final ArrayListWithCallbacks list, final Object itemRemoved,
-			final int index) {
-		if (list == pages) {
-			updateButtonVisibilities();
-			regenerateProgressIndicator();
-		}
-	}
-
-	@Override
-	public void onListCleared(final ArrayListWithCallbacks list) {
-		if (list == pages) {
-			updateButtonVisibilities();
-			regenerateProgressIndicator();
-		}
-	}
+	// Private methods
 
 	/**
 	 * Binds the View elements used in this activity to member variables.
@@ -318,16 +353,16 @@ public abstract class IntroActivity extends AppCompatActivity
 	}
 
 	/**
-	 * Registers event listeners for {@code viewPager}, {@code pages}.
+	 * Registers event listeners for {@code viewPager} and {@code pages}.
 	 */
 	private void registerListeners() {
-		viewPager.addOnPageChangeListener(this);
-		pages.addOnListChangedListener(this);
+		viewPager.addOnPageChangeListener(pageChangeListenerDelegate);
+		pages.addOnListChangedListener(listChangeListenerDelegate);
 	}
 
 	/**
-	 * Initialises UI elements related to displaying the current page. If this activity is being
-	 * restored then the previously open page is restored.
+	 * Initialises the UI elements for displaying the current page. If this activity is being
+	 * restored, then the page which was previously open will be opened.
 	 *
 	 * @param savedInstanceState
 	 * 		if this activity is being re-initialized after previously being shut down, then this Bundle
@@ -342,6 +377,7 @@ public abstract class IntroActivity extends AppCompatActivity
 		viewPager.setAdapter(adapter);
 		viewPager.setCurrentItem(index);
 
+		// Make sure the background for the first page is displayed
 		if (backgroundManager != null) {
 			backgroundManager.updateBackground(rootView, 0, 1);
 		}
@@ -404,7 +440,6 @@ public abstract class IntroActivity extends AppCompatActivity
 		}
 	}
 
-
 	/**
 	 * Removes {@code progressIndicator} from the view and reattaches it. The active item is
 	 * updated.
@@ -420,6 +455,9 @@ public abstract class IntroActivity extends AppCompatActivity
 			}
 		}
 	}
+
+
+	// Abstract methods
 
 	/**
 	 * Called by {@link #onCreate(Bundle)} to generate the pages to display in this activity. The
@@ -466,6 +504,8 @@ public abstract class IntroActivity extends AppCompatActivity
 	}
 
 
+	// Methods relating to the root view
+
 	/**
 	 * @return a reference to the top most view of this activity
 	 */
@@ -473,6 +513,8 @@ public abstract class IntroActivity extends AppCompatActivity
 		return rootView;
 	}
 
+
+	// Methods relating to the page transformer
 
 	/**
 	 * Sets the PageTransformer which will be used to the pages of this intro screen when scrolled.
@@ -488,6 +530,8 @@ public abstract class IntroActivity extends AppCompatActivity
 		viewPager.setPageTransformer(reverseDrawingOrder, transformer);
 	}
 
+
+	// Methods relating to accessing pages and navigating between them
 
 	/**
 	 * Returns a reference to the pages of this activity, as an unmodifiable collection.
@@ -643,6 +687,7 @@ public abstract class IntroActivity extends AppCompatActivity
 		return backgroundManager;
 	}
 
+	// Methoods relating to the progress indicator
 
 	/**
 	 * Sets the selection indicator to show the user's progress through the activity. The provides
@@ -686,6 +731,8 @@ public abstract class IntroActivity extends AppCompatActivity
 		return progressIndicatorAnimationsEnabled;
 	}
 
+
+	// Methods relating to the left button
 
 	/**
 	 * Sets the behaviour of the left button. This is distinct from the on-click behaviour, which
@@ -904,6 +951,8 @@ public abstract class IntroActivity extends AppCompatActivity
 	}
 
 
+	// Methods relating to the right button
+
 	/**
 	 * Sets the behaviour of the right button when clicked. This is distinct from the on-click
 	 * behaviour, which can be set using {@link #setRightButtonOnClickListener(OnClickListener)}.
@@ -1098,6 +1147,8 @@ public abstract class IntroActivity extends AppCompatActivity
 		return rightButtonDisabled;
 	}
 
+
+	// Methods relating to the final button
 
 	/**
 	 * Sets the behaviour of the final button. This is distinct from the on-click behaviour, which
