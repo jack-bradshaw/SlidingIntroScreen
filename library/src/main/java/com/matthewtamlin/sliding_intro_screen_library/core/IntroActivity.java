@@ -167,6 +167,11 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 */
 	private SelectionIndicator progressIndicator;
 
+	/**
+	 * Whether or not changes in the progress indicator should be animated.
+	 */
+	private boolean progressIndicatorAnimationsEnabled = true;
+
 
 	// Button variables
 
@@ -190,11 +195,32 @@ public abstract class IntroActivity extends AppCompatActivity {
 	private IntroButton finalButton;
 
 	/**
+	 * Whether or not the left button should be disabled.
+	 */
+	private boolean leftButtonDisabled = false;
+
+	/**
+	 * Whether or not the right button should be disabled.
+	 */
+	private boolean rightButtonDisabled = false;
+
+	/**
+	 * Whether or not the final button should be disabled.
+	 */
+	private boolean finalButtonDisabled = false;
+
+	/**
+	 * Whether or not {@code leftButton} should be hidden when the last page is being displayed.
+	 */
+	private boolean hideLeftButtonOnLastPage = true;
+
+	/**
 	 * Maps each button to the animation which is currently acting on it. This allows animations to
 	 * be cancelled if another is requested. If a button is not currently being animated, then that
 	 * button does not exist in the keyset.
 	 */
 	private final HashMap<IntroButton, ValueAnimator> buttonAnimations = new HashMap<>();
+
 
 	// Dataset related variables
 
@@ -215,34 +241,6 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * Responsible for updating the background as the pages scroll.
 	 */
 	private BackgroundManager backgroundManager = null;
-
-
-	// Configuration variables
-
-	/**
-	 * Whether or not changes in the progress indicator should be animated.
-	 */
-	private boolean progressIndicatorAnimationsEnabled = true;
-
-	/**
-	 * Whether or not the left button should be disabled.
-	 */
-	private boolean leftButtonDisabled = false;
-
-	/**
-	 * Whether or not the right button should be disabled.
-	 */
-	private boolean rightButtonDisabled = false;
-
-	/**
-	 * Whether or not the final button should be disabled.
-	 */
-	private boolean finalButtonDisabled = false;
-
-	/**
-	 * Whether or not {@code leftButton} should be hidden when the last page is being displayed.
-	 */
-	private boolean hideLeftButtonOnLastPage = true;
 
 
 	// Listener delegates
