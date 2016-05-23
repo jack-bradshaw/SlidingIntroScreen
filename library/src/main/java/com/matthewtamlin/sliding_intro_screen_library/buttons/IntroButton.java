@@ -37,14 +37,13 @@ import java.util.HashMap;
 /**
  * An IntroButton is a Button designed to manipulate an IntroActivity. Each button has a behaviour
  * and an appearance. The behaviour of each button is an implementation of the {@link
- * IntroButton.Behaviour} interface, and is used to
- * perform some action when the button is pressed. Each button may also have an OnClickListener
- * independent of its behaviour. The appearance determines how the button is displayed, and can be
- * set to any of the predefined appearances in {@link com.matthewtamlin.sliding_intro_screen_library
- * .IntroButton.Appearance}. Each Behaviour <b>class</b> can have different text label and icon
- * resources, and changing the behaviour will automatically load the corresponding resources. The
- * context supplied to the constructor is automatically provided to the Behaviour if the context is
- * an IntroActivity.
+ * IntroButton.Behaviour} interface, and is used to perform some action when the button is pressed.
+ * Each button may also have an OnClickListener independent of its behaviour. The appearance
+ * determines how the button is displayed, and can be set to any of the predefined appearances in
+ * {@link com.matthewtamlin.sliding_intro_screen_library .IntroButton.Appearance}. Each Behaviour
+ * <b>class</b> can have different text label and icon resources, and changing the behaviour will
+ * automatically load the corresponding resources. The context supplied to the constructor is
+ * automatically provided to the Behaviour if the context is an IntroActivity.
  */
 public class IntroButton extends Button implements OnClickListener {
 	/**
