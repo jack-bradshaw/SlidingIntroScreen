@@ -308,12 +308,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_intro);
 		bindViews();
 		registerListeners();
-
-		// Copy the returned pages to prevent external changes to the main collection
-		for (final Fragment f : generatePages(savedInstanceState)) {
-			pages.add(f);
-		}
-
+		pages.addAll(generatePages(savedInstanceState)); // Copying avoids external changes to pages
 		initialiseNavigationButtons();
 		initialiseViewPager(savedInstanceState);
 		updateButtonVisibilities();
