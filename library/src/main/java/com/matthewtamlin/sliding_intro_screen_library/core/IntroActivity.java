@@ -687,7 +687,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 		return backgroundManager;
 	}
 
-	// Methoods relating to the progress indicator
+	
+	// Methods relating to the progress indicator
 
 	/**
 	 * Sets the selection indicator to show the user's progress through the activity. The provides
