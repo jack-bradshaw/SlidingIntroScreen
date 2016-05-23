@@ -82,30 +82,28 @@ import java.util.Collections;
  * from changing the page.</li> <li>Modifying/replacing the progress indicator.</li>
  */
 public abstract class IntroActivity extends AppCompatActivity {
+	// Static constants for debugging
+
 	/**
 	 * Used to identify this class during debugging.
 	 */
 	private static final String TAG = "[IntroActivity]";
+
+
+	// Static constants for state restoration
 
 	/**
 	 * Constant used to save and restore the current page on configuration changes.
 	 */
 	private static final String STATE_KEY_CURRENT_PAGE_INDEX = "current page index";
 
+
+	// Static default constants
+
 	/**
 	 * The default current page index to be used when there is no state to restore.
 	 */
-	private static final int DEFAULT_CURRENT_PAGE_INDEX = 0;
-
-	/**
-	 * The Behaviour to use for the left button until it is explicitly set.
-	 */
-	private final Behaviour DEFAULT_LEFT_BUTTON_BEHAVIOUR = new IntroButton.GoToLastPage();
-
-	/**
-	 * The Behaviour to use for the right button until it is explicitly set.
-	 */
-	private final Behaviour DEFAULT_RIGHT_BUTTON_BEHAVIOUR = new IntroButton.GoToNextPage();
+	private final static int DEFAULT_CURRENT_PAGE_INDEX = 0;
 
 	/**
 	 * The Appearance to use for the left button until it is explicitly set.
@@ -126,6 +124,22 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * The text to display in the final button until it is explicitly set.
 	 */
 	private static final CharSequence DEFAULT_FINAL_BUTTON_TEXT = "DONE";
+
+
+	// Non-static default constants
+
+	/**
+	 * The Behaviour to use for the left button until it is explicitly set.
+	 */
+	private final Behaviour DEFAULT_LEFT_BUTTON_BEHAVIOUR = new IntroButton.GoToLastPage();
+
+	/**
+	 * The Behaviour to use for the right button until it is explicitly set.
+	 */
+	private final Behaviour DEFAULT_RIGHT_BUTTON_BEHAVIOUR = new IntroButton.GoToNextPage();
+
+
+	// View handles
 
 	/**
 	 * The root view of this activity.
@@ -167,6 +181,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 	private SelectionIndicator progressIndicator;
 
 
+	// Dataset related variables
+
 	/**
 	 * The pages to display in {@code viewPager}.
 	 */
@@ -177,11 +193,16 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 */
 	private final IntroAdapter adapter = new IntroAdapter(getSupportFragmentManager(), pages);
 
+
+	// Background manager related variables
+
 	/**
 	 * Responsible for updating the background as the pages scroll.
 	 */
 	private BackgroundManager backgroundManager = null;
 
+
+	// Configuration variables
 
 	/**
 	 * Whether or not changes in the progress indicator should be animated.
@@ -207,6 +228,9 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * Whether or not {@code leftButton} should be hidden when the last page is being displayed.
 	 */
 	private boolean hideLeftButtonOnLastPage = true;
+
+
+	// Listener delegates
 
 	/**
 	 * Page change events from {@code viewPager} are delegated to this receiver. Using a delegate as
@@ -267,6 +291,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 	};
 
 
+	// Overridden methods
+
 	/**
 	 * Initialises the UI and behaviour of this activity. This method calls {@link
 	 * #generatePages(Bundle)} to create the pages to display in this activity.
@@ -315,6 +341,9 @@ public abstract class IntroActivity extends AppCompatActivity {
 		}
 	}
 
+
+	// Private methods
+
 	/**
 	 * Binds the View elements used in this activity to member variables.
 	 */
@@ -337,8 +366,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Initialises UI elements related to displaying the current page. If this activity is being
-	 * restored then the previously open page is restored.
+	 * Initialises the UI elements for displaying the current page. If this activity is being
+	 * restored, then the page which was previously open will be opened.
 	 *
 	 * @param savedInstanceState
 	 * 		if this activity is being re-initialized after previously being shut down, then this Bundle
@@ -354,7 +383,6 @@ public abstract class IntroActivity extends AppCompatActivity {
 		viewPager.setCurrentItem(index);
 
 		// Make sure the background for the first page is displayed
-		// TODO look at moving to a different method
 		if (backgroundManager != null) {
 			backgroundManager.updateBackground(rootView, 0, 1);
 		}
@@ -417,7 +445,6 @@ public abstract class IntroActivity extends AppCompatActivity {
 		}
 	}
 
-
 	/**
 	 * Removes {@code progressIndicator} from the view and reattaches it. The active item is
 	 * updated.
@@ -433,6 +460,9 @@ public abstract class IntroActivity extends AppCompatActivity {
 			}
 		}
 	}
+
+
+	// Abstract methods
 
 	/**
 	 * Called by {@link #onCreate(Bundle)} to generate the pages to display in this activity. The
@@ -479,6 +509,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 
+	// Methods relating to the root view
+
 	/**
 	 * @return a reference to the top most view of this activity
 	 */
@@ -486,6 +518,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 		return rootView;
 	}
 
+
+	// Methods relating to the page transformer
 
 	/**
 	 * Sets the PageTransformer which will be used to the pages of this intro screen when scrolled.
@@ -501,6 +535,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 		viewPager.setPageTransformer(reverseDrawingOrder, transformer);
 	}
 
+
+	// Methods relating to accessing pages and navigating between them
 
 	/**
 	 * Returns a reference to the pages of this activity, as an unmodifiable collection.
@@ -656,6 +692,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 		return backgroundManager;
 	}
 
+	// Methoods relating to the progress indicator
 
 	/**
 	 * Sets the selection indicator to show the user's progress through the activity. The provides
@@ -699,6 +736,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 		return progressIndicatorAnimationsEnabled;
 	}
 
+
+	// Methods relating to the left button
 
 	/**
 	 * Sets the behaviour of the left button. This is distinct from the on-click behaviour, which
@@ -917,6 +956,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 
+	// Methods relating to the right button
+
 	/**
 	 * Sets the behaviour of the right button when clicked. This is distinct from the on-click
 	 * behaviour, which can be set using {@link #setRightButtonOnClickListener(OnClickListener)}.
@@ -1112,6 +1153,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 
+	// Methods relating to the final button
+
 	/**
 	 * Sets the behaviour of the final button. This is distinct from the on-click behaviour, which
 	 * can be set using {@link #setLeftButtonOnClickListener(OnClickListener)}. Predefined
@@ -1305,6 +1348,4 @@ public abstract class IntroActivity extends AppCompatActivity {
 	public final boolean finalButtonIsDisabled() {
 		return finalButtonDisabled;
 	}
-
-
 }
