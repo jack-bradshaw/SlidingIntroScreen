@@ -268,7 +268,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 		@Override
 		public void onPageSelected(int position) {
 			// Page changes are often user initiated events, so show animations
-			updateButtonVisibilities(true);
+			updateButtonStatus(true);
 
 			if (progressIndicator != null) {
 				progressIndicator.setSelectedItem(position, progressIndicatorAnimationsEnabled);
@@ -301,7 +301,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 		pages.addAll(generatePages(savedInstanceState)); // Copying avoids external changes to pages
 		initialiseNavigationButtons();
 		initialiseViewPager(savedInstanceState);
-		updateButtonVisibilities(false); // Don't animate during setup
+		updateButtonStatus(false); // Don't animate during setup
 		progressIndicator = new DotIndicator(this);
 		regenerateProgressIndicator();
 	}
@@ -387,7 +387,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	/**
 	 * Determines which buttons should currently be usable, and updates the UI accordingly.
 	 */
-	private void updateButtonVisibilities(boolean animate) {
+	private void updateButtonStatus(boolean animate) {
 		updateLeftButtonStatus(animate);
 		updateRightButtonVisibility(animate);
 		updateFinalButtonVisibility(animate);
@@ -1060,7 +1060,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 */
 	public final void disableLeftButton(final boolean disabled, boolean animate) {
 		leftButtonDisabled = disabled;
-		updateButtonVisibilities(animate);
+		updateButtonStatus(animate);
 	}
 
 	/**
@@ -1085,7 +1085,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 */
 	public final void hideLeftButtonOnLastPage(final boolean hideButton, final boolean animate) {
 		hideLeftButtonOnLastPage = hideButton;
-		updateButtonVisibilities(animate);
+		updateButtonStatus(animate);
 	}
 
 	/**
@@ -1286,7 +1286,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 */
 	public final void disableRightButton(final boolean disabled, final boolean animate) {
 		rightButtonDisabled = disabled;
-		updateButtonVisibilities(animate);
+		updateButtonStatus(animate);
 	}
 
 	/**
@@ -1485,7 +1485,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 */
 	public final void disableFinalButton(final boolean disabled, final boolean animate) {
 		finalButtonDisabled = disabled;
-		updateButtonVisibilities(animate);
+		updateButtonStatus(animate);
 	}
 
 	/**
