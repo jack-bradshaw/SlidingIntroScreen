@@ -131,7 +131,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	private static final int BUTTON_ANIMATION_DURATION_MS = 150;
 
 
-	// Non-static default constants
+	// Non-static constants
 
 	/**
 	 * The Behaviour to use for the left button until it is explicitly set.
@@ -269,7 +269,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 		public void onPageSelected(int position) {
 			// Page changes are often user initiated events, so show animations
 			reflectMemberVariablesInAllButtons(true);
-			
+
 			if (progressIndicator != null) {
 				progressIndicator.setSelectedItem(position, progressIndicatorAnimationsEnabled);
 			}
