@@ -52,7 +52,7 @@ public class TestBehaviours extends ThreePageTestBase {
 				});
 
 				setLeftButtonText("Go back to 0 ", null);
-				hideLeftButtonOnLastPage(false);
+				disableLeftButtonOnLastPage(false);
 			}
 		});
 
