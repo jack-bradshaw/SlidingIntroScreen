@@ -268,8 +268,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 		@Override
 		public void onPageSelected(int position) {
 			// Page changes are often user initiated events, so show animations
-			updateButtonStatus(true);
-
+			reflectMemberVariablesInAllButtons(true);
+			
 			if (progressIndicator != null) {
 				progressIndicator.setSelectedItem(position, progressIndicatorAnimationsEnabled);
 			}
@@ -301,7 +301,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 		pages.addAll(generatePages(savedInstanceState)); // Copying avoids external changes to pages
 		initialiseNavigationButtons();
 		initialiseViewPager(savedInstanceState);
-		updateButtonStatus(false); // Don't animate during setup
+		reflectMemberVariablesInAllButtons(false); // Don't animate during setup
 		progressIndicator = new DotIndicator(this);
 		regenerateProgressIndicator();
 	}
@@ -385,23 +385,28 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Determines which buttons should currently be usable, and updates the UI accordingly.
+	 * Enables or disables each button separately, so that the buttons match the current member
+	 * variables. If true is passed for {@code animate}, then animations will be used if possible.
+	 * Animations are not possible if {@code buttonAnimatorFactory} is null.
+	 *
+	 * @param animate
+	 * 		true to use animations, false to ignore them
 	 */
-	private void updateButtonStatus(boolean animate) {
-		updateLeftButtonStatus(animate);
-		updateRightButtonVisibility(animate);
-		updateFinalButtonVisibility(animate);
+	private void reflectMemberVariablesInAllButtons(final boolean animate) {
+		reflectMemberVariablesInLeftButton(animate);
+		reflectMemberVariablesInRightButton(animate);
+		reflectMemberVariablesInFinalButton(animate);
 	}
 
 	/**
-	 * Determines whether or not the left button should be usable, and updates the UI accordingly.
-	 * If true is passed for {@code animate}, then the state change will be animated using the
-	 * current animator factory (if one exists).
+	 * Enables or disables the left button, so that it matches the current member variables. If true
+	 * is passed for {@code animate}, then animations will be used if possible. Animations are not
+	 * possible if {@code buttonAnimatorFactory} is null.
 	 *
 	 * @param animate
-	 * 		whether or not the state change should be animated
+	 * 		true to use animations, false to ignore them
 	 */
-	private void updateLeftButtonStatus(final boolean animate) {
+	private void reflectMemberVariablesInLeftButton(final boolean animate) {
 		// Determine whether or not changes need to occur
 		final boolean lastPageReached = (viewPager.getCurrentItem() + 1) == pages.size();
 		final boolean buttonShouldBeInvisible = (lastPageReached && hideLeftButtonOnLastPage) ||
@@ -428,14 +433,14 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Determines whether or not the right button should be usable, and updates the UI accordingly.
-	 * If true is passed for {@code animate}, then the state change will be animated using the
-	 * current animator factory (if one exists).
+	 * Enables or disables the right button, so that it matches the current member variables. If
+	 * true is passed for {@code animate}, then animations will be used if possible. Animations are
+	 * not possible if {@code buttonAnimatorFactory} is null.
 	 *
 	 * @param animate
-	 * 		whether or not the state change should be animated
+	 * 		true to use animations, false to ignore them
 	 */
-	private void updateRightButtonVisibility(boolean animate) {
+	private void reflectMemberVariablesInRightButton(boolean animate) {
 		// Determine whether or not changes need to occur
 		final boolean lastPageReached = (viewPager.getCurrentItem() + 1) == pages.size();
 		final boolean buttonShouldBeInvisible = lastPageReached || rightButtonDisabled;
@@ -461,14 +466,14 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Determines whether or not the final button should be usable, and updates the UI accordingly.
-	 * If true is passed for {@code animate}, then the state change will be animated using the
-	 * current animator factory (if one exists).
+	 * Enables or disables the final button, so that it matches the current member variables. If
+	 * true is passed for {@code animate}, then animations will be used if possible. Animations are
+	 * not possible if {@code buttonAnimatorFactory} is null.
 	 *
 	 * @param animate
-	 * 		whether or not the state change should be animated
+	 * 		true to use animations, false otherwise
 	 */
-	private void updateFinalButtonVisibility(boolean animate) {
+	private void reflectMemberVariablesInFinalButton(boolean animate) {
 		// Determine whether or not changes need to occur
 		final boolean lastPageReached = (viewPager.getCurrentItem() + 1) == pages.size();
 		final boolean buttonShouldBeInvisible = !lastPageReached || finalButtonDisabled;
@@ -494,9 +499,9 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Disables the supplied button by making it invisible and un-clickable. The supplied Animator
-	 * will be used to transition the button, unless null is supplied. This method should only be
-	 * called when the supplied button is enabled.
+	 * Disables the supplied button by making it invisible and un-clickable. This method should only
+	 * be called while the supplied button is enabled (i.e. visible and clickable). The supplied
+	 * Animator will be used to transition the button.
 	 *
 	 * @param buttonAnimator
 	 * 		the Animator to use when transitioning the button, null to perform no animation
@@ -534,14 +539,14 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Enables the supplied button by making it visible and clickable. The supplied Animator will be
-	 * used to transition the button, unless null is supplied. This method should only be called
-	 * when the supplied button is disabled.
+	 * Enables the supplied button by making it visible and clickable. This method should only be
+	 * called while the supplied button is disabled (i.e. invisible and un-clickable). The supplied
+	 * Animator will be used to transition the button.
 	 *
 	 * @param buttonAnimator
 	 * 		the Animator to use when transitioning the button, null to perform no animation
 	 * @param button
-	 * 		the button to disable, not null
+	 * 		the button to enable, not null
 	 * @throws IllegalArgumentException
 	 * 		if {@code button} is null
 	 */
@@ -570,7 +575,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Updates the progress indicator to reflect the current member variable.
+	 * Updates the progress indicator to reflect the current member variables.
 	 */
 	private void regenerateProgressIndicator() {
 		progressIndicatorHelper.removeAllViews();
@@ -1060,7 +1065,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 */
 	public final void disableLeftButton(final boolean disabled, boolean animate) {
 		leftButtonDisabled = disabled;
-		updateButtonStatus(animate);
+		reflectMemberVariablesInLeftButton(animate);
 	}
 
 	/**
@@ -1074,9 +1079,9 @@ public abstract class IntroActivity extends AppCompatActivity {
 
 	/**
 	 * Sets whether or not the left button should be hidden when the last page is displayed. If the
-	 * button has been disabled by calling {@link #disableFinalButton(boolean)}, then this method
-	 * will not cause the left button to be displayed. The setting will still be recorded so that if
-	 * the button is later enabled, then the last page behaviour is retained.
+	 * button has been disabled by calling {@link #disableFinalButton(boolean, boolean)}, then this
+	 * method will not cause the left button to be displayed. The setting will still be recorded so
+	 * that if the button is later enabled, then the last page behaviour is retained.
 	 *
 	 * @param hideButton
 	 * 		true to hide the left button on the last page, false to show it
@@ -1085,7 +1090,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 */
 	public final void hideLeftButtonOnLastPage(final boolean hideButton, final boolean animate) {
 		hideLeftButtonOnLastPage = hideButton;
-		updateButtonStatus(animate);
+		reflectMemberVariablesInLeftButton(animate);
 	}
 
 	/**
@@ -1286,7 +1291,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 */
 	public final void disableRightButton(final boolean disabled, final boolean animate) {
 		rightButtonDisabled = disabled;
-		updateButtonStatus(animate);
+		reflectMemberVariablesInRightButton(animate);
 	}
 
 	/**
@@ -1485,13 +1490,13 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 */
 	public final void disableFinalButton(final boolean disabled, final boolean animate) {
 		finalButtonDisabled = disabled;
-		updateButtonStatus(animate);
+		reflectMemberVariablesInFinalButton(animate);
 	}
 
 	/**
-	 * Returns whether or not the final button is currently disabled and hidden.
+	 * Returns whether or not the final button is currently disabled (invisible and un-clickable).
 	 *
-	 * @return true if disabled and hidden, false otherwise
+	 * @return true if disabled, false otherwise
 	 */
 	public final boolean finalButtonIsDisabled() {
 		return finalButtonDisabled;
