@@ -69,22 +69,23 @@ import java.util.HashMap;
  * mechanism for setting a shared preferences flag to prevent the user from being shown the intro
  * screen again. <p> The navigation bar contains three buttons: a left button, a right button and a
  * final button. The left button is present on all pages, but by default it is not displayed on the
- * last page. The button can be shown on the last page by calling {@link #hideLeftButtonOnLastPage
- * (boolean)}. The right button is present on all pages but the last, and this cannot be changed as
- * the final button replaces the right button on the last page. By default, the left button skips
- * ahead to the last page and the right button moves to the next page. The behaviour of the final
- * button is generated in {@link #generateFinalButtonBehaviour()}. The behaviour of each button can
- * be changed using the respective 'set behaviour' method. The appearance of each button can also be
- * changed using the respective 'set appearance' method. These methods make it easy to display text,
- * an icon, or both in each button. The other methods of this activity allow finer control over the
- * appearance of each button. <p> The background of an IntroActivity can be changed in two ways:
- * manually changing the root View (using {@link #getRootView()}, or supplying a BackgroundManager
- * to {@link #setBackgroundManager(BackgroundManager)}. For static backgrounds, the former method is
- * simpler and less error prone. To make dynamic backgrounds which change as the user scrolls, a
- * BackgroundManager is needed. <p> The methods of this activity also provide the following
- * customisation options: <li>Hiding/showing the status bar.</li> <li>Programmatically changing the
- * page.</li> <li>Locking the page to prevent touch events and/or commands (e.g. button presses)
- * from changing the page.</li> <li>Modifying/replacing the progress indicator.</li>
+ * last page. The button can be shown on the last page by calling {@link
+ * #disableLeftButtonOnLastPage (boolean)}. The right button is present on all pages but the last,
+ * and this cannot be changed as the final button replaces the right button on the last page. By
+ * default, the left button skips ahead to the last page and the right button moves to the next
+ * page. The behaviour of the final button is generated in {@link #generateFinalButtonBehaviour()}.
+ * The behaviour of each button can be changed using the respective 'set behaviour' method. The
+ * appearance of each button can also be changed using the respective 'set appearance' method. These
+ * methods make it easy to display text, an icon, or both in each button. The other methods of this
+ * activity allow finer control over the appearance of each button. <p> The background of an
+ * IntroActivity can be changed in two ways: manually changing the root View (using {@link
+ * #getRootView()}, or supplying a BackgroundManager to {@link #setBackgroundManager(BackgroundManager)}.
+ * For static backgrounds, the former method is simpler and less error prone. To make dynamic
+ * backgrounds which change as the user scrolls, a BackgroundManager is needed. <p> The methods of
+ * this activity also provide the following customisation options: <li>Hiding/showing the status
+ * bar.</li> <li>Programmatically changing the page.</li> <li>Locking the page to prevent touch
+ * events and/or commands (e.g. button presses) from changing the page.</li> <li>Modifying/replacing
+ * the progress indicator.</li>
  */
 public abstract class IntroActivity extends AppCompatActivity {
 	// Constants
@@ -177,7 +178,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	/**
 	 * An IntroButton which is displayed at the bottom left of the navigation bar. This button is
 	 * hidden on the last page by default, however this can be changed using {@link
-	 * #hideLeftButtonOnLastPage(boolean, boolean)}.
+	 * #disableLeftButtonOnLastPage(boolean, boolean)}.
 	 */
 	private IntroButton leftButton;
 
@@ -209,12 +210,13 @@ public abstract class IntroActivity extends AppCompatActivity {
 	private boolean finalButtonDisabled = false;
 
 	/**
-	 * Whether or not {@code leftButton} should be hidden when the last page is being displayed.
+	 * Whether or not {@code leftButton} should be disabled on the last page.
 	 */
-	private boolean hideLeftButtonOnLastPage = true;
+	private boolean disableLeftButtonOnLastPage = true;
 
 	/**
-	 * Supplies the Animators used to make the buttons appear and disappear.
+	 * Supplies the Animators used to make the buttons appear and disappear when being enabled and
+	 * disabled.
 	 */
 	private IntroButtonAnimationFactory buttonAnimatorFactory;
 
@@ -363,8 +365,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Sets the behaviour and appearance of the left and right buttons, and sets {@code viewPager}
-	 * as their action target.
+	 * Sets the behaviour and appearance of the buttons, and sets {@code viewPager} as their
+	 * target.
 	 */
 	private void initialiseNavigationButtons() {
 		leftButton.setBehaviour(DEFAULT_LEFT_BUTTON_BEHAVIOUR);
@@ -406,7 +408,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	private void reflectMemberVariablesInLeftButton(final boolean animate) {
 		// Determine whether or not changes need to occur
 		final boolean lastPageReached = (viewPager.getCurrentItem() + 1) == pages.size();
-		final boolean buttonShouldBeInvisible = (lastPageReached && hideLeftButtonOnLastPage) ||
+		final boolean buttonShouldBeInvisible = (lastPageReached && disableLeftButtonOnLastPage) ||
 				leftButtonDisabled;
 		final boolean buttonIsCurrentlyInvisible = leftButton.getVisibility() == View.INVISIBLE;
 		final boolean shouldUpdateButton = buttonShouldBeInvisible != buttonIsCurrentlyInvisible;
@@ -1053,12 +1055,14 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Hides and disables the left button.
+	 * Disables the left button by making it invisible and un-clickable. Any changes will be
+	 * animated using the IntroButtonAnimatorFactory supplied to {@link
+	 * #setButtonAnimatorFactory(IntroButtonAnimationFactory)}.
 	 *
 	 * @param disabled
-	 * 		whether or not the button should be hidden/disabled
+	 * 		true to disable the button, false to enable it (i.e. make it visible and clickable)
 	 * @param animate
-	 * 		whether or not the change should be animated
+	 * 		whether or not the change (if any) should be animated
 	 */
 	public final void disableLeftButton(final boolean disabled, boolean animate) {
 		leftButtonDisabled = disabled;
@@ -1066,39 +1070,40 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Returns whether or not the left button is currently disabled and hidden.
+	 * Returns whether or not the left button is currently disabled (i.e. invisible and
+	 * un-clickable).
 	 *
-	 * @return true if disabled and hidden, false otherwise
+	 * @return true if the button is currently disabled, false otherwise
 	 */
 	public final boolean leftButtonIsDisabled() {
 		return leftButtonDisabled;
 	}
 
 	/**
-	 * Sets whether or not the left button should be hidden when the last page is displayed. If the
-	 * button has been disabled by calling {@link #disableFinalButton(boolean, boolean)}, then this
-	 * method will not cause the left button to be displayed. The setting will still be recorded so
-	 * that if the button is later enabled, then the last page behaviour is retained.
+	 * Sets whether or not the left button should be automatically disabled on the last page and
+	 * re-enabled when returning to a previous page. This feature is overridden if true was last
+	 * passed to {@link #disableLeftButton(boolean, boolean)}. Any changes will be animated using
+	 * the IntroButtonAnimatorFactory supplied to {@link #setButtonAnimatorFactory(IntroButtonAnimationFactory)}.
 	 *
 	 * @param hideButton
-	 * 		true to hide the left button on the last page, false to show it
-	 * @param animate
-	 * 		whether or not the change should be animated
+	 * 		true to automatically disable the left button on the last page, false prevent automatic
+	 * 		disabling
 	 */
-	public final void hideLeftButtonOnLastPage(final boolean hideButton, final boolean animate) {
-		hideLeftButtonOnLastPage = hideButton;
-		reflectMemberVariablesInLeftButton(animate);
+	public final void disableLeftButtonOnLastPage(final boolean hideButton) {
+		disableLeftButtonOnLastPage = hideButton;
+		reflectMemberVariablesInLeftButton(true);
 	}
 
 	/**
-	 * Returns whether or not the left button will be hidden when the last page is displayed. This
-	 * method ignores whether or not the button is disabled/enabled.
+	 * Returns whether or not the left button will be disabled when the last page is displayed. This
+	 * method does not take into account whether or not the button is has been globally disabled
+	 * using {@link #disableLeftButton(boolean, boolean)}.
 	 *
-	 * @return true if the left button will be hidden when the last page is displayed, false
+	 * @return true if the left button will be disabled while the last page is displayed, false
 	 * otherwise
 	 */
-	public final boolean leftButtonIsHiddenOnLastPage() {
-		return hideLeftButtonOnLastPage;
+	public final boolean leftButtonIsDisabledOnLastPage() {
+		return disableLeftButtonOnLastPage;
 	}
 
 
@@ -1279,12 +1284,14 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Hides and disables the right button.
+	 * Disables the right button by making it invisible and un-clickable. Any changes will be
+	 * animated using the IntroButtonAnimatorFactory supplied to {@link
+	 * #setButtonAnimatorFactory(IntroButtonAnimationFactory)}.
 	 *
 	 * @param disabled
-	 * 		whether or not the button should be hidden/disabled
+	 * 		true to disable the button, false to enable it (i.e. make it visible and clickable)
 	 * @param animate
-	 * 		whether or not the change should be animated
+	 * 		whether or not the change (if any) should be animated
 	 */
 	public final void disableRightButton(final boolean disabled, final boolean animate) {
 		rightButtonDisabled = disabled;
@@ -1292,9 +1299,10 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Returns whether or not the right button is currently disabled.
+	 * Returns whether or not the right button is currently disabled (i.e. invisible and
+	 * un-clickable).
 	 *
-	 * @return true if disabled and hidden, false otherwise
+	 * @return true if the button is currently disabled, false otherwise
 	 */
 	public final boolean rightButtonIsDisabled() {
 		return rightButtonDisabled;
@@ -1478,12 +1486,14 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Hides and disables the final button.
+	 * Disables the final button by making it invisible and un-clickable. Any changes will be
+	 * animated using the IntroButtonAnimatorFactory supplied to {@link
+	 * #setButtonAnimatorFactory(IntroButtonAnimationFactory)}.
 	 *
 	 * @param disabled
-	 * 		whether or not the button should be hidden/disabled
+	 * 		true to disable the button, false to enable it (i.e. make it visible and clickable)
 	 * @param animate
-	 * 		whether or not the change should be animated
+	 * 		whether or not the change (if any) should be animated
 	 */
 	public final void disableFinalButton(final boolean disabled, final boolean animate) {
 		finalButtonDisabled = disabled;
@@ -1491,9 +1501,10 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Returns whether or not the final button is currently disabled (invisible and un-clickable).
+	 * Returns whether or not the final button is currently disabled (i.e. invisible and
+	 * un-clickable).
 	 *
-	 * @return true if disabled, false otherwise
+	 * @return true if the button is currently disabled, false otherwise
 	 */
 	public final boolean finalButtonIsDisabled() {
 		return finalButtonDisabled;
