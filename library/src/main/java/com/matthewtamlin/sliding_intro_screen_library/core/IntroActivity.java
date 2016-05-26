@@ -87,7 +87,7 @@ import java.util.HashMap;
  * from changing the page.</li> <li>Modifying/replacing the progress indicator.</li>
  */
 public abstract class IntroActivity extends AppCompatActivity {
-	// Static constants
+	// Constants
 
 	/**
 	 * Used to identify this class during debugging.
@@ -129,9 +129,6 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * milliseconds.
 	 */
 	private static final int BUTTON_ANIMATION_DURATION_MS = 150;
-
-
-	// Non-static constants
 
 	/**
 	 * The Behaviour to use for the left button until it is explicitly set.
