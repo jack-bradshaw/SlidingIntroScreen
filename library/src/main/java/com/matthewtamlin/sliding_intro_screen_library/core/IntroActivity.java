@@ -178,7 +178,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	/**
 	 * An IntroButton which is displayed at the bottom left of the navigation bar. This button is
 	 * hidden on the last page by default, however this can be changed using {@link
-	 * #disableLeftButtonOnLastPage(boolean, boolean)}.
+	 * #disableLeftButtonOnLastPage(boolean)}.
 	 */
 	private IntroButton leftButton;
 
