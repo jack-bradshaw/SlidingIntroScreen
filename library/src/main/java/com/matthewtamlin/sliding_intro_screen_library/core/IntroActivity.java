@@ -18,7 +18,6 @@ package com.matthewtamlin.sliding_intro_screen_library.core;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -225,7 +224,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * be cancelled if another is requested. If a button is not currently being animated, then that
 	 * button does not exist in the keyset.
 	 */
-	private final HashMap<IntroButton, ValueAnimator> buttonAnimations = new HashMap<>();
+	private final HashMap<IntroButton, Animator> buttonAnimations = new HashMap<>();
 
 
 	// Dataset related variables
@@ -514,7 +513,18 @@ public abstract class IntroActivity extends AppCompatActivity {
 			throw new IllegalArgumentException("button cannot be null");
 		}
 
+		// Any animations currently affecting the button must be cancelled before new ones start
+		if (buttonAnimations.containsKey(button)) {
+			buttonAnimations.get(button).cancel();
+			buttonAnimations.remove(button);
+		}
+
 		if (buttonAnimator != null) {
+			// Register animation so that it may be cancelled later if necessary
+			buttonAnimations.put(button, buttonAnimator);
+
+			// End and cancel conditions ensure that the UI is not left in a transient state when
+			// animations finish for whatever reason
 			buttonAnimator.addListener(new AnimatorListenerAdapter() {
 				@Override
 				public void onAnimationEnd(Animator animation) {
@@ -532,6 +542,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 			buttonAnimator.setDuration(BUTTON_ANIMATION_DURATION_MS);
 			buttonAnimator.start();
 		} else {
+			// If no animator was supplied, just apply the end conditions
 			button.setVisibility(View.INVISIBLE);
 			button.setEnabled(false);
 		}
@@ -550,7 +561,21 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * 		if {@code button} is null
 	 */
 	private void enableButton(final Animator buttonAnimator, final IntroButton button) {
+		if (button == null) {
+			throw new IllegalArgumentException("button cannot be null");
+		}
+
+		// Any animations currently affecting the button must be cancelled before new ones start
+		if (buttonAnimations.containsKey(button)) {
+			buttonAnimations.get(button).cancel();
+			buttonAnimations.remove(button);
+		}
+
 		if (buttonAnimator != null) {
+			buttonAnimations.put(button, buttonAnimator);
+
+			// End and cancel conditions ensure that the UI is not left in a transient state when
+			// animations finish for whatever reason
 			buttonAnimator.addListener(new AnimatorListenerAdapter() {
 				@Override
 				public void onAnimationEnd(Animator animation) {
@@ -568,6 +593,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 			buttonAnimator.setDuration(BUTTON_ANIMATION_DURATION_MS);
 			buttonAnimator.start();
 		} else {
+			// If no Animator was supplied, just apply the end conditions
 			button.setVisibility(View.VISIBLE);
 			button.setEnabled(true);
 		}
