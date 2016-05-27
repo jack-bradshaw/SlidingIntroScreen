@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.matthewtamlin.android_utilities_library.helpers.DimensionHelper;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.FadeAnimatorFactory;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Appearance;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Behaviour;
@@ -149,7 +150,13 @@ public class TestButtonConfig extends ThreePageTestBase {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		createControlButtons();
+	}
 
+	/**
+	 * Creates the buttons which control the test.
+	 */
+	private void createControlButtons() {
 		final LinearLayout layout = new LinearLayout(this);
 		layout.setOrientation(LinearLayout.VERTICAL);
 		getRootView().addView(layout);
@@ -174,7 +181,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 			@Override
 			public void onClick(View v) {
 				boolean initiallyDisabled = leftButtonIsDisabled();
-				disableLeftButton(!initiallyDisabled);
+				disableLeftButton(!initiallyDisabled, true);
 				assertThat("left button didn't disable/enable correctly",
 						initiallyDisabled != leftButtonIsDisabled());
 			}
@@ -187,7 +194,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 			@Override
 			public void onClick(View v) {
 				boolean initiallyDisabled = rightButtonIsDisabled();
-				disableRightButton(!initiallyDisabled);
+				disableRightButton(!initiallyDisabled, true);
 				assertThat("right button didn't disable/enable correctly",
 						initiallyDisabled != rightButtonIsDisabled());
 			}
@@ -200,7 +207,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 			@Override
 			public void onClick(View v) {
 				boolean initiallyDisabled = finalButtonIsDisabled();
-				disableFinalButton(!initiallyDisabled);
+				disableFinalButton(!initiallyDisabled, true);
 				assertThat("left button didn't disable/enable correctly",
 						initiallyDisabled != finalButtonIsDisabled());
 			}
@@ -212,10 +219,11 @@ public class TestButtonConfig extends ThreePageTestBase {
 		toggleLeftVisibility.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				hideLeftButtonOnLastPage(!leftButtonIsHiddenOnLastPage());
+				disableLeftButtonOnLastPage(!leftButtonIsDisabledOnLastPage());
 			}
 		});
 	}
+
 
 	/**
 	 * Initialise the drawables to display in the buttons after triggering.
@@ -265,9 +273,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 	 * Check that the buttons were modified correctly.
 	 */
 	private void checkAppearance() {
-		/**
-		 * Check that left button properties changed correctly
-		 */
+		// Check that left button properties changed correctly
 		assertThat("left button text not set/returned correctly when using implicit behaviour",
 				getLeftButtonText(null).equals(LEFT_BUTTON_TEXT));
 		assertThat("left button text not set/returned correctly when using explicit behaviour",
