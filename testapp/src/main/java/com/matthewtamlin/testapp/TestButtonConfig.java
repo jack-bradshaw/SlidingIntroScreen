@@ -224,7 +224,6 @@ public class TestButtonConfig extends ThreePageTestBase {
 		});
 	}
 
-
 	/**
 	 * Initialise the drawables to display in the buttons after triggering.
 	 */
