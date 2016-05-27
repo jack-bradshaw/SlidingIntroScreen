@@ -5,7 +5,7 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.view.View;
 
-public class FadeAnimatorFactory implements IntroButtonAnimationFactory {
+public class FadeAnimatorFactory implements AnimationFactory {
 	@Override
 	public Animator newLeftButtonAppearAnimator(View leftButton) {
 		return createFade(leftButton, 0, 1);
