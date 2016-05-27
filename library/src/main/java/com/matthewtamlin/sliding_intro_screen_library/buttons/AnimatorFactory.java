@@ -9,7 +9,7 @@ import android.view.View;
  * caller to explicitly specify which button the Animator is for, and whether the Animation should
  * make the button appear or disappear
  */
-public interface IntroButtonAnimationFactory {
+public interface AnimatorFactory {
 	/**
 	 * Creates a new Animator which can be used to make the left button of a IntroActivity appear.
 	 * The Animator must adhere to the following conditions: <ul> <li>At the start of the animation,

@@ -39,7 +39,7 @@ import com.matthewtamlin.sliding_intro_screen_library.background.BackgroundManag
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Appearance;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Behaviour;
-import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButtonAnimationFactory;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.AnimatorFactory;
 import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager.LockMode;
 import com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator;
 import com.matthewtamlin.sliding_intro_screen_library.indicators.SelectionIndicator;
@@ -217,7 +217,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * Supplies the Animators used to make the buttons appear and disappear when being enabled and
 	 * disabled.
 	 */
-	private IntroButtonAnimationFactory buttonAnimatorFactory;
+	private AnimatorFactory buttonAnimatorFactory;
 
 	/**
 	 * Maps each button to the animation which is currently acting on it. This allows animations to
@@ -902,7 +902,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * @param animatorFactory
 	 * 		the source of the Animators, null allowed
 	 */
-	public void setButtonAnimatorFactory(IntroButtonAnimationFactory animatorFactory) {
+	public void setButtonAnimatorFactory(AnimatorFactory animatorFactory) {
 		this.buttonAnimatorFactory = animatorFactory;
 	}
 
@@ -1083,7 +1083,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	/**
 	 * Disables the left button by making it invisible and un-clickable. Any changes will be
 	 * animated using the IntroButtonAnimatorFactory supplied to {@link
-	 * #setButtonAnimatorFactory(IntroButtonAnimationFactory)}.
+	 * #setButtonAnimatorFactory(AnimatorFactory)}.
 	 *
 	 * @param disabled
 	 * 		true to disable the button, false to enable it (i.e. make it visible and clickable)
@@ -1109,7 +1109,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * Sets whether or not the left button should be automatically disabled on the last page and
 	 * re-enabled when returning to a previous page. This feature is overridden if true was last
 	 * passed to {@link #disableLeftButton(boolean, boolean)}. Any changes will be animated using
-	 * the IntroButtonAnimatorFactory supplied to {@link #setButtonAnimatorFactory(IntroButtonAnimationFactory)}.
+	 * the IntroButtonAnimatorFactory supplied to {@link #setButtonAnimatorFactory(AnimatorFactory)}.
 	 *
 	 * @param hideButton
 	 * 		true to automatically disable the left button on the last page, false prevent automatic
@@ -1312,7 +1312,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	/**
 	 * Disables the right button by making it invisible and un-clickable. Any changes will be
 	 * animated using the IntroButtonAnimatorFactory supplied to {@link
-	 * #setButtonAnimatorFactory(IntroButtonAnimationFactory)}.
+	 * #setButtonAnimatorFactory(AnimatorFactory)}.
 	 *
 	 * @param disabled
 	 * 		true to disable the button, false to enable it (i.e. make it visible and clickable)
@@ -1514,7 +1514,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	/**
 	 * Disables the final button by making it invisible and un-clickable. Any changes will be
 	 * animated using the IntroButtonAnimatorFactory supplied to {@link
-	 * #setButtonAnimatorFactory(IntroButtonAnimationFactory)}.
+	 * #setButtonAnimatorFactory(AnimatorFactory)}.
 	 *
 	 * @param disabled
 	 * 		true to disable the button, false to enable it (i.e. make it visible and clickable)
