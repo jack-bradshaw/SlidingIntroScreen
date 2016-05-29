@@ -315,6 +315,14 @@ public abstract class IntroActivity extends AppCompatActivity {
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
 		reflectMemberVariablesInAllButtons();
+
+		// When the activity is displayed (and the final page isn't shown) the final button
+		// disappear animation needs to occur so that the appear animation occurs properly later
+		if (hasFocus && getIndexOfCurrentPage() + 1 != pages.size()) {
+			Animator finalAnimator =
+					buttonAnimatorFactory.newFinalButtonDisappearAnimator(finalButton);
+			finalAnimator.start();
+		}
 	}
 
 	@Override
