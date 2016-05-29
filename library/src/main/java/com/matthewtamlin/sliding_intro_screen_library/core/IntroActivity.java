@@ -562,6 +562,9 @@ public abstract class IntroActivity extends AppCompatActivity {
 		if (buttonAnimator != null) {
 			buttonAnimations.put(button, buttonAnimator);
 
+			// Give the disable animation (if any) time to finish before the enable animation starts
+			buttonAnimator.setStartDelay(BUTTON_ANIMATION_DURATION_MS);
+
 			// End and cancel conditions ensure that the UI is not left in a transient state when
 			// animations finish for whatever reason
 			buttonAnimator.addListener(new AnimatorListenerAdapter() {
