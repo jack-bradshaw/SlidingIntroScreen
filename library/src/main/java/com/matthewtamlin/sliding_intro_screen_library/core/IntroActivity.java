@@ -299,6 +299,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_intro);
 		bindViews();
 
+		buttonAnimatorFactory = defineButtonAnimations();
+
 		viewPager.addOnPageChangeListener(pageChangeListenerDelegate);
 		pages.addAll(generatePages(savedInstanceState)); // Avoids external changes to pages
 
@@ -312,7 +314,6 @@ public abstract class IntroActivity extends AppCompatActivity {
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		buttonAnimatorFactory = defineButtonAnimations();
 		reflectMemberVariablesInAllButtons();
 	}
 
