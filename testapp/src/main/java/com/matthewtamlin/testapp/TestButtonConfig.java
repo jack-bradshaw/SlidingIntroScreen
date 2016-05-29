@@ -181,7 +181,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 			@Override
 			public void onClick(View v) {
 				boolean initiallyDisabled = leftButtonIsDisabled();
-				disableLeftButton(!initiallyDisabled, true);
+				disableLeftButton(!initiallyDisabled);
 				assertThat("left button didn't disable/enable correctly",
 						initiallyDisabled != leftButtonIsDisabled());
 			}
@@ -194,7 +194,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 			@Override
 			public void onClick(View v) {
 				boolean initiallyDisabled = rightButtonIsDisabled();
-				disableRightButton(!initiallyDisabled, true);
+				disableRightButton(!initiallyDisabled);
 				assertThat("right button didn't disable/enable correctly",
 						initiallyDisabled != rightButtonIsDisabled());
 			}
@@ -207,7 +207,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 			@Override
 			public void onClick(View v) {
 				boolean initiallyDisabled = finalButtonIsDisabled();
-				disableFinalButton(!initiallyDisabled, true);
+				disableFinalButton(!initiallyDisabled);
 				assertThat("left button didn't disable/enable correctly",
 						initiallyDisabled != finalButtonIsDisabled());
 			}
