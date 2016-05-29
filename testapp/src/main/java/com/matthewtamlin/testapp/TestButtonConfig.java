@@ -27,9 +27,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.matthewtamlin.android_utilities_library.helpers.DimensionHelper;
-import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton;
-import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Appearance;
-import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton.Behaviour;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.FadeAnimatorFactory;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Appearance;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Behaviour;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -149,7 +150,13 @@ public class TestButtonConfig extends ThreePageTestBase {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		createControlButtons();
+	}
 
+	/**
+	 * Creates the buttons which control the test.
+	 */
+	private void createControlButtons() {
 		final LinearLayout layout = new LinearLayout(this);
 		layout.setOrientation(LinearLayout.VERTICAL);
 		getRootView().addView(layout);
@@ -212,7 +219,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 		toggleLeftVisibility.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				hideLeftButtonOnLastPage(!leftButtonIsHiddenOnLastPage());
+				disableLeftButtonOnLastPage(!leftButtonIsDisabledOnLastPage());
 			}
 		});
 	}
@@ -265,9 +272,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 	 * Check that the buttons were modified correctly.
 	 */
 	private void checkAppearance() {
-		/**
-		 * Check that left button properties changed correctly
-		 */
+		// Check that left button properties changed correctly
 		assertThat("left button text not set/returned correctly when using implicit behaviour",
 				getLeftButtonText(null).equals(LEFT_BUTTON_TEXT));
 		assertThat("left button text not set/returned correctly when using explicit behaviour",

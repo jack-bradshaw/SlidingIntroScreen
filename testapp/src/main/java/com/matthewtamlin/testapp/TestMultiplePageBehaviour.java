@@ -20,7 +20,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.matthewtamlin.sliding_intro_screen_library.core.IntroButton;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
 
 /**
  * Test the activity when multiple pages are shown. The activity should show: <li>Window: Status bar
