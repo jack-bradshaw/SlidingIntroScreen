@@ -906,14 +906,23 @@ public abstract class IntroActivity extends AppCompatActivity {
 		return new FadeAnimatorFactory();
 	}
 
+	/**
+	 * @return an IntroButtonModifier which can be used to modify the left button, not null
+	 */
 	public IntroButtonModifier modifyLeftButton() {
 		return new IntroButtonModifier(leftButton);
 	}
 
+	/**
+	 * @return an IntroButtonModifier which can be used to modify the right button, not null
+	 */
 	public IntroButtonModifier modifyRightButton() {
 		return new IntroButtonModifier(rightButton);
 	}
 
+	/**
+	 * @return an IntroButtonModifier which can be used to modify the final button, not null
+	 */
 	public IntroButtonModifier modifyFinalButton() {
 		return new IntroButtonModifier(finalButton);
 	}
