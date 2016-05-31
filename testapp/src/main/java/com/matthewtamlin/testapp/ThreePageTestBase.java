@@ -52,21 +52,21 @@ public abstract class ThreePageTestBase extends IntroActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setLeftButtonOnClickListener(new OnClickListener() {
+		getLeftButtonAccessor().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.d(TAG, "[on click] [left button]");
 			}
 		});
 
-		setRightButtonOnClickListener(new OnClickListener() {
+		getRightButtonAccessor().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.d(TAG, "[on click] [right button]");
 			}
 		});
 
-		setFinalButtonOnClickListener(new View.OnClickListener() {
+		getFinalButtonAccessor().setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.d(TAG, "[on click] [final button]");
