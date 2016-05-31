@@ -19,15 +19,12 @@ package com.matthewtamlin.sliding_intro_screen_library.core;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -41,7 +38,7 @@ import com.matthewtamlin.sliding_intro_screen_library.buttons.FadeAnimatorFactor
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Appearance;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Behaviour;
-import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButtonModifier;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButtonAccessor;
 import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager.LockMode;
 import com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator;
 import com.matthewtamlin.sliding_intro_screen_library.indicators.SelectionIndicator;
@@ -635,7 +632,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 
 	/**
 	 * Called by {@link #onCreate(Bundle)} to generate the behaviour of the final button. This
-	 * behaviour can be changed later using {@link #modifyFinalButton()}. The IntroButton class
+	 * behaviour can be changed later using {@link #getFinalButtonAccessor()}. The IntroButton class
 	 * contains Behaviours which can be used to perform common tasks.
 	 *
 	 * @return the behaviour to use for the final button, not null
@@ -907,24 +904,27 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * @return an IntroButtonModifier which can be used to modify the left button, not null
+	 * @return an IntroButtonAccessor which can be used to modify and inspect the left button, not
+	 * null
 	 */
-	public IntroButtonModifier modifyLeftButton() {
-		return new IntroButtonModifier(leftButton);
+	public IntroButtonAccessor getLeftButtonAccessor() {
+		return new IntroButtonAccessor(leftButton);
 	}
 
 	/**
-	 * @return an IntroButtonModifier which can be used to modify the right button, not null
+	 * @return an IntroButtonAccessor which can be used to modify and inspect the right button, not
+	 * null
 	 */
-	public IntroButtonModifier modifyRightButton() {
-		return new IntroButtonModifier(rightButton);
+	public IntroButtonAccessor getRightButtonAccessor() {
+		return new IntroButtonAccessor(rightButton);
 	}
 
 	/**
-	 * @return an IntroButtonModifier which can be used to modify the final button, not null
+	 * @return an IntroButtonAccessor which can be used to modify and inspect the final button, not
+	 * null
 	 */
-	public IntroButtonModifier modifyFinalButton() {
-		return new IntroButtonModifier(finalButton);
+	public IntroButtonAccessor getFinalButtonAccessor() {
+		return new IntroButtonAccessor(finalButton);
 	}
 
 	/**
