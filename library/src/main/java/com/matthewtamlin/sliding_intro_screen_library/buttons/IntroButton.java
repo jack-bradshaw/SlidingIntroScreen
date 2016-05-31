@@ -35,15 +35,16 @@ import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
 import java.util.HashMap;
 
 /**
- * An IntroButton is a Button designed to manipulate an IntroActivity. Each button has a behaviour
- * and an appearance. The behaviour of each button is an implementation of the {@link
- * IntroButton.Behaviour} interface, and is used to perform some action when the button is pressed.
- * Each button may also have an OnClickListener independent of its behaviour. The appearance
- * determines how the button is displayed, and can be set to any of the predefined appearances in
- * {@link com.matthewtamlin.sliding_intro_screen_library .IntroButton.Appearance}. Each Behaviour
- * <b>class</b> can have different text label and icon resources, and changing the behaviour will
- * automatically load the corresponding resources. The context supplied to the constructor is
- * automatically provided to the Behaviour if the context is an IntroActivity.
+ * An IntroButton is a Button designed to manipulate an IntroActivity. Each button has a {@link
+ * Behaviour} and an {@link Appearance}. The Behaviour is used when the button is pressed to perform
+ * some action on the IntroActivity hosting the button. The Appearance determines how the button is
+ * displayed, and can be set to any of the predefined appearances in {@link
+ * IntroButton.Appearance}.
+ * <p/>
+ * Each button can display text and an icon. The Appearance determines exactly how these elements
+ * are displayed. When the appearance and icon are set, they are associated with a <b>class</b> of
+ * Behaviour. Changing the Behaviour will automatically change the text and icon. This allows the
+ * text and icon to be matched to the function of the button.
  */
 public class IntroButton extends Button implements OnClickListener {
 	/**
@@ -92,13 +93,14 @@ public class IntroButton extends Button implements OnClickListener {
 
 	/**
 	 * External on-click listener to receive on-click events after the event has been handled by the
-	 * behaviour.
+	 * Behaviour.
 	 */
 	private OnClickListener externalOnClickListener;
 
 
 	/**
-	 * Constructs a new IntroButton instance.
+	 * Constructs a new IntroButton instance. The supplied Context is used as the target for the
+	 * Behaviour if the Context is an instance of IntroActivity.
 	 *
 	 * @param context
 	 * 		the context this IntroButton will be operating in
@@ -109,7 +111,8 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * Constructs a new IntroButton instance.
+	 * Constructs a new IntroButton instance. The supplied Context is used as the target for the
+	 * Behaviour if the Context is an instance of IntroActivity.
 	 *
 	 * @param context
 	 * 		the context this IntroButton will be operating in
@@ -122,7 +125,8 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * Constructs a new IntroButton instance.
+	 * Constructs a new IntroButton instance. The supplied Context is used as the target for the
+	 * Behaviour if the Context is an instance of IntroActivity.
 	 *
 	 * @param context
 	 * 		the context this IntroButton will be operating in
@@ -212,10 +216,16 @@ public class IntroButton extends Button implements OnClickListener {
 
 
 	/**
-	 * Sets the behaviour of this IntroButton. The behaviour will be executed when the button is
-	 * clicked. See {@link com.matthewtamlin .sliding_intro_screen_library.IntroButton.Behaviour}.
-	 * This method does not accept null; instead consider passing an instance of {@link
-	 * IntroButton.DoNothing}.
+	 * Sets the Behaviour of this IntroButton. The Behaviour will be executed when the button is
+	 * clicked, but is distinct from the on-click listener set by {@link
+	 * #setOnClickListener(OnClickListener)}. The IntroButton class contains predefined Behaviours
+	 * which meet most needs, but custom implementations of the Behaviour interface are also
+	 * accepted. The {@link com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.BehaviourAdapter}
+	 * class can be used to reduce boilerplate code when implementing the Behaviour interface.This
+	 * method does not accept null; to do nothing when the button is clicked, pass an instance of
+	 * {@link IntroButton.DoNothing}.
+	 * <p/>
+	 * See {@link Behaviour}.
 	 *
 	 * @param behaviour
 	 * 		the Behaviour to use, not null
@@ -232,18 +242,19 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * @return the current on-click behaviour of this IntroButton
+	 * @return the current Behaviour of this IntroButton, not null
 	 */
 	public Behaviour getBehaviour() {
 		return behaviour;
 	}
 
 	/**
-	 * Sets the appearance of this IntroButton. See {@link com.matthewtamlin
-	 * .sliding_intro_screen_library.IntroButton.Appearance}.
+	 * Sets the Appearance of this IntroButton. The Appearance defines how the button is displayed.
+	 * <p/>
+	 * See {@link Appearance}.
 	 *
 	 * @param appearance
-	 * 		the predefined appearance to use, not null
+	 * 		the predefined Appearance to use, not null
 	 * @throws IllegalArgumentException
 	 * 		if {@code appearance} is null
 	 */
@@ -257,7 +268,7 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * @return the current appearance of this IntroButton
+	 * @return the current Appearance of this IntroButton, not null
 	 */
 	public Appearance getAppearance() {
 		return appearance;
@@ -266,13 +277,14 @@ public class IntroButton extends Button implements OnClickListener {
 	/**
 	 * Sets the text label to be displayed by this IntroButton when its appearance is set to {@code
 	 * Appearance.TEXT_ONLY}, {@code Appearance.ICON_TEXT_LEFT} or {@code
-	 * Appearance.ICON_TEXT_RIGHT}. A different label can be set for each Behaviour class.
+	 * Appearance.ICON_TEXT_RIGHT}. The label is linked to a Behaviour class, and will only be shown
+	 * when this IntroButton is set to use a Behaviour of that class.
 	 *
 	 * @param label
-	 * 		the text label to display when the current behaviour is an instance of {@code
+	 * 		the text label to display when the current Behaviour is an instance of {@code
 	 * 		behaviourClass}
 	 * @param behaviourClass
-	 * 		the Behaviour class to set the label for, or null to use the class of the current
+	 * 		the Behaviour class to associate the label with, null to use the class of the current
 	 * 		Behaviour
 	 */
 	public void setLabel(final CharSequence label, final Class<? extends Behaviour>
@@ -286,11 +298,11 @@ public class IntroButton extends Button implements OnClickListener {
 
 	/**
 	 * Returns the text label displayed by this IntroButton for a particular Behaviour class. Note
-	 * that the label may not be currently visible.
+	 * that the label may not currently be visible.
 	 *
 	 * @param behaviourClass
-	 * 		the Behaviour class to query the label against, or null to use the class of the current
-	 * 		behaviour
+	 * 		the Behaviour class of which to get the associated text, null to use the class of the
+	 * 		current Behaviour
 	 * @return the label displayed when the behaviour is set to an instance of {@code
 	 * behaviourClass}
 	 */
@@ -303,12 +315,14 @@ public class IntroButton extends Button implements OnClickListener {
 	/**
 	 * Sets the icon to be displayed by this IntroButton when its appearance is set to {@code
 	 * Appearance.ICON_ONLY}, {@code Appearance.TEXT_WITH_LEFT_ICON} or {@code
-	 * Appearance.TEXT_WITH_RIGHT_ICON}. A different icon can be set for each Behaviour class.
+	 * Appearance.TEXT_WITH_RIGHT_ICON}. The icon is linked to a Behaviour class, and will only be
+	 * shown when this IntroButton is set to use a Behaviour of that class.
 	 *
 	 * @param icon
 	 * 		the icon to display when the current behaviour is an instance of {@code behaviourClass}
 	 * @param behaviourClass
-	 * 		the Behaviour class to set the icon for, or null to use the class of the current behaviour
+	 * 		the Behaviour class to associate the icon with, null to use the class of the current
+	 * 		Behaviour
 	 */
 	public void setIcon(final Drawable icon, final Class<? extends Behaviour> behaviourClass) {
 		final Class<? extends Behaviour> behaviourClassToSet =
@@ -319,12 +333,13 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * Returns the icon displayed on this IntroButton for a particular Behaviour. Note that the icon
-	 * may not be currently visible.
+	 * Returns the icon displayed by this IntroButton for a particular Behaviour class. Note that
+	 * the icon may not currently be visible.
 	 *
 	 * @param behaviourClass
-	 * 		the Behaviour to query the icon against, or null to use the class of the current behaviour
-	 * @return the icon displayed when the behaviour is set to an instance of {@code behaviourClass}
+	 * 		the Behaviour class of which to get the associated icon, null to use the class of the
+	 * 		current Behaviour
+	 * @return the icon displayed when the Behaviour is set to an instance of {@code behaviourClass}
 	 */
 	public Drawable getIcon(final Class<? extends Behaviour> behaviourClass) {
 		final Class behaviourClassToSet =
@@ -387,7 +402,7 @@ public class IntroButton extends Button implements OnClickListener {
 
 
 	/**
-	 * The different appearances an IntroButton can have. The appearance of an IntroButton
+	 * The different appearances an IntroButton can have. The Appearance of an IntroButton
 	 * determines whether or not it should display a label, an icon, or both. In the case of both,
 	 * it also determines whether the icon appears to the left or the right of the label.
 	 */
@@ -444,7 +459,8 @@ public class IntroButton extends Button implements OnClickListener {
 		});
 
 		/**
-		 * An AppearanceManipulator which can manipulate an IntroButton as required.
+		 * An AppearanceManipulator which when run will change an IntroButton to reflect this
+		 * Appearance.
 		 */
 		private final AppearanceManipulator manipulator;
 
@@ -452,25 +468,16 @@ public class IntroButton extends Button implements OnClickListener {
 		 * Constructs a new Appearance instance.
 		 *
 		 * @param manipulator
-		 * 		an AppearanceManipulator which can manipulate the IntroButton as required
+		 * 		AppearanceManipulator which when run will change an IntroButton to reflect this
+		 * 		Appearance
 		 */
 		Appearance(AppearanceManipulator manipulator) {
 			this.manipulator = manipulator;
 		}
 
 		/**
-		 * Returns the Appearance corresponding to the supplied ordinal.
-		 *
-		 * @param ordinal
-		 * 		the ordinal to use
-		 * @return the Appearance corresponding to {@code ordinal}
-		 */
-		public static Appearance fromOrdinal(int ordinal) {
-			return Appearance.values()[ordinal];
-		}
-
-		/**
-		 * @return an AppearanceManipulator which can manipulate an IntroButton as required
+		 * @return an AppearanceManipulator which when run will change an IntroButton to reflect
+		 * this Appearance
 		 */
 		public AppearanceManipulator getManipulator() {
 			return manipulator;
@@ -480,9 +487,7 @@ public class IntroButton extends Button implements OnClickListener {
 
 	/**
 	 * Pass concrete instances of this interface to the {@link #setBehaviour(Behaviour)} method of
-	 * an IntroButton to define its on click behaviour. This interface has methods for setting and
-	 * retrieving an IntroActivity, to allow the {@link #run()} method to manipulate the
-	 * IntroActivity hosting the button.
+	 * an IntroButton to define its on-click behaviour.
 	 */
 	public interface Behaviour extends Runnable {
 		/**
@@ -510,7 +515,8 @@ public class IntroButton extends Button implements OnClickListener {
 	 * A partial implementation of the Behaviour interface, designed to eliminate boilerplate code
 	 * in full implementations. This class features a simple getter/setter combo for the target
 	 * IntroActivity, so that subclasses simply need to implement {@code run()} and use {@code
-	 * getActivity()} to obtain the activity to manipulate.
+	 * getActivity()} to obtain the activity to manipulate. Subclasses should perform null checks on
+	 * the result of {@code getActivity()}.
 	 */
 	public abstract static class BehaviourAdapter implements Behaviour {
 		/**
@@ -595,13 +601,13 @@ public class IntroButton extends Button implements OnClickListener {
 
 	/**
 	 * A Behaviour designed to launch a new activity. The default constructor has two arguments: an
-	 * {@link Intent} and a {@link android.content.SharedPreferences.Editor} shared preThe new
-	 * activity is defined by an intent passed to the default constructor. The {@link
-	 * android.content.SharedPreferences.Editor}. Any pending changes in this editor will be
-	 * committed when the next activity successfully launches. This can be used to set a shared
-	 * preferences flag which stops the activity from being displayed to the user again. Subclass
-	 * this class and implement {@link #shouldLaunchActivity() } to define validation conditions
-	 * which must pass before the activity is launched.
+	 * {@link Intent} and a {@link android.content.SharedPreferences.Editor}. The Intent defines
+	 * which Activity to launch, and the SharedPreferences editor prevents the IntroActivity from
+	 * being launched again after completion. Any pending changes in the editor will be committed
+	 * when the next activity successfully launches. This can be used to set a shared preferences
+	 * flag which stops the activity from being displayed to the user again. Subclass this class and
+	 * implement {@link #shouldLaunchActivity()} to define validation conditions which must pass
+	 * before the activity is launched.
 	 */
 	public static abstract class ProgressToNextActivity extends BehaviourAdapter {
 		/**
@@ -677,10 +683,10 @@ public class IntroButton extends Button implements OnClickListener {
 
 	/**
 	 * A Behaviour for requesting permissions. Pass the permissions to request to the constructor,
-	 * along with a request code which can be used to receive the result. If this behaviour is used,
-	 * {@link android.support.v7.app.AppCompatActivity#onRequestPermissionsResult(int, String[],
-	 * int[])} should be overridden in the activity passed to {@link #setActivity(IntroActivity)} so
-	 * that the request result can be received.
+	 * along with a request code which can be used to receive the result. If this Behaviour is used,
+	 * then {@link android.support.v7.app.AppCompatActivity#onRequestPermissionsResult(int,
+	 * String[], int[])} should be overridden in the target activity so that the request result can
+	 * be received.
 	 */
 	@TargetApi(23)
 	public static class RequestPermissions extends BehaviourAdapter {
@@ -724,8 +730,8 @@ public class IntroButton extends Button implements OnClickListener {
 
 /**
  * Manipulates the appearance of an IntroButton. Subclasses need only implement the {@link
- * #manipulateAppearance()} method and call {@link #getButton()} to get a reference to the button to
- * manipulate.
+ * #manipulateAppearance()} method and call the {@link #getButton()} method to get a reference to
+ * the IntroButton to manipulate.
  */
 abstract class AppearanceManipulator {
 	/**
