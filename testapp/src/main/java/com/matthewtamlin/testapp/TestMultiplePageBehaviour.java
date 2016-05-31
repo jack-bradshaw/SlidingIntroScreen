@@ -18,9 +18,9 @@ package com.matthewtamlin.testapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.ProgressToNextActivity;
 
 /**
  * Test the activity when multiple pages are shown. The activity should show: <li>Window: Status bar
@@ -42,24 +42,19 @@ public class TestMultiplePageBehaviour extends ThreePageTestBase {
 	protected IntroButton.Behaviour generateFinalButtonBehaviour() {
 		final Intent i = new Intent(this, PostActivity.class);
 
-		final IntroButton.ProgressToNextActivity b =
-				new IntroButton.ProgressToNextActivity(i, null) {
-					@Override
-					public boolean shouldLaunchActivity() {
-						return true;
-					}
-				};
+		final ProgressToNextActivity progressBehaviour = new ProgressToNextActivity(i, null) {
+			@Override
+			public boolean shouldLaunchActivity() {
+				return true;
+			}
+		};
 
-		setFinalButtonText("DONE", b.getClass());
-		Log.d(TAG, "text: " + getFinalButtonText(b.getClass()));
-
-		return b;
+		return progressBehaviour;
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		Log.d(TAG, "text: " + getFinalButtonText(null));
+		getFinalButtonAccessor().setText("DONE", null);
 	}
 }
