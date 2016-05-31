@@ -319,10 +319,15 @@ public class TestButtonConfig extends ThreePageTestBase {
 
 		// Check that final button properties changed correctly
 		final IntroButtonAccessor finalButtonAccessor = getFinalButtonAccessor();
-		assertThat("final button text not set/returned correctly",
+		assertThat("final button text not set/returned correctly when using implicit behaviour",
 				finalButtonAccessor.getText(null).equals(FINAL_BUTTON_TEXT));
-		assertThat("final button icon not set/returned correctly",
-				finalButtonAccessor.getText(null).equals(finalDrawable));
+		assertThat("final button text not set/returned correctly when using explicit behaviour",
+				finalButtonAccessor.getText(FINAL_BUTTON_BEHAVIOUR.getClass())
+						.equals(FINAL_BUTTON_TEXT));
+		assertThat("final button icon not set/returned correctly when using implicit behaviour",
+				finalButtonAccessor.getIcon(null).equals(finalDrawable));
+		assertThat("final button icon not set/returned correctly when using explicit behaviour",
+				finalButtonAccessor.getIcon(FINAL_BUTTON_BEHAVIOUR.getClass()).equals(finalDrawable));
 		assertThat("final button color not set/returned correctly",
 				finalButtonAccessor.getTextColor() == FINAL_BUTTON_COLOR);
 		assertThat("final button behaviour not set/returned correctly",
