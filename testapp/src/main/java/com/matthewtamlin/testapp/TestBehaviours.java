@@ -44,14 +44,14 @@ public class TestBehaviours extends ThreePageTestBase {
 		testCustomBehaviour.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				setLeftButtonBehaviour(new IntroButton.BehaviourAdapter() {
+				getLeftButtonAccessor().setBehaviour(new IntroButton.BehaviourAdapter() {
 					@Override
 					public void run() {
-						getActivity().goToPage(3);
+						getActivity().goToPage(0);
 					}
 				});
 
-				setLeftButtonText("Go back to 0 ", null);
+				getLeftButtonAccessor().setText("Go to 0 ", null);
 				disableLeftButtonOnLastPage(false);
 			}
 		});
@@ -62,16 +62,16 @@ public class TestBehaviours extends ThreePageTestBase {
 		testPermissionBehaviour.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				setLeftButtonBehaviour(
+				getLeftButtonAccessor().setBehaviour(
 						new IntroButton.RequestPermissions(PERMISSIONS, PERM_REQUEST_CODE));
-				setLeftButtonText("REQUEST PERMS", null);
+				getFinalButtonAccessor().setText("REQUEST PERMS", null);
 			}
 		});
 	}
 
 	@Override
-	public void onRequestPermissionsResult(int requestCode, String[] permissions,
-			int[] grantResults) {
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
+			grantResults) {
 
 		// Assume that grantResults will always have the same length as permissions
 		for (int i = 0; i < grantResults.length; i++) {
