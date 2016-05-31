@@ -27,11 +27,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.matthewtamlin.android_utilities_library.helpers.DimensionHelper;
-import com.matthewtamlin.sliding_intro_screen_library.buttons.FadeAnimatorFactory;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Appearance;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Behaviour;
-import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButtonModifier;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButtonAccessor;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -170,8 +169,8 @@ public class TestButtonConfig extends ThreePageTestBase {
 			public void onClick(View v) {
 				Log.d(TAG, "[on click] [modify buttons]");
 				initialiseDrawables();
-				changeAppearance();
-				checkAppearance();
+				makeChanges();
+				checkChanges();
 			}
 		});
 
@@ -240,94 +239,100 @@ public class TestButtonConfig extends ThreePageTestBase {
 	/**
 	 * Modify the buttons.
 	 */
-	private void changeAppearance() {
+	private void makeChanges() {
 		// Modify left button
-		final IntroButtonModifier leftButtonModifier = modifyLeftButton();
-		leftButtonModifier.setBehaviour(LEFT_BUTTON_BEHAVIOUR);
-		leftButtonModifier.setAppearance(LEFT_BUTTON_APPEARANCE);
-		leftButtonModifier.setText(LEFT_BUTTON_TEXT, null);
-		leftButtonModifier.setIcon(leftDrawable, null);
-		setLeftButtonTextColor(LEFT_BUTTON_COLOR);
-		setLeftButtonTextSize(LEFT_BUTTON_TEXT_SIZE_SP);
-		setLeftButtonTypeface(Typeface.DEFAULT_BOLD);
+		final IntroButtonAccessor leftButtonAccessor = getLeftButtonAccessor();
+		leftButtonAccessor.setBehaviour(LEFT_BUTTON_BEHAVIOUR);
+		leftButtonAccessor.setAppearance(LEFT_BUTTON_APPEARANCE);
+		leftButtonAccessor.setText(LEFT_BUTTON_TEXT, null);
+		leftButtonAccessor.setIcon(leftDrawable, null);
+		leftButtonAccessor.setTextColor(LEFT_BUTTON_COLOR);
+		leftButtonAccessor.setTextSize(LEFT_BUTTON_TEXT_SIZE_SP);
+		leftButtonAccessor.setTypeface(Typeface.DEFAULT_BOLD);
 
 		// Modify right button
-		setRightButtonBehaviour(RIGHT_BUTTON_BEHAVIOUR);
-		setRightButtonAppearance(RIGHT_BUTTON_APPEARANCE);
-		setRightButtonText(RIGHT_BUTTON_TEXT, null);
-		setRightButtonIcon(rightDrawable, null);
-		setRightButtonTextColor(RIGHT_BUTTON_COLOR);
-		setRightButtonTypeface(Typeface.MONOSPACE);
-		setRightButtonTextSize(RIGHT_BUTTON_TEXT_SIZE_SP);
+		final IntroButtonAccessor rightButtonAccessor = getRightButtonAccessor();
+		rightButtonAccessor.setBehaviour(RIGHT_BUTTON_BEHAVIOUR);
+		rightButtonAccessor.setAppearance(RIGHT_BUTTON_APPEARANCE);
+		rightButtonAccessor.setText(RIGHT_BUTTON_TEXT, null);
+		rightButtonAccessor.setIcon(rightDrawable, null);
+		rightButtonAccessor.setTextColor(RIGHT_BUTTON_COLOR);
+		rightButtonAccessor.setTextSize(RIGHT_BUTTON_TEXT_SIZE_SP);
+		rightButtonAccessor.setTypeface(Typeface.MONOSPACE);
 
 		// Modify final button
-		setFinalButtonBehaviour(FINAL_BUTTON_BEHAVIOUR);
-		setFinalButtonAppearance(FINAL_BUTTON_APPEARANCE);
-		setFinalButtonText(FINAL_BUTTON_TEXT, null);
-		setFinalButtonIcon(finalDrawable, null);
-		setFinalButtonTextColor(FINAL_BUTTON_COLOR);
-		setFinalButtonTypeface(Typeface.SANS_SERIF);
-		setFinalButtonTextSize(FINAL_BUTTON_TEXT_SIZE_SP);
+		final IntroButtonAccessor finalButtonAccessor = getFinalButtonAccessor();
+		finalButtonAccessor.setBehaviour(FINAL_BUTTON_BEHAVIOUR);
+		finalButtonAccessor.setAppearance(FINAL_BUTTON_APPEARANCE);
+		finalButtonAccessor.setText(FINAL_BUTTON_TEXT, null);
+		finalButtonAccessor.setIcon(finalDrawable, null);
+		finalButtonAccessor.setTextColor(FINAL_BUTTON_COLOR);
+		finalButtonAccessor.setTextSize(FINAL_BUTTON_TEXT_SIZE_SP);
+		finalButtonAccessor.setTypeface(Typeface.SANS_SERIF);
 	}
 
 	/**
 	 * Check that the buttons were modified correctly.
 	 */
-	private void checkAppearance() {
+	private void checkChanges() {
 		// Check that left button properties changed correctly
+		final IntroButtonAccessor leftButtonAccessor = getLeftButtonAccessor();
 		assertThat("left button text not set/returned correctly when using implicit behaviour",
-				getLeftButtonText(null).equals(LEFT_BUTTON_TEXT));
+				leftButtonAccessor.getText(null).equals(LEFT_BUTTON_TEXT));
 		assertThat("left button text not set/returned correctly when using explicit behaviour",
-				getLeftButtonText(LEFT_BUTTON_BEHAVIOUR.getClass()).equals(LEFT_BUTTON_TEXT));
+				leftButtonAccessor.getText(LEFT_BUTTON_BEHAVIOUR.getClass())
+						.equals(LEFT_BUTTON_TEXT));
 		assertThat("left button icon not set/returned correctly when using implicit behaviour",
-				getLeftButtonIcon(null).equals(leftDrawable));
+				leftButtonAccessor.getIcon(null).equals(leftDrawable));
 		assertThat("left button icon not set/returned correctly when using explicit behaviour",
-				getLeftButtonIcon(LEFT_BUTTON_BEHAVIOUR.getClass()).equals(leftDrawable));
+				leftButtonAccessor.getIcon(LEFT_BUTTON_BEHAVIOUR.getClass()).equals(leftDrawable));
 		assertThat("left button color not set/returned correctly",
-				getLeftButtonTextColor() == LEFT_BUTTON_COLOR);
+				leftButtonAccessor.getTextColor() == LEFT_BUTTON_COLOR);
 		assertThat("left button behaviour not set/returned correctly",
-				getLeftButtonBehaviour().equals(LEFT_BUTTON_BEHAVIOUR));
+				leftButtonAccessor.getBehaviour().equals(LEFT_BUTTON_BEHAVIOUR));
 		assertThat("left button appearance not set/returned correctly",
-				getLeftButtonAppearance().equals(LEFT_BUTTON_APPEARANCE));
+				leftButtonAccessor.getAppearance().equals(LEFT_BUTTON_APPEARANCE));
 		assertThat("left button text size not set/returned correctly",
-				getLeftButtonTextSize() ==
+				leftButtonAccessor.getTextSize() ==
 						DimensionHelper.spToPx(LEFT_BUTTON_TEXT_SIZE_SP, TestButtonConfig.this));
 
 		// Check that right button properties changed correctly
+		final IntroButtonAccessor rightButtonAccessor = getRightButtonAccessor();
 		assertThat("right button text not set/returned correctly when using implicit behaviour",
-				getRightButtonText(null).equals(RIGHT_BUTTON_TEXT));
+				rightButtonAccessor.getText(null).equals(RIGHT_BUTTON_TEXT));
 		assertThat("right button text not set/returned correctly when using explicit behaviour",
-				getRightButtonText(RIGHT_BUTTON_BEHAVIOUR.getClass()).equals(
+				rightButtonAccessor.getText(RIGHT_BUTTON_BEHAVIOUR.getClass()).equals(
 						RIGHT_BUTTON_TEXT));
 		assertThat("right button icon not set/returned correctly when using implicit behaviour",
-				getRightButtonIcon(null).equals(rightDrawable));
+				rightButtonAccessor.getIcon(null).equals(rightDrawable));
 		assertThat("right button icon not set/returned correctly when using explicit behaviour",
-				getRightButtonIcon(RIGHT_BUTTON_BEHAVIOUR.getClass()).equals(rightDrawable));
+				rightButtonAccessor.getIcon(RIGHT_BUTTON_BEHAVIOUR.getClass()).equals(rightDrawable));
 		assertThat("right button color not set/returned correctly",
-				getRightButtonTextColor() == RIGHT_BUTTON_COLOR);
+				rightButtonAccessor.getTextColor() == RIGHT_BUTTON_COLOR);
 		assertThat("right button behaviour not set/returned correctly",
-				getRightButtonBehaviour().equals(RIGHT_BUTTON_BEHAVIOUR));
+				rightButtonAccessor.getBehaviour().equals(RIGHT_BUTTON_BEHAVIOUR));
 		assertThat("right button appearance not set/returned correctly",
-				getRightButtonAppearance().equals(RIGHT_BUTTON_APPEARANCE));
+				rightButtonAccessor.getAppearance().equals(RIGHT_BUTTON_APPEARANCE));
 		assertThat("right button text size not set/returned correctly",
-				getRightButtonTextSize() ==
+				rightButtonAccessor.getTextSize() ==
 						DimensionHelper.spToPx(RIGHT_BUTTON_TEXT_SIZE_SP, TestButtonConfig.this));
 
 		// Check that final button properties changed correctly
+		final IntroButtonAccessor finalButtonAccessor = getFinalButtonAccessor();
 		assertThat("final button text not set/returned correctly",
-				getFinalButtonText(null).equals(FINAL_BUTTON_TEXT));
+				finalButtonAccessor.getText(null).equals(FINAL_BUTTON_TEXT));
 		assertThat("final button icon not set/returned correctly",
-				getFinalButtonIcon(null).equals(finalDrawable));
+				finalButtonAccessor.getText(null).equals(finalDrawable));
 		assertThat("final button color not set/returned correctly",
-				getFinalButtonTextColor() == FINAL_BUTTON_COLOR);
+				finalButtonAccessor.getTextColor() == FINAL_BUTTON_COLOR);
 		assertThat("final button behaviour not set/returned correctly",
-				getFinalButtonBehaviour().equals(FINAL_BUTTON_BEHAVIOUR));
+				finalButtonAccessor.getBehaviour().equals(FINAL_BUTTON_BEHAVIOUR));
 		assertThat("final button appearance not set/returned correctly",
-				getFinalButtonAppearance().equals(FINAL_BUTTON_APPEARANCE));
+				finalButtonAccessor.getAppearance().equals(FINAL_BUTTON_APPEARANCE));
 		assertThat("final button text size not set/returned correctly",
-				getFinalButtonTextSize() ==
+				finalButtonAccessor.getTextSize() ==
 						DimensionHelper.spToPx(FINAL_BUTTON_TEXT_SIZE_SP, TestButtonConfig.this));
 
-		Log.d(TAG, "[checkAppearance] [assertions passed]");
+		Log.d(TAG, "[checkChanges] [assertions passed]");
 	}
 }
