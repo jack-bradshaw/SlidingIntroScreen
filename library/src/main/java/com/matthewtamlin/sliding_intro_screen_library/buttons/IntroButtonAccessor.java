@@ -33,7 +33,9 @@ public final class IntroButtonAccessor {
 	 * Sets the Behaviour of the IntroButton accessed by this accessor. This is distinct from the
 	 * on-click listener, which can be set using {@link #setOnClickListener(View.OnClickListener)}.
 	 * The IntroButton class contains predefined Behaviours which meet most needs, but custom
-	 * implementations of the Behaviour interface are also accepted.
+	 * implementations of the Behaviour interface are also accepted. The {@link
+	 * com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.BehaviourAdapter} class
+	 * can be used to reduce boilerplate code when implementing the Behaviour interface.
 	 * <p/>
 	 * Null is not accepted by this method. To do nothing when the button is pressed, pass an
 	 * instance of {@link com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.DoNothing}.
@@ -76,9 +78,9 @@ public final class IntroButtonAccessor {
 
 	/**
 	 * Sets the text to display in the IntroButton accessed by this accessor. The text is linked to
-	 * a Behaviour class, and will only be shown when the IntroButton is set to use that Behaviour.
-	 * The current appearance of the button determines whether or not the text will actually be
-	 * displayed.
+	 * a Behaviour class, and will only be shown when the IntroButton is set to use a Behaviour of
+	 * that class. The current Appearance of the button determines whether or not the text will
+	 * actually be displayed.
 	 *
 	 * @param text
 	 * 		the text to display in the button, not null
@@ -92,8 +94,8 @@ public final class IntroButtonAccessor {
 	}
 
 	/**
-	 * Returns the text to display in the IntroButton accessed by this accessor. This method returns
-	 * the text which is associated with the supplied Behaviour.
+	 * Returns the text to display in the IntroButton accessed by this accessor. The text which is
+	 * associated with the supplied Behaviour is returned.
 	 *
 	 * @param behaviourClass
 	 * 		the Behaviour class of which to get the associated text, null to use the class of the
@@ -105,7 +107,7 @@ public final class IntroButtonAccessor {
 	}
 
 	/**
-	 * /** Sets the icon to display in the IntroButton accessed by this accessor. The icon is linked
+	 * Sets the icon to display in the IntroButton accessed by this accessor. The icon is linked
 	 * to a Behaviour class, and will only be shown when the IntroButton is set to use that
 	 * Behaviour. The current appearance of the button determines whether or not the icon will
 	 * actually be displayed.
@@ -122,8 +124,8 @@ public final class IntroButtonAccessor {
 	}
 
 	/**
-	 * Returns the icon to display in the IntroButton accessed by this accessor. This method returns
-	 * the icon which is associated with the supplied Behaviour.
+	 * Returns the icon to display in the IntroButton accessed by this accessor. The icon which
+	 * is associated with the supplied Behaviour is returned.
 	 *
 	 * @param behaviourClass
 	 * 		the Behaviour class of which to get the associated icon, null to use the class of the
