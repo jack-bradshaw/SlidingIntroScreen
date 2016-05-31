@@ -635,8 +635,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 
 	/**
 	 * Called by {@link #onCreate(Bundle)} to generate the behaviour of the final button. This
-	 * behaviour can be changed later using {@link #setFinalButtonBehaviour(Behaviour)}. The {@link
-	 * IntroButton.ProgressToNextActivity} class is designed to simplify the implementation.
+	 * behaviour can be changed later using {@link #modifyFinalButton()}. The IntroButton class
+	 * contains Behaviours which can be used to perform common tasks.
 	 *
 	 * @return the behaviour to use for the final button, not null
 	 */

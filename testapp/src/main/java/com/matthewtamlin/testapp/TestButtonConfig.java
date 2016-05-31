@@ -31,6 +31,7 @@ import com.matthewtamlin.sliding_intro_screen_library.buttons.FadeAnimatorFactor
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Appearance;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Behaviour;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButtonModifier;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -241,10 +242,11 @@ public class TestButtonConfig extends ThreePageTestBase {
 	 */
 	private void changeAppearance() {
 		// Modify left button
-		setLeftButtonBehaviour(LEFT_BUTTON_BEHAVIOUR);
-		setLeftButtonAppearance(LEFT_BUTTON_APPEARANCE);
-		setLeftButtonText(LEFT_BUTTON_TEXT, null);
-		setLeftButtonIcon(leftDrawable, null);
+		final IntroButtonModifier leftButtonModifier = modifyLeftButton();
+		leftButtonModifier.setBehaviour(LEFT_BUTTON_BEHAVIOUR);
+		leftButtonModifier.setAppearance(LEFT_BUTTON_APPEARANCE);
+		leftButtonModifier.setText(LEFT_BUTTON_TEXT, null);
+		leftButtonModifier.setIcon(leftDrawable, null);
 		setLeftButtonTextColor(LEFT_BUTTON_COLOR);
 		setLeftButtonTextSize(LEFT_BUTTON_TEXT_SIZE_SP);
 		setLeftButtonTypeface(Typeface.DEFAULT_BOLD);
