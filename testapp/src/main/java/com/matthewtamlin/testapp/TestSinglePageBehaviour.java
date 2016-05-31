@@ -54,21 +54,21 @@ public class TestSinglePageBehaviour extends IntroActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setLeftButtonOnClickListener(new View.OnClickListener() {
+		getLeftButtonAccessor().setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.d(TAG, "[on click] [left button]");
 			}
 		});
 
-		setRightButtonOnClickListener(new View.OnClickListener() {
+		getRightButtonAccessor().setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.d(TAG, "[on click] [right button]");
 			}
 		});
 
-		setFinalButtonOnClickListener(new View.OnClickListener() {
+		getFinalButtonAccessor().setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.d(TAG, "[on click] [final button]");
@@ -80,8 +80,8 @@ public class TestSinglePageBehaviour extends IntroActivity {
 	protected Collection<Fragment> generatePages(Bundle savedInstanceState) {
 		ArrayList<Fragment> pages = new ArrayList<>();
 
-		int screenWidth = ScreenSizeHelper.getScreenWidth(getWindowManager());
-		int screenHeight = ScreenSizeHelper.getScreenHeight(getWindowManager());
+		final int screenWidth = ScreenSizeHelper.getScreenWidth(getWindowManager());
+		final int screenHeight = ScreenSizeHelper.getScreenHeight(getWindowManager());
 
 		final Bitmap frontDots = BitmapHelper
 				.decodeSampledBitmapFromResource(getResources(), R.raw.front, screenWidth,
@@ -97,14 +97,6 @@ public class TestSinglePageBehaviour extends IntroActivity {
 		return pages;
 	}
 
-	/**
-	 * Called by {@link #onCreate(Bundle)} to generate the behaviour of the final button. This
-	 * behaviour can be changed later using {@link #setFinalButtonBehaviour(IntroButton.Behaviour)}.
-	 * The {@link IntroButton.ProgressToNextActivity} class is designed to simplify the
-	 * implementation.
-	 *
-	 * @return the behaviour to use for the final button, not null
-	 */
 	@Override
 	protected IntroButton.Behaviour generateFinalButtonBehaviour() {
 		final Intent i = new Intent(this, PostActivity.class);
