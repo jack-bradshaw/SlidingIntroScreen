@@ -302,7 +302,7 @@ public class IntroButton extends Button implements OnClickListener {
 	 *
 	 * @param behaviourClass
 	 * 		the Behaviour class to get the associated text of, null to use the the current Behaviour
-	 * @return the label displayed for the Behaviour of interest, null if there is none
+	 * @return the label for the Behaviour class, null if there is none
 	 */
 	public CharSequence getLabel(final Class<? extends Behaviour> behaviourClass) {
 		final Class behaviourClassToGet = (behaviourClass == null) ? this.behaviour.getClass() :
@@ -319,7 +319,7 @@ public class IntroButton extends Button implements OnClickListener {
 	 * @param icon
 	 * 		the icon to display
 	 * @param behaviourClass
-	 * 		the Behaviour class to associate the label with, null to use the current Behaviour
+	 * 		the Behaviour class to associate the icon with, null to use the current Behaviour
 	 */
 	public void setIcon(final Drawable icon, final Class<? extends Behaviour> behaviourClass) {
 		final Class<? extends Behaviour> behaviourClassToSet =
@@ -335,7 +335,7 @@ public class IntroButton extends Button implements OnClickListener {
 	 *
 	 * @param behaviourClass
 	 * 		the Behaviour class to get the associated icon of, null to use the the current Behaviour
-	 * @return the icon displayed for the Behaviour of interest, null if there is none
+	 * @return the icon for the Behaviour class, null if there is none
 	 */
 	public Drawable getIcon(final Class<? extends Behaviour> behaviourClass) {
 		final Class behaviourClassToSet =
