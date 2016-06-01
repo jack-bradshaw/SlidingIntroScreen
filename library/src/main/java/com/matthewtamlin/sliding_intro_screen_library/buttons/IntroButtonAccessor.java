@@ -6,12 +6,11 @@ import android.view.View;
 
 
 /**
- * Provides indirect access to an IntroButton. Each IntroButtonAccessor provides access to a single
- * IntroButton, and the same IntroButton will be accessed for the duration of the accessor's life.
- * This class is immutable but not necessarily thread-safe, as the methods may interact with
- * non-thread safe objects.
- * <p/>
- * See {@link IntroButton} for further details.
+ * Provides indirect access to an IntroButton, to allow limited modification and inspection. Each
+ * accessor provides access to a single IntroButton only. This class is immutable but not
+ * necessarily thread-safe, as its methods interact with non-thread safe objects.
+ * <p>
+ * See {@link IntroButton}.
  */
 public final class IntroButtonAccessor {
 	/**
@@ -25,23 +24,21 @@ public final class IntroButtonAccessor {
 	 * @param button
 	 * 		the IntroButton to provide access to
 	 */
-	public IntroButtonAccessor(IntroButton button) {
+	public IntroButtonAccessor(final IntroButton button) {
 		this.button = button;
 	}
 
 	/**
-	 * Sets the Behaviour of the IntroButton accessed by this accessor. This is distinct from the
-	 * on-click listener, which can be set using {@link #setOnClickListener(View.OnClickListener)}.
-	 * The IntroButton class contains predefined Behaviours which meet most needs, but custom
-	 * implementations of the Behaviour interface are also accepted. The {@link
-	 * com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.BehaviourAdapter} class
-	 * can be used to reduce boilerplate code when implementing the Behaviour interface.
-	 * <p/>
-	 * Null is not accepted by this method. To do nothing when the button is pressed, pass an
-	 * instance of {@link com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.DoNothing}.
+	 * Sets the Behaviour of the accessed IntroButton. The IntroButton class contains predefined
+	 * Behaviours which meet most needs, but custom implementations of the Behaviour interface are
+	 * also accepted. The {@link IntroButton.BehaviourAdapter} class can be used to reduce
+	 * boilerplate code when implementing the interface. This method does not accept null; to do
+	 * nothing when the button is clicked, pass an instance of {@link IntroButton.DoNothing}.
+	 * <p>
+	 * See {@link com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Behaviour}.
 	 *
 	 * @param behaviour
-	 * 		the Behaviour to use when the accessed IntroButton is pressed, not null
+	 * 		the Behaviour to use, not null
 	 * @throws IllegalArgumentException
 	 * 		if {@code behaviour} is null
 	 */
@@ -50,15 +47,17 @@ public final class IntroButtonAccessor {
 	}
 
 	/**
-	 * @return the current Behaviour of the IntroButton accessed by this accessor, not null
+	 * @return the current Behaviour of the accessed IntroButton, not null
 	 */
 	public final IntroButton.Behaviour getBehaviour() {
 		return button.getBehaviour();
 	}
 
 	/**
-	 * Sets the Appearance of the IntroButton accessed by this accessor. The Appearance defines how
-	 * the button is displayed. See {@link com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Appearance}.
+	 * Sets the Appearance of the accessed IntroButton. The Appearance defines how the button is
+	 * displayed.
+	 * <p>
+	 * See {@link com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Appearance}.
 	 *
 	 * @param appearance
 	 * 		the predefined Appearance to use, not null
@@ -70,128 +69,99 @@ public final class IntroButtonAccessor {
 	}
 
 	/**
-	 * @return the current Appearance of the IntroButton accessed by this accessor, not null
+	 * @return the current Appearance of the accessed IntroButton, not null
 	 */
 	public final IntroButton.Appearance getAppearance() {
 		return button.getAppearance();
 	}
 
 	/**
-	 * Sets the text to display in the IntroButton accessed by this accessor. The text is linked to
-	 * a Behaviour class, and will only be shown when the IntroButton is set to use a Behaviour of
-	 * that class. The current Appearance of the button determines whether or not the text will
-	 * actually be displayed.
+	 * Sets the text to be displayed by the accessed IntroButton. The text will only be displayed
+	 * when its Appearance is set to {@code Appearance.TEXT_ONLY}, {@code Appearance.ICON_TEXT_LEFT}
+	 * or {@code Appearance.ICON_TEXT_RIGHT}. The text is linked to a Behaviour class, and will only
+	 * be used when the button is using an instance of that Behaviour class.
 	 *
 	 * @param text
-	 * 		the text to display in the button, not null
+	 * 		the text to display
 	 * @param behaviourClass
-	 * 		the Behaviour class to associate the text with, null to use the class of the current
-	 * 		Behaviour
+	 * 		the Behaviour class to associate the text with, null to use the current Behaviour
 	 */
-	public final void setText(final CharSequence text, final Class<? extends IntroButton
-			.Behaviour> behaviourClass) {
+	public final void setText(final CharSequence text, final Class<? extends IntroButton.Behaviour>
+			behaviourClass) {
 		button.setLabel(text, behaviourClass);
 	}
 
 	/**
-	 * Returns the text to display in the IntroButton accessed by this accessor. The text which is
-	 * associated with the supplied Behaviour is returned.
+	 * Returns the text displayed by the accessed IntroButton for a particular Behaviour class. Note
+	 * that the text may not currently be visible.
 	 *
 	 * @param behaviourClass
-	 * 		the Behaviour class of which to get the associated text, null to use the class of the
-	 * 		current Behaviour
-	 * @return the text associated with {@code behaviourClass}, null if there is none
+	 * 		the Behaviour class to get the associated text of, null to use the the current Behaviour
+	 * @return the text for the Behaviour class, null if there is none
 	 */
 	public final CharSequence getText(final Class<? extends IntroButton.Behaviour> behaviourClass) {
 		return button.getLabel(behaviourClass);
 	}
 
 	/**
-	 * Sets the icon to display in the IntroButton accessed by this accessor. The icon is linked
-	 * to a Behaviour class, and will only be shown when the IntroButton is set to use that
-	 * Behaviour. The current appearance of the button determines whether or not the icon will
-	 * actually be displayed.
+	 * Sets the icon to be displayed by the accessed IntroButton. The icon will only be displayed
+	 * when its Appearance is set to {@code Appearance.ICON_ONLY}, {@code Appearance.ICON_TEXT_LEFT}
+	 * or {@code Appearance.ICON_TEXT_RIGHT}. The icon is linked to a Behaviour class, and will only
+	 * be used when the IntroButton is using an instance of that Behaviour class.
 	 *
 	 * @param icon
-	 * 		the icon to display in the button, no null
+	 * 		the icon to display
 	 * @param behaviourClass
-	 * 		the behaviour class to associate the text with, null to use the class of the current
-	 * 		Behaviour
+	 * 		the Behaviour class to associate the icon with, null to use the current Behaviour
 	 */
-	public final void setIcon(final Drawable icon,
-			final Class<? extends IntroButton.Behaviour> behaviourClass) {
+	public final void setIcon(final Drawable icon, final Class<? extends IntroButton.Behaviour>
+			behaviourClass) {
 		button.setIcon(icon, behaviourClass);
 	}
 
 	/**
-	 * Returns the icon to display in the IntroButton accessed by this accessor. The icon which
-	 * is associated with the supplied Behaviour is returned.
+	 * Returns the icon displayed by this IntroButton for a particular Behaviour class. Note that
+	 * the icon may not currently be visible.
 	 *
 	 * @param behaviourClass
-	 * 		the Behaviour class of which to get the associated icon, null to use the class of the
-	 * 		current Behaviour
-	 * @return the icon associated with {@code behaviourClass}, null if there is none
+	 * 		the Behaviour class to get the associated icon of, null to use the the current Behaviour
+	 * @return the icon for the Behaviour class, null if there is none
 	 */
 	public final Drawable getIcon(final Class<? extends IntroButton.Behaviour> behaviourClass) {
 		return button.getIcon(behaviourClass);
 	}
 
 	/**
-	 * Sets the color of the text in the IntroButton accessed by this accessor. The color is common
-	 * to all Behaviours.
+	 * Sets the text color of the accessed IntroButton.
 	 *
 	 * @param color
-	 * 		the color to use, as an ARGB hex code
+	 * 		the text color, as an ARGB hex code
 	 */
 	public final void setTextColor(final int color) {
 		button.setTextColor(color);
 	}
 
 	/**
-	 * Returns the color of the text in the IntroButton accessed by this accessor. The color is
-	 * common to all Behaviours.
-	 *
-	 * @return the text color, as an ARGB hex code
+	 * @return the text color of the accessed button, as an ARGB hex code
 	 */
 	public final int getTextColor() {
 		return button.getCurrentTextColor();
 	}
 
 	/**
-	 * Sets the size of the text in the IntroButton accessed by this accessor. The size is common to
-	 * all Behaviours.
-	 *
-	 * @param sizeSp
-	 * 		the text size to use, measured in scaled-pixels
-	 */
-	public final void setTextSize(final float sizeSp) {
-		button.setTextSize(sizeSp);
-	}
-
-	/**
-	 * Returns the size of the text in the IntroButton accessed by this accessor. The size is common
-	 * to all Behaviours.
-	 *
-	 * @return the current text size, measured in pixels
-	 */
-	public final float getTextSize() {
-		return button.getTextSize();
-	}
-
-	/**
-	 * Sets the typeface and style in which the text of the left button should be displayed.
+	 * Sets the typeface and style of the accessed IntroButton.
 	 *
 	 * @param tf
 	 * 		the typeface to use
 	 * @param style
-	 * 		style for the typeface
+	 * 		the style to use
 	 */
 	public final void setTypeface(final Typeface tf, final int style) {
 		button.setTypeface(tf, style);
 	}
 
 	/**
-	 * Sets the typeface and style for the text of the IntroButton accessed by this accessor.
+	 * Sets the typeface of the accessed IntroButton.
 	 *
 	 * @param tf
 	 * 		the typeface to use
@@ -201,12 +171,29 @@ public final class IntroButtonAccessor {
 	}
 
 	/**
-	 * Register a callback to be invoked when the IntroButton accessed by this accessor is clicked.
-	 * Registering for on-click events does not prevent the IntroButton from performing its
-	 * predefined Behaviour.
+	 * Sets the size of the text displayed in the accessed IntroButton.
+	 *
+	 * @param textSizeSp
+	 * 		the size to use, measured in scaled-pixels
+	 */
+	public final void setTextSize(final float textSizeSp) {
+		button.setTextSize(textSizeSp);
+	}
+
+	/**
+	 * @return the size of the text currently displayed in the accessed IntroButton, measured in
+	 * pixels
+	 */
+	public final float getTextSize() {
+		return button.getTextSize();
+	}
+
+	/**
+	 * Sets the on-click listener for the accessed IntroButton. This functionality is independent of
+	 * the Behaviour.
 	 *
 	 * @param l
-	 * 		the callback that will run, null to clear the existing listener
+	 * 		the listener to receive the callbacks, null to clear any listener
 	 */
 	public final void setOnClickListener(final View.OnClickListener l) {
 		button.setOnClickListener(l);
