@@ -19,15 +19,12 @@ package com.matthewtamlin.sliding_intro_screen_library.core;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -41,6 +38,7 @@ import com.matthewtamlin.sliding_intro_screen_library.buttons.FadeAnimatorFactor
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Appearance;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Behaviour;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButtonAccessor;
 import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager.LockMode;
 import com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator;
 import com.matthewtamlin.sliding_intro_screen_library.indicators.SelectionIndicator;
@@ -634,8 +632,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 
 	/**
 	 * Called by {@link #onCreate(Bundle)} to generate the behaviour of the final button. This
-	 * behaviour can be changed later using {@link #setFinalButtonBehaviour(Behaviour)}. The {@link
-	 * IntroButton.ProgressToNextActivity} class is designed to simplify the implementation.
+	 * behaviour can be changed later using {@link #getFinalButtonAccessor()}. The IntroButton class
+	 * contains Behaviours which can be used to perform common tasks.
 	 *
 	 * @return the behaviour to use for the final button, not null
 	 */
@@ -892,7 +890,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 
-	// Methods common to all buttons
+	// Methods relating to the buttons
 
 	/**
 	 * Called when the activity is created to define the AnimatorFactory to use whenever a button is
@@ -905,185 +903,38 @@ public abstract class IntroActivity extends AppCompatActivity {
 		return new FadeAnimatorFactory();
 	}
 
-
-	// Methods relating to the left button
-
 	/**
-	 * Sets the behaviour of the left button. This is distinct from the on-click behaviour, which
-	 * can be set using {@link #setLeftButtonOnClickListener(OnClickListener)}. Predefined
-	 * behaviours are provided in the {@link IntroButton} class, however custom behaviours are
-	 * accepted. To use a custom behaviour, implement {@link Behaviour} and pass an instance of the
-	 * implementation to this method. Alternatively, subclassing {@link
-	 * IntroButton.BehaviourAdapter} simplifies the implementation and eliminates boilerplate code.
+	 * Returns an an IntroButtonAccessor which can be used to modify and inspect the left button.
 	 *
-	 * @param behaviour
-	 * 		the behaviour to use when left button is pressed, not null
+	 * @return the accessor, not null
 	 */
-	public final void setLeftButtonBehaviour(final Behaviour behaviour) {
-		leftButton.setBehaviour(behaviour);
+	public IntroButtonAccessor getLeftButtonAccessor() {
+		return new IntroButtonAccessor(leftButton);
 	}
 
 	/**
-	 * @return the current behaviour of the left button
-	 */
-	public final Behaviour getLeftButtonBehaviour() {
-		return leftButton.getBehaviour();
-	}
-
-	/**
-	 * Sets the appearance of the left button.
+	 * Returns an an IntroButtonAccessor which can be used to modify and inspect the right button.
 	 *
-	 * @param appearance
-	 * 		the predefined appearance to use, not null
+	 * @return the accessor, not null
 	 */
-	public final void setLeftButtonAppearance(final Appearance appearance) {
-		leftButton.setAppearance(appearance);
+	public IntroButtonAccessor getRightButtonAccessor() {
+		return new IntroButtonAccessor(rightButton);
 	}
 
 	/**
-	 * @return the current Appearance of the left button
-	 */
-	public final Appearance getLeftButtonAppearance() {
-		return leftButton.getAppearance();
-	}
-
-	/**
-	 * Sets the text to display in the left button for a single behaviour class. The current
-	 * appearance of the button determines whether or not the text will actually be displayed.
-	 * Although null is accepted, changing the button appearance using {@link
-	 * #setLeftButtonAppearance(Appearance)} is the preferred method of showing no text.
+	 * Returns an an IntroButtonAccessor which can be used to modify and inspect the final button.
 	 *
-	 * @param text
-	 * 		the text label to display
-	 * @param behaviourClass
-	 * 		the behaviour class to set the label for, null to use the class of the current behaviour
+	 * @return the accessor, not null
 	 */
-	public final void setLeftButtonText(final CharSequence text,
-			final Class<? extends Behaviour> behaviourClass) {
-		leftButton.setLabel(text, behaviourClass);
+	public IntroButtonAccessor getFinalButtonAccessor() {
+		return new IntroButtonAccessor(finalButton);
 	}
 
 	/**
-	 * Returns the text to display in the left button for a particular behaviour class.
-	 *
-	 * @param behaviourClass
-	 * 		the behaviour class to query the text against, null to use the class of the current
-	 * 		behaviour
-	 * @return the text for {@code behaviourClass}, null if there is none
-	 */
-	public final CharSequence getLeftButtonText(final Class<? extends Behaviour> behaviourClass) {
-		return leftButton.getLabel(behaviourClass);
-	}
-
-	/**
-	 * Sets the icon to display in the left button for a single behaviour class. The current
-	 * appearance of the button determines whether or not the icon will actually be displayed, and
-	 * where it will be located. Although null is accepted, changing the button appearance using
-	 * {@link #setLeftButtonAppearance(Appearance)} is the preferred method of showing no icon.
-	 *
-	 * @param icon
-	 * 		the icon to display
-	 * @param behaviourClass
-	 * 		the behaviour class to set the icon for, null to use the class of the current appearance
-	 */
-	public final void setLeftButtonIcon(final Drawable icon,
-			final Class<? extends Behaviour> behaviourClass) {
-		leftButton.setIcon(icon, behaviourClass);
-	}
-
-	/**
-	 * Returns the icon to display in the left button for a particular behaviour.
-	 *
-	 * @param behaviourClass
-	 * 		the behaviour class to query the icon against, null to use the class of the current
-	 * 		behaviour
-	 * @return the icon for {@code behaviourClass}, null if there is none
-	 */
-	public final Drawable getLeftButtonIcon(final Class<? extends Behaviour> behaviourClass) {
-		return leftButton.getIcon(behaviourClass);
-	}
-
-	/**
-	 * Sets the color of the text in the left button. The color is common to all behaviours.
-	 *
-	 * @param color
-	 * 		the color to use, as an ARGB hex code
-	 */
-	public final void setLeftButtonTextColor(final int color) {
-		leftButton.setTextColor(color);
-	}
-
-	/**
-	 * Returns the color of the text in the left button. The color is common to all behaviours.
-	 *
-	 * @return the text color, as an ARGB hex code
-	 */
-	public final int getLeftButtonTextColor() {
-		return leftButton.getCurrentTextColor();
-	}
-
-	/**
-	 * Sets the size of the text in the left button. The size is common to all behaviours.
-	 *
-	 * @param sizeSp
-	 * 		the size to use, measured in scaled-pixels
-	 */
-	public final void setLeftButtonTextSize(final float sizeSp) {
-		leftButton.setTextSize(sizeSp);
-	}
-
-	/**
-	 * Returns the size of the text in the left button. The size is common to all behaviours.
-	 *
-	 * @return the text size, measured in pixels
-	 */
-	public final float getLeftButtonTextSize() {
-		return leftButton.getTextSize();
-	}
-
-	/**
-	 * Sets the typeface and style in which the text of the left button should be displayed. Turns
-	 * on the fake bold and italic bits in the Paint if the Typeface that you provided does not have
-	 * all the bits in the style that you specified.
-	 *
-	 * @param tf
-	 * 		the typeface to use
-	 * @param style
-	 * 		style for the typeface
-	 */
-	public final void setLeftButtonTypeface(final Typeface tf, final int style) {
-		leftButton.setTypeface(tf, style);
-	}
-
-	/**
-	 * Sets the typeface and style in which the text of the left button should be displayed. Turns
-	 * on the fake bold and italic bits in the Paint if the Typeface that you provided does not have
-	 * all the bits in the style that you specified.
-	 *
-	 * @param tf
-	 * 		the typeface to use
-	 */
-	public final void setLeftButtonTypeface(final Typeface tf) {
-		leftButton.setTypeface(tf);
-	}
-
-	/**
-	 * Register a callback to be invoked when the left button is clicked. If the button is not
-	 * clickable, it becomes clickable. Registering for on-click events does not prevent the left
-	 * button from performing its predefined behaviour.
-	 *
-	 * @param l
-	 * 		the callback that will run, null to clear the existing listener
-	 */
-	public final void setLeftButtonOnClickListener(final OnClickListener l) {
-		leftButton.setOnClickListener(l);
-	}
-
-	/**
-	 * Disables the left button by making it invisible and un-clickable.
+	 * Disables the left button on all pages by making it invisible and un-clickable.
 	 *
 	 * @param disabled
-	 * 		true to disable the button, false to enable it (i.e. make it visible and clickable)
+	 * 		true to disable the button, false to enable it
 	 */
 	public final void disableLeftButton(final boolean disabled) {
 		leftButtonDisabled = disabled;
@@ -1091,19 +942,9 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Returns whether or not the left button is currently disabled (i.e. invisible and
-	 * un-clickable).
-	 *
-	 * @return true if the button is currently disabled, false otherwise
-	 */
-	public final boolean leftButtonIsDisabled() {
-		return leftButtonDisabled;
-	}
-
-	/**
 	 * Sets whether or not the left button should be automatically disabled on the last page and
-	 * re-enabled when returning to a previous page. This feature is overridden if true was last
-	 * passed to {@link #disableLeftButton(boolean)}.
+	 * re-enabled when returning to a previous page. The {@link #disableLeftButton(boolean)} method
+	 * takes precedence over this method.
 	 *
 	 * @param disableButton
 	 * 		true to automatically disable the left button on the last page, false to prevent automatic
@@ -1115,8 +956,17 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
+	 * Returns whether or not the left button is currently disabled on all pages.
+	 *
+	 * @return true if the button is currently entirely, false otherwise
+	 */
+	public final boolean leftButtonIsEntirelyDisabled() {
+		return leftButtonDisabled;
+	}
+
+	/**
 	 * Returns whether or not the left button will be disabled when the last page is displayed. This
-	 * method does not take into account whether or not the button is has been globally disabled
+	 * method does not take into account whether or not the button is has been entirely disabled
 	 * using {@link #disableLeftButton(boolean)}.
 	 *
 	 * @return true if the left button will be disabled while the last page is displayed, false
@@ -1126,188 +976,11 @@ public abstract class IntroActivity extends AppCompatActivity {
 		return disableLeftButtonOnLastPage;
 	}
 
-
-	// Methods relating to the right button
-
 	/**
-	 * Sets the behaviour of the right button when clicked. This is distinct from the on-click
-	 * behaviour, which can be set using {@link #setRightButtonOnClickListener(OnClickListener)}.
-	 * Predefined behaviours are provided in the {@link IntroButton} class, however custom
-	 * behaviours are accepted. To use a custom behaviour, implement {@link Behaviour} and pass an
-	 * instance of the implementation to this method. Alternatively, subclassing {@link
-	 * IntroButton.BehaviourAdapter} simplifies the implementation and eliminates boilerplate code.
-	 *
-	 * @param behaviour
-	 * 		the behaviour to use when the right button is pressed, not null
-	 */
-	public final void setRightButtonBehaviour(final Behaviour behaviour) {
-		rightButton.setBehaviour(behaviour);
-	}
-
-	/**
-	 * @return the current Behaviour of the right button
-	 */
-	public final Behaviour getRightButtonBehaviour() {
-		return rightButton.getBehaviour();
-	}
-
-	/**
-	 * Sets the appearance of the right button.
-	 *
-	 * @param appearance
-	 * 		the predefined appearance to use, not null
-	 */
-	public final void setRightButtonAppearance(final Appearance appearance) {
-		rightButton.setAppearance(appearance);
-	}
-
-	/**
-	 * @return the current Appearance of the right button
-	 */
-	public final Appearance getRightButtonAppearance() {
-		return rightButton.getAppearance();
-	}
-
-	/**
-	 * Sets the text to display in the right button for a single behaviour class. The current
-	 * appearance of the button determines whether or not the text will actually be displayed.
-	 * Although null is accepted, changing the button appearance using {@link
-	 * #setLeftButtonAppearance(Appearance)} is the preferred method of showing no text.
-	 *
-	 * @param text
-	 * 		the text label to display
-	 * @param behaviourClass
-	 * 		the behaviour class to set the label for, null to use the class of the current behaviour
-	 */
-	public final void setRightButtonText(final CharSequence text,
-			final Class<? extends Behaviour> behaviourClass) {
-		rightButton.setLabel(text, behaviourClass);
-	}
-
-	/**
-	 * Returns the text to display in the right button for a particular behaviour class.
-	 *
-	 * @param behaviourClass
-	 * 		the behaviour class to query the text against, null to use the class of the current
-	 * 		behaviour
-	 * @return the text for {@code behaviourClass}, null if there is none
-	 */
-	public final CharSequence getRightButtonText(
-			final Class<? extends IntroButton.Behaviour> behaviourClass) {
-		return rightButton.getLabel(behaviourClass);
-	}
-
-	/**
-	 * Sets the icon to display in the right button for a single behaviour class. The current
-	 * appearance of the button determines whether or not the icon will actually be displayed, and
-	 * where it will be located. Although null is accepted, changing the button appearance using
-	 * {@link #setRightButtonAppearance(IntroButton.Appearance)} is the preferred method of showing
-	 * no icon.
-	 *
-	 * @param icon
-	 * 		the icon to display
-	 * @param behaviourClass
-	 * 		the behaviour class to set the icon for, null to use the class of the current appearance
-	 */
-	public final void setRightButtonIcon(final Drawable icon,
-			final Class<? extends IntroButton.Behaviour> behaviourClass) {
-		rightButton.setIcon(icon, behaviourClass);
-	}
-
-	/**
-	 * Returns the icon to display in the right button for a particular behaviour.
-	 *
-	 * @param behaviourClass
-	 * 		the behaviour class to query the icon against, null to use the class of the current
-	 * 		behaviour
-	 * @return the icon for {@code behaviourClass}, null if there is none
-	 */
-	public final Drawable getRightButtonIcon(
-			final Class<? extends IntroButton.Behaviour> behaviourClass) {
-		return rightButton.getIcon(behaviourClass);
-	}
-
-	/**
-	 * Sets the text color of the right button. The color is common to all behaviours.
-	 *
-	 * @param color
-	 * 		the color to use, as an ARGB hex code
-	 */
-	public final void setRightButtonTextColor(final int color) {
-		rightButton.setTextColor(color);
-	}
-
-	/**
-	 * Returns the color of the text in the right button. The color is common to all behaviours.
-	 *
-	 * @return the text color, as an ARGB hex code
-	 */
-	public final int getRightButtonTextColor() {
-		return rightButton.getCurrentTextColor();
-	}
-
-	/**
-	 * Sets the size of the text in the right button. The size is common to all behaviours.
-	 *
-	 * @param sizeSp
-	 * 		the size to use, measured in scaled-pixels
-	 */
-	public final void setRightButtonTextSize(float sizeSp) {
-		rightButton.setTextSize(sizeSp);
-	}
-
-	/**
-	 * Returns the size of the text in the right button. The size is common to all behaviours.
-	 *
-	 * @return the text size, measured in pixels
-	 */
-	public final float getRightButtonTextSize() {
-		return rightButton.getTextSize();
-	}
-
-	/**
-	 * Sets the typeface and style in which the text of the right button should be displayed. Turns
-	 * on the fake bold and italic bits in the Paint if the Typeface that you provided does not have
-	 * all the bits in the style that you specified.
-	 *
-	 * @param tf
-	 * 		the typeface to use
-	 * @param style
-	 * 		style for the typeface
-	 */
-	public final void setRightButtonTypeface(final Typeface tf, final int style) {
-		rightButton.setTypeface(tf, style);
-	}
-
-	/**
-	 * Sets the typeface and style in which the text of the right button should be displayed. Turns
-	 * on the fake bold and italic bits in the Paint if the Typeface that you provided does not have
-	 * all the bits in the style that you specified.
-	 *
-	 * @param tf
-	 * 		the typeface to use
-	 */
-	public final void setRightButtonTypeface(final Typeface tf) {
-		rightButton.setTypeface(tf);
-	}
-
-	/**
-	 * Register a callback to be invoked when the right button is clicked. If the button is not
-	 * clickable, it becomes clickable. Registering for on-click events does not prevent the right
-	 * button from performing its predefined behaviour.
-	 *
-	 * @param l
-	 * 		the callback that will run, null to clear the existing listener
-	 */
-	public final void setRightButtonOnClickListener(final OnClickListener l) {
-		rightButton.setOnClickListener(l);
-	}
-
-	/**
-	 * Disables the right button by making it invisible and un-clickable.
+	 * Disables the right button on all pages by making it invisible and un-clickable.
 	 *
 	 * @param disabled
-	 * 		true to disable the button, false to enable it (i.e. make it visible and clickable)
+	 * 		true to disable the button, false to enable it
 	 */
 	public final void disableRightButton(final boolean disabled) {
 		rightButtonDisabled = disabled;
@@ -1315,8 +988,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Returns whether or not the right button is currently disabled (i.e. invisible and
-	 * un-clickable).
+	 * Returns whether or not the right button is currently disabled on all pages.
 	 *
 	 * @return true if the button is currently disabled, false otherwise
 	 */
@@ -1324,188 +996,11 @@ public abstract class IntroActivity extends AppCompatActivity {
 		return rightButtonDisabled;
 	}
 
-
-	// Methods relating to the final button
-
 	/**
-	 * Sets the behaviour of the final button. This is distinct from the on-click behaviour, which
-	 * can be set using {@link #setLeftButtonOnClickListener(OnClickListener)}. Predefined
-	 * behaviours are provided in the {@link IntroButton} class, however custom behaviours are
-	 * accepted. To use a custom behaviour, implement {@link Behaviour} and pass an instance of the
-	 * implementation to this method. Alternatively, subclassing {@link
-	 * IntroButton.BehaviourAdapter} simplifies the implementation and eliminates boilerplate code.
-	 *
-	 * @param behaviour
-	 * 		the behaviour to use when left button is pressed, not null
-	 */
-	public final void setFinalButtonBehaviour(final Behaviour behaviour) {
-		finalButton.setBehaviour(behaviour);
-	}
-
-	/**
-	 * @return the current behaviour of the final button
-	 */
-	public final Behaviour getFinalButtonBehaviour() {
-		return finalButton.getBehaviour();
-	}
-
-	/**
-	 * Sets the appearance of the final button.
-	 *
-	 * @param appearance
-	 * 		the predefined appearance to use, not null
-	 */
-	public final void setFinalButtonAppearance(final IntroButton.Appearance appearance) {
-		finalButton.setAppearance(appearance);
-	}
-
-	/**
-	 * @return the current Appearance of the final button
-	 */
-	public final IntroButton.Appearance getFinalButtonAppearance() {
-		return finalButton.getAppearance();
-	}
-
-	/**
-	 * Sets the text to display in the final button for a single behaviour class. The current
-	 * appearance of the button determines whether or not the text will actually be displayed.
-	 * Although null is accepted, changing the button appearance using {@link
-	 * #setLeftButtonAppearance(Appearance)} is the preferred method of showing no text.
-	 *
-	 * @param text
-	 * 		the text label to display
-	 * @param behaviourClass
-	 * 		the behaviour class to set the label for, null to use the class of the current behaviour
-	 */
-	public final void setFinalButtonText(final CharSequence text,
-			final Class<? extends Behaviour> behaviourClass) {
-		finalButton.setLabel(text, behaviourClass);
-	}
-
-	/**
-	 * Returns the text to display in the final button for a particular behaviour class.
-	 *
-	 * @param behaviourClass
-	 * 		the behaviour class to query the text against, null to use the class of the current
-	 * 		behaviour
-	 * @return the text for {@code behaviourClass}, null if there is none
-	 */
-	public final CharSequence getFinalButtonText(
-			final Class<? extends IntroButton.Behaviour> behaviourClass) {
-		return finalButton.getLabel(behaviourClass);
-	}
-
-	/**
-	 * Sets the icon to display in the final button for a single behaviour class. The current
-	 * appearance of the button determines whether or not the icon will actually be displayed, and
-	 * where it will be located. Although null is accepted, changing the button appearance using
-	 * {@link #setFinalButtonAppearance(IntroButton.Appearance)} is the preferred method of showing
-	 * no icon.
-	 *
-	 * @param icon
-	 * 		the icon to display
-	 * @param behaviourClass
-	 * 		the behaviour class to set the icon for, null to use the class of the current appearance
-	 */
-	public final void setFinalButtonIcon(final Drawable icon,
-			final Class<? extends IntroButton.Behaviour> behaviourClass) {
-		finalButton.setIcon(icon, behaviourClass);
-	}
-
-	/**
-	 * Returns the icon to display in the final button for a particular behaviour.
-	 *
-	 * @param behaviourClass
-	 * 		the behaviour class to query the icon against, null to use the class of the current
-	 * 		behaviour
-	 * @return the icon for {@code behaviourClass}, null if there is none
-	 */
-	public final Drawable getFinalButtonIcon(
-			final Class<? extends IntroButton.Behaviour> behaviourClass) {
-		return finalButton.getIcon(behaviourClass);
-	}
-
-	/**
-	 * Sets the color of the text in the final button. The color is common to all behaviours.
-	 *
-	 * @param color
-	 * 		the color to use, as an ARGB hex code
-	 */
-	public final void setFinalButtonTextColor(final int color) {
-		finalButton.setTextColor(color);
-	}
-
-	/**
-	 * Returns the color of the text in the final button. The color is common to all behaviours.
-	 *
-	 * @return the text color, as an ARGB hex code
-	 */
-	public final int getFinalButtonTextColor() {
-		return finalButton.getCurrentTextColor();
-	}
-
-	/**
-	 * Sets the size of the text in the final button. The size is common to all behaviours.
-	 *
-	 * @param sizeSp
-	 * 		the size to use, measured in scaled-pixels
-	 */
-	public final void setFinalButtonTextSize(final float sizeSp) {
-		finalButton.setTextSize(sizeSp);
-	}
-
-	/**
-	 * Returns the size of the text in the final button. The size is common to all behaviours.
-	 *
-	 * @return the text size, measured in pixels
-	 */
-	public final float getFinalButtonTextSize() {
-		return finalButton.getTextSize();
-	}
-
-	/**
-	 * Sets the typeface and style in which the text of the final button should be displayed. Turns
-	 * on the fake bold and italic bits in the Paint if the Typeface that you provided does not have
-	 * all the bits in the style that you specified.
-	 *
-	 * @param tf
-	 * 		the typeface to use
-	 * @param style
-	 * 		style for the typeface
-	 */
-	public final void setFinalButtonTypeface(final Typeface tf, final int style) {
-		finalButton.setTypeface(tf, style);
-	}
-
-	/**
-	 * Sets the typeface and style in which the text of the final button should be displayed. Turns
-	 * on the fake bold and italic bits in the Paint if the Typeface that you provided does not have
-	 * all the bits in the style that you specified.
-	 *
-	 * @param tf
-	 * 		the typeface to use
-	 */
-	public final void setFinalButtonTypeface(final Typeface tf) {
-		finalButton.setTypeface(tf);
-	}
-
-	/**
-	 * Register a callback to be invoked when the final button is clicked. If the button is not
-	 * clickable, it becomes clickable. Registering for on-click events does not prevent the final
-	 * button from performing its predefined behaviour.
-	 *
-	 * @param l
-	 * 		the callback that will run, null to clear the existing listener
-	 */
-	public final void setFinalButtonOnClickListener(final View.OnClickListener l) {
-		finalButton.setOnClickListener(l);
-	}
-
-	/**
-	 * Disables the final button by making it invisible and un-clickable.
+	 * Disables the final button on all pages by making it invisible and un-clickable.
 	 *
 	 * @param disabled
-	 * 		true to disable the button, false to enable it (i.e. make it visible and clickable)
+	 * 		true to disable the button, false to enable it
 	 */
 	public final void disableFinalButton(final boolean disabled) {
 		finalButtonDisabled = disabled;
@@ -1513,8 +1008,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Returns whether or not the final button is currently disabled (i.e. invisible and
-	 * un-clickable).
+	 * Returns whether or not the final button is currently disabled on all pages.
 	 *
 	 * @return true if the button is currently disabled, false otherwise
 	 */
