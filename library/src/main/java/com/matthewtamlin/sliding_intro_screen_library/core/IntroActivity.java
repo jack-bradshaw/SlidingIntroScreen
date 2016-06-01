@@ -904,34 +904,37 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * @return an IntroButtonAccessor which can be used to modify and inspect the left button, not
-	 * null
+	 * Returns an an IntroButtonAccessor which can be used to modify and inspect the left button.
+	 *
+	 * @return the accessor, not null
 	 */
 	public IntroButtonAccessor getLeftButtonAccessor() {
 		return new IntroButtonAccessor(leftButton);
 	}
 
 	/**
-	 * @return an IntroButtonAccessor which can be used to modify and inspect the right button, not
-	 * null
+	 * Returns an an IntroButtonAccessor which can be used to modify and inspect the right button.
+	 *
+	 * @return the accessor, not null
 	 */
 	public IntroButtonAccessor getRightButtonAccessor() {
 		return new IntroButtonAccessor(rightButton);
 	}
 
 	/**
-	 * @return an IntroButtonAccessor which can be used to modify and inspect the final button, not
-	 * null
+	 * Returns an an IntroButtonAccessor which can be used to modify and inspect the final button.
+	 *
+	 * @return the accessor, not null
 	 */
 	public IntroButtonAccessor getFinalButtonAccessor() {
 		return new IntroButtonAccessor(finalButton);
 	}
 
 	/**
-	 * Disables the left button by making it invisible and un-clickable.
+	 * Disables the left button on all pages by making it invisible and un-clickable.
 	 *
 	 * @param disabled
-	 * 		true to disable the button, false to enable it (i.e. make it visible and clickable)
+	 * 		true to disable the button, false to enable it
 	 */
 	public final void disableLeftButton(final boolean disabled) {
 		leftButtonDisabled = disabled;
@@ -939,19 +942,9 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Returns whether or not the left button is currently disabled (i.e. invisible and
-	 * un-clickable).
-	 *
-	 * @return true if the button is currently disabled, false otherwise
-	 */
-	public final boolean leftButtonIsDisabled() {
-		return leftButtonDisabled;
-	}
-
-	/**
 	 * Sets whether or not the left button should be automatically disabled on the last page and
-	 * re-enabled when returning to a previous page. This feature is overridden if true was last
-	 * passed to {@link #disableLeftButton(boolean)}.
+	 * re-enabled when returning to a previous page. The {@link #disableLeftButton(boolean)} method
+	 * takes precedence over this method.
 	 *
 	 * @param disableButton
 	 * 		true to automatically disable the left button on the last page, false to prevent automatic
@@ -963,8 +956,17 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
+	 * Returns whether or not the left button is currently disabled on all pages.
+	 *
+	 * @return true if the button is currently entirely, false otherwise
+	 */
+	public final boolean leftButtonIsEntirelyDisabled() {
+		return leftButtonDisabled;
+	}
+
+	/**
 	 * Returns whether or not the left button will be disabled when the last page is displayed. This
-	 * method does not take into account whether or not the button is has been globally disabled
+	 * method does not take into account whether or not the button is has been entirely disabled
 	 * using {@link #disableLeftButton(boolean)}.
 	 *
 	 * @return true if the left button will be disabled while the last page is displayed, false
@@ -975,10 +977,10 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Disables the right button by making it invisible and un-clickable.
+	 * Disables the right button on all pages by making it invisible and un-clickable.
 	 *
 	 * @param disabled
-	 * 		true to disable the button, false to enable it (i.e. make it visible and clickable)
+	 * 		true to disable the button, false to enable it
 	 */
 	public final void disableRightButton(final boolean disabled) {
 		rightButtonDisabled = disabled;
@@ -986,8 +988,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Returns whether or not the right button is currently disabled (i.e. invisible and
-	 * un-clickable).
+	 * Returns whether or not the right button is currently disabled on all pages.
 	 *
 	 * @return true if the button is currently disabled, false otherwise
 	 */
@@ -996,10 +997,10 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Disables the final button by making it invisible and un-clickable.
+	 * Disables the final button on all pages by making it invisible and un-clickable.
 	 *
 	 * @param disabled
-	 * 		true to disable the button, false to enable it (i.e. make it visible and clickable)
+	 * 		true to disable the button, false to enable it
 	 */
 	public final void disableFinalButton(final boolean disabled) {
 		finalButtonDisabled = disabled;
@@ -1007,8 +1008,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Returns whether or not the final button is currently disabled (i.e. invisible and
-	 * un-clickable).
+	 * Returns whether or not the final button is currently disabled on all pages.
 	 *
 	 * @return true if the button is currently disabled, false otherwise
 	 */

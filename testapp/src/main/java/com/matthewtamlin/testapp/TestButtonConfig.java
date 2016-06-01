@@ -180,10 +180,10 @@ public class TestButtonConfig extends ThreePageTestBase {
 		showHideLeft.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				boolean initiallyDisabled = leftButtonIsDisabled();
+				boolean initiallyDisabled = leftButtonIsEntirelyDisabled();
 				disableLeftButton(!initiallyDisabled);
 				assertThat("left button didn't disable/enable correctly",
-						initiallyDisabled != leftButtonIsDisabled());
+						initiallyDisabled != leftButtonIsEntirelyDisabled());
 			}
 		});
 
