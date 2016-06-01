@@ -7,9 +7,8 @@ import android.view.View;
 
 /**
  * Provides indirect access to an IntroButton, to allow limited modification and inspection. Each
- * accessor provides access to a single IntroButton only. This class is immutable but not
- * necessarily thread-safe, as its methods interact with non-thread safe objects.
- * <p>
+ * accessor provides access to a single IntroButton only.
+ * <p/>
  * See {@link IntroButton}.
  */
 public final class IntroButtonAccessor {
@@ -22,9 +21,15 @@ public final class IntroButtonAccessor {
 	 * Constructs a new IntroButtonAccessor instance.
 	 *
 	 * @param button
-	 * 		the IntroButton to provide access to
+	 * 		the IntroButton to provide access to, not null
+	 * @throws IllegalArgumentException
+	 * 		if {@code button} is null
 	 */
 	public IntroButtonAccessor(final IntroButton button) {
+		if (button == null) {
+			throw new IllegalArgumentException("button cannot be null");
+		}
+
 		this.button = button;
 	}
 
@@ -34,7 +39,7 @@ public final class IntroButtonAccessor {
 	 * also accepted. The {@link IntroButton.BehaviourAdapter} class can be used to reduce
 	 * boilerplate code when implementing the interface. This method does not accept null; to do
 	 * nothing when the button is clicked, pass an instance of {@link IntroButton.DoNothing}.
-	 * <p>
+	 * <p/>
 	 * See {@link com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Behaviour}.
 	 *
 	 * @param behaviour
@@ -47,7 +52,11 @@ public final class IntroButtonAccessor {
 	}
 
 	/**
-	 * @return the current Behaviour of the accessed IntroButton, not null
+	 * Returns the current Behaviour of the accessed IntroButton.
+	 * <p/>
+	 * See {@link com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Behaviour}.
+	 *
+	 * @return the current Behaviour, not null
 	 */
 	public final IntroButton.Behaviour getBehaviour() {
 		return button.getBehaviour();
@@ -56,7 +65,7 @@ public final class IntroButtonAccessor {
 	/**
 	 * Sets the Appearance of the accessed IntroButton. The Appearance defines how the button is
 	 * displayed.
-	 * <p>
+	 * <p/>
 	 * See {@link com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Appearance}.
 	 *
 	 * @param appearance
@@ -69,7 +78,11 @@ public final class IntroButtonAccessor {
 	}
 
 	/**
-	 * @return the current Appearance of the accessed IntroButton, not null
+	 * Returns the current Appearance of the accessed IntroButton.
+	 * <p/>
+	 * See {@link com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Appearance}.
+	 *
+	 * @return the current Appearance, not null
 	 */
 	public final IntroButton.Appearance getAppearance() {
 		return button.getAppearance();
