@@ -821,6 +821,9 @@ public abstract class IntroActivity extends AppCompatActivity {
 		return viewPager.getLockMode();
 	}
 
+
+	// Methods relating to the background manager
+
 	/**
 	 * Sets the background manager to use when scrolling through pages. The {@link
 	 * BackgroundManager#updateBackground(View, int, float)} method of the supplied manager will be
