@@ -90,9 +90,9 @@ public final class IntroButtonAccessor {
 
 	/**
 	 * Sets the text to be displayed by the accessed IntroButton. The text will only be displayed
-	 * when its Appearance is set to {@code Appearance.TEXT_ONLY}, {@code Appearance.ICON_TEXT_LEFT}
+	 * when the Appearance is set to {@code Appearance.TEXT_ONLY}, {@code Appearance.ICON_TEXT_LEFT}
 	 * or {@code Appearance.ICON_TEXT_RIGHT}. The text is linked to a Behaviour class, and will only
-	 * be used when the button is using an instance of that Behaviour class.
+	 * be shown when the button is using an instance of that Behaviour class.
 	 *
 	 * @param text
 	 * 		the text to display
@@ -118,9 +118,9 @@ public final class IntroButtonAccessor {
 
 	/**
 	 * Sets the icon to be displayed by the accessed IntroButton. The icon will only be displayed
-	 * when its Appearance is set to {@code Appearance.ICON_ONLY}, {@code Appearance.ICON_TEXT_LEFT}
+	 * when the Appearance is set to {@code Appearance.ICON_ONLY}, {@code Appearance.ICON_TEXT_LEFT}
 	 * or {@code Appearance.ICON_TEXT_RIGHT}. The icon is linked to a Behaviour class, and will only
-	 * be used when the IntroButton is using an instance of that Behaviour class.
+	 * be shown when the IntroButton is using an instance of that Behaviour class.
 	 *
 	 * @param icon
 	 * 		the icon to display
