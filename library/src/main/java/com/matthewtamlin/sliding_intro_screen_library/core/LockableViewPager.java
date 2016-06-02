@@ -53,8 +53,7 @@ public class LockableViewPager extends ViewPager {
 	 * 		the Context in which this LockableViewPager is operating, not null
 	 * @param attrs
 	 * 		an attribute in the current theme that contains a reference to a style resource that
-	 * 		supplies defaults values for the StyledAttributes, or 0 to not look for defaults, null
-	 * 		allowed
+	 * 		supplies defaults values for the StyledAttributes, or 0 to not look for defaults
 	 */
 	public LockableViewPager(Context context, AttributeSet attrs) {
 		super(context, attrs);
