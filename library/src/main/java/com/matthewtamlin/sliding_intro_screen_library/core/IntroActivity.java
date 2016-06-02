@@ -50,40 +50,44 @@ import java.util.HashMap;
 /**
  * Displays an introduction screen to the user, consisting of a series of pages and a navigation
  * bar. The pages display the content of the introduction screen, and the navigation bar displays
- * the user's progress through the activity. By default, a simple {@link DotIndicator} is shown in
- * the navigation bar, however the methods of the activity allow custom SelectionIndicators to be
- * set. The navigation bar also provides buttons for moving between pages and advancing to the next
- * activity.  It is recommended that the manifest entry declare {@code android:noHistory="true"} to
- * prevent the user from navigating back to this activity once finished. <p> To use this class,
- * subclass it and implement {@link #generatePages(Bundle)} and {@link
- * #generateFinalButtonBehaviour()}. {@link #generatePages(Bundle)} is called by {@link
- * #onCreate(Bundle)} to generate the pages (i.e. Fragments) to display in the activity. The method
- * must return a collection, it cannot return null. Pages cannot be added or removed from the
- * activity after this method returns. {@link #generateFinalButtonBehaviour()} is called by {@link
- * #onCreate(Bundle)} to generate the behaviour to assign to the final button. The method must
- * return a Behaviour, it cannot return null. The behaviour of the button defines what happens when
- * the button is pressed. The {@link IntroButton.ProgressToNextActivity} abstract class is designed
- * to facilitate validation conditions to check that the activity should finish, and it provides a
- * mechanism for setting a shared preferences flag to prevent the user from being shown the intro
- * screen again. <p> The navigation bar contains three buttons: a left button, a right button and a
- * final button. The left button is present on all pages, but by default it is not displayed on the
- * last page. The button can be shown on the last page by calling {@link
- * #disableLeftButtonOnLastPage (boolean)}. The right button is present on all pages but the last,
- * and this cannot be changed as the final button replaces the right button on the last page. By
- * default, the left button skips ahead to the last page and the right button moves to the next
- * page. The behaviour of the final button is generated in {@link #generateFinalButtonBehaviour()}.
- * The behaviour of each button can be changed using the respective 'set behaviour' method. The
- * appearance of each button can also be changed using the respective 'set appearance' method. These
- * methods make it easy to display text, an icon, or both in each button. The other methods of this
- * activity allow finer control over the appearance of each button. <p> The background of an
- * IntroActivity can be changed in two ways: manually changing the root View (using {@link
- * #getRootView()}, or supplying a BackgroundManager to {@link #setBackgroundManager(BackgroundManager)}.
- * For static backgrounds, the former method is simpler and less error prone. To make dynamic
- * backgrounds which change as the user scrolls, a BackgroundManager is needed. <p> The methods of
- * this activity also provide the following customisation options: <li>Hiding/showing the status
- * bar.</li> <li>Programmatically changing the page.</li> <li>Locking the page to prevent touch
- * events and/or commands (e.g. button presses) from changing the page.</li> <li>Modifying/replacing
- * the progress indicator.</li>
+ * the user's progress through the activity. The navigation bar also provides three configurable
+ * buttons for moving through the activity and performing other functions. It is recommended that
+ * the manifest entry declare {@code android:noHistory="true"} to prevent the user from navigating
+ * back to this activity once it is complete.
+ * <p/>
+ * To use this class, subclass it and implement {@link #generatePages(Bundle)} and {@link
+ * #generateFinalButtonBehaviour()}. The former method is called by onCreate method generates the
+ * pages (i.e. Fragments) displayed in the introduction. Pages cannot be added or removed after this
+ * method returns, however they may still be modified. The latter method is called by onCreate to
+ * generate the Behaviour to assign to the button shown on the last page (see {@link IntroButton}).
+ * It is recommended that an instance of the {@link IntroButton.ProgressToNextActivity} class be
+ * used.
+ * <p/>
+ * The navigation bar contains three buttons: a left button, a right button and a final button. By
+ * default the left and right buttons are present on all pages but the last, and the final button is
+ * displayed only on the last page. The left button can be displayed on the last page by calling
+ * {@link #disableLeftButtonOnLastPage(boolean)}. By default, the left button skips ahead to the
+ * last page and the right button moves to the next page. The behaviour of the final button is
+ * generated in {@link #generateFinalButtonBehaviour()}. The behaviour and appearance of each button
+ * can be changed using the methods of this Activity. Whenever buttons appear or disappear, they are
+ * animated using the {@link AnimatorFactory} supplied by {@link #generateButtonAnimatorFactory}.
+ * The default animations cause the buttons to fade in and out, however this behaviour can be
+ * changed by overriding {@code generateButtonAnimatorFactory()} and returning a custom
+ * AnimatorFactory.
+ * <p/>
+ * Unless the individual page Fragments define their own backgrounds, it is highly recommended that
+ * the background of the IntroActivity be changed. The background of an IntroActivity can be changed
+ * in two ways: by manually changing the root View (via {@link #getRootView()}), or by supplying a
+ * BackgroundManager to {@link #setBackgroundManager(BackgroundManager)}. The former approach is
+ * simpler and less error prone, and is ideal when a static background is all that is needed. The
+ * latter approach is ideal when a dynamic background is desired. The {@link
+ * com.matthewtamlin.sliding_intro_screen_library.background.ColorBlender} class is provided to
+ * simplify implementation of a dynamic background.
+ * <p/>
+ * The methods of this activity provide the following additional customisation options:
+ * <ul><li>Hiding/showing the status bar.</li> <li>Programmatically changing the page.</li>
+ * <li>Locking the page.</li> <li>Modifying/replacing the progress indicator.</li> <li>Setting a
+ * page transformer.</li> <li>Obtaining references to the individual pages.</li></ul>
  */
 public abstract class IntroActivity extends AppCompatActivity {
 	// Constants
@@ -95,12 +99,12 @@ public abstract class IntroActivity extends AppCompatActivity {
 	private static final String TAG = "[IntroActivity]";
 
 	/**
-	 * Constant used to save and restore the current page on configuration changes.
+	 * Key for saving and restoring the current page on configuration changes.
 	 */
 	private static final String STATE_KEY_CURRENT_PAGE_INDEX = "current page index";
 
 	/**
-	 * The default current page index to be used when there is no state to restore.
+	 * The page index to use when there is no state to restore.
 	 */
 	private final static int DEFAULT_CURRENT_PAGE_INDEX = 0;
 
@@ -125,8 +129,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	private static final CharSequence DEFAULT_FINAL_BUTTON_TEXT = "DONE";
 
 	/**
-	 * The length of time to use when animating button appearance/disappearance, measured in
-	 * milliseconds.
+	 * The length of time to use for button appear/disappear animations, measured in milliseconds.
 	 */
 	private static final int BUTTON_ANIMATION_DURATION_MS = 150;
 
@@ -144,12 +147,12 @@ public abstract class IntroActivity extends AppCompatActivity {
 	// Miscellaneous View handles
 
 	/**
-	 * The root view of this activity.
+	 * The root view of the View hierarchy.
 	 */
 	private RelativeLayout rootView;
 
 	/**
-	 * Displays the elements of {@code pages} to the user.
+	 * Displays the pages to the user.
 	 */
 	private LockableViewPager viewPager;
 
@@ -162,9 +165,9 @@ public abstract class IntroActivity extends AppCompatActivity {
 	// Progress indicator variables
 
 	/**
-	 * Holds the selection indicator.
+	 * Wrapper for the selection indicator.
 	 */
-	private FrameLayout progressIndicatorHelper;
+	private FrameLayout progressIndicatorWrapper;
 
 	/**
 	 * Displays the user's progress through the intro screen.
@@ -180,36 +183,35 @@ public abstract class IntroActivity extends AppCompatActivity {
 	// Button variables
 
 	/**
-	 * An IntroButton which is displayed at the bottom left of the navigation bar. This button is
-	 * hidden on the last page by default, however this can be changed using {@link
-	 * #disableLeftButtonOnLastPage(boolean)}.
+	 * The IntroButton displayed in the left end of the navigation bar. This button is hidden on the
+	 * last page by default but can be shown using {@link #disableLeftButtonOnLastPage(boolean)}.
 	 */
 	private IntroButton leftButton;
 
 	/**
-	 * An IntroButton which is displayed at the bottom right of the navigation bar. This button is
-	 * not displayed on the last page.
+	 * The IntroButton displayed in the right end of the navigation bar. This button is not shown on
+	 * the last page.
 	 */
 	private IntroButton rightButton;
 
 	/**
-	 * An IntroButton which is displayed at the bottom right of the navigation bar. This button is
-	 * only displayed on the last page.
+	 * The IntroButton displayed in the right end of the navigation bar when the last page is
+	 * shown.
 	 */
 	private IntroButton finalButton;
 
 	/**
-	 * Whether or not the left button should be disabled.
+	 * Whether or not the left button should be disabled entirely.
 	 */
 	private boolean leftButtonDisabled = false;
 
 	/**
-	 * Whether or not the right button should be disabled.
+	 * Whether or not the right button should be disabled entirely.
 	 */
 	private boolean rightButtonDisabled = false;
 
 	/**
-	 * Whether or not the final button should be disabled.
+	 * Whether or not the final button should be disabled entirely.
 	 */
 	private boolean finalButtonDisabled = false;
 
@@ -225,9 +227,9 @@ public abstract class IntroActivity extends AppCompatActivity {
 	private AnimatorFactory buttonAnimatorFactory;
 
 	/**
-	 * Maps each button to the animation which is currently acting on it. This allows animations to
-	 * be cancelled if another is requested. If a button is not currently being animated, then that
-	 * button does not exist in the keyset.
+	 * Maps each button to the animator currently affecting it. This allows animators to be
+	 * cancelled if a newer animator is created. If a button is not currently being animated, then
+	 * it should not exist in the keyset.
 	 */
 	private final HashMap<IntroButton, Animator> buttonAnimations = new HashMap<>();
 
@@ -235,12 +237,12 @@ public abstract class IntroActivity extends AppCompatActivity {
 	// Dataset related variables
 
 	/**
-	 * The pages to display in {@code viewPager}.
+	 * The pages to display.
 	 */
 	private final ArrayListWithCallbacks<Fragment> pages = new ArrayListWithCallbacks<>();
 
 	/**
-	 * Adapts the elements of {@code pages} to {@code viewPager}.
+	 * Adapts the pages so that they can be displayed in the UI.
 	 */
 	private final IntroAdapter adapter = new IntroAdapter(getSupportFragmentManager(), pages);
 
@@ -248,7 +250,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	// Background manager related variables
 
 	/**
-	 * Responsible for updating the background as the pages scroll.
+	 * Updates the background of the Activity as the pages scroll.
 	 */
 	private BackgroundManager backgroundManager = null;
 
@@ -257,8 +259,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 
 	/**
 	 * Page change events from {@code viewPager} are delegated to this receiver. Using a delegate as
-	 * the receiver is better than using the public class, since this approach groups common code
-	 * and hides the internal implementation from the public class signature.
+	 * the receiver is hides the internal implementation from the class signature.
 	 */
 	private final OnPageChangeListener pageChangeListenerDelegate = new OnPageChangeListener() {
 		@Override
@@ -270,7 +271,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 
 		@Override
 		public void onPageSelected(int position) {
-			// Page changes are often user initiated events, so show animations
+			// The active page has changes, so the UI needs to be updated
 			reflectMemberVariablesInAllButtons();
 
 			if (progressIndicator != null) {
@@ -288,8 +289,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 	// Overridden methods
 
 	/**
-	 * Initialises the UI and behaviour of this activity. This method calls {@link
-	 * #generatePages(Bundle)} to create the pages to display in this activity.
+	 * Initialises the UI and behaviour of this activity. This method's execution calls the abstract
+	 * methods.
 	 *
 	 * @param savedInstanceState
 	 * 		if this activity is being re-initialized after previously being shut down, then this Bundle
@@ -300,17 +301,22 @@ public abstract class IntroActivity extends AppCompatActivity {
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		// Initialise the UI and get references to the View elements
 		setContentView(R.layout.activity_intro);
 		bindViews();
 
-		buttonAnimatorFactory = defineButtonAnimations();
-
-		viewPager.addOnPageChangeListener(pageChangeListenerDelegate);
-		pages.addAll(generatePages(savedInstanceState)); // Avoids external changes to pages
-
+		// Initialise the buttons
 		initialiseNavigationButtons();
+		buttonAnimatorFactory = generateButtonAnimatorFactory();
+
+		// Generate the pages and create a copy to avoid external changes to the dataset
+		pages.addAll(generatePages(savedInstanceState));
+
+		// Initialise the view pager
+		viewPager.addOnPageChangeListener(pageChangeListenerDelegate);
 		initialiseViewPager(savedInstanceState);
 
+		// Initialise the progress indicator
 		progressIndicator = new DotIndicator(this);
 		regenerateProgressIndicator();
 	}
@@ -318,11 +324,15 @@ public abstract class IntroActivity extends AppCompatActivity {
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
+
+		// Will apply animations to the left and right buttons as usual
 		reflectMemberVariablesInAllButtons();
 
 		// When the activity is displayed (and the final page isn't shown) the final button
-		// disappear animation needs to occur so that the appear animation occurs properly later
-		if (hasFocus && getIndexOfCurrentPage() + 1 != pages.size()) {
+		// disappear animation needs to occur so that animations display properly later
+		boolean lastPage = getIndexOfCurrentPage() + 1 == pages.size();
+
+		if (hasFocus && !lastPage) {
 			Animator finalAnimator =
 					buttonAnimatorFactory.newFinalButtonDisappearAnimator(finalButton);
 			finalAnimator.start();
@@ -337,8 +347,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 
 	/**
 	 * Called when the back button is pressed. If this activity is currently displaying the first
-	 * page or the left lock mode prevents commands, then the default back behaviour occurs.
-	 * Otherwise, the previous page is displayed.
+	 * page or the lock mode prevents commands, the default back behaviour occurs. Otherwise, the
+	 * previous page is displayed.
 	 */
 	@Override
 	public void onBackPressed() {
@@ -359,7 +369,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 		rootView = (RelativeLayout) findViewById(R.id.intro_activity_root);
 		horizontalDivider = findViewById(R.id.intro_activity_horizontalDivider);
 		viewPager = (LockableViewPager) findViewById(R.id.intro_activity_viewPager);
-		progressIndicatorHelper =
+		progressIndicatorWrapper =
 				(FrameLayout) findViewById(R.id.intro_activity_progressIndicatorHolder);
 		leftButton = (IntroButton) findViewById(R.id.intro_activity_leftButton);
 		rightButton = (IntroButton) findViewById(R.id.intro_activity_rightButton);
@@ -368,7 +378,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 
 	/**
 	 * Initialises the UI elements for displaying the current page. If this activity is being
-	 * restored, then the page which was previously open will be opened.
+	 * restored, then the page which was previously displayed will be redisplayed.
 	 *
 	 * @param savedInstanceState
 	 * 		if this activity is being re-initialized after previously being shut down, then this Bundle
@@ -376,21 +386,23 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * 		#onSaveInstanceState(Bundle)}, otherwise null
 	 */
 	private void initialiseViewPager(final Bundle savedInstanceState) {
-		final int index = (savedInstanceState == null) ? DEFAULT_CURRENT_PAGE_INDEX :
-				savedInstanceState
-						.getInt(STATE_KEY_CURRENT_PAGE_INDEX, DEFAULT_CURRENT_PAGE_INDEX);
+		// Restore the page index from the saved instance state if possible
+		final int pageIndex = (savedInstanceState == null) ?
+				DEFAULT_CURRENT_PAGE_INDEX :
+				savedInstanceState.getInt(STATE_KEY_CURRENT_PAGE_INDEX, DEFAULT_CURRENT_PAGE_INDEX);
 
+		// Initialise the dataset of the view pager and display the desired page
 		viewPager.setAdapter(adapter);
-		viewPager.setCurrentItem(index);
+		viewPager.setCurrentItem(pageIndex);
 
-		// Make sure the background for the first page is displayed
+		// Make sure the background for the current page is displayed
 		if (backgroundManager != null) {
-			backgroundManager.updateBackground(rootView, 0, 1);
+			backgroundManager.updateBackground(rootView, pageIndex, 0);
 		}
 	}
 
 	/**
-	 * Sets the behaviour and appearance of the buttons, and sets {@code viewPager} as their
+	 * Sets the Behaviour and Appearance of the buttons. This Activity is set to the Behaviour
 	 * target.
 	 */
 	private void initialiseNavigationButtons() {
@@ -518,12 +530,12 @@ public abstract class IntroActivity extends AppCompatActivity {
 			// Register animation so that it may be cancelled later if necessary
 			buttonAnimations.put(button, buttonAnimator);
 
-			// End and cancel conditions ensure that the UI is not left in a transient state when
-			// animations finish for whatever reason
+			// End/cancel conditions ensure that the UI is not left in a transient state when
+			// animations finish
 			buttonAnimator.addListener(new AnimatorListenerAdapter() {
 				@Override
 				public void onAnimationStart(Animator animation) {
-					button.setVisibility(View.VISIBLE); // Make sure view is visible while animating
+					button.setVisibility(View.VISIBLE); // Make sure View is visible while animating
 					button.setEnabled(false); // Click events should be ignored immediately
 				}
 
@@ -535,7 +547,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 
 				@Override
 				public void onAnimationCancel(Animator animation) {
-					// Restore button to enabled mode
+					// Restore the button to enabled mode
 					button.setVisibility(View.VISIBLE);
 					button.setEnabled(true);
 				}
@@ -544,7 +556,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 			buttonAnimator.setDuration(BUTTON_ANIMATION_DURATION_MS);
 			buttonAnimator.start();
 		} else {
-			// If no animator was supplied, just apply the end conditions
+			// If no animator was supplied, just apply the disabled conditions
 			button.setVisibility(View.INVISIBLE);
 			button.setEnabled(false);
 		}
@@ -576,16 +588,16 @@ public abstract class IntroActivity extends AppCompatActivity {
 		if (buttonAnimator != null) {
 			buttonAnimations.put(button, buttonAnimator);
 
-			// Give the disable animation (if any) time to finish before the enable animation starts
+			// Give any disable animations time to finish before the enable animation starts
 			buttonAnimator.setStartDelay(BUTTON_ANIMATION_DURATION_MS);
 
-			// End and cancel conditions ensure that the UI is not left in a transient state when
-			// animations finish for whatever reason
+			// End/cancel conditions ensure that the UI is not left in a transient state when
+			// animations finish
 			buttonAnimator.addListener(new AnimatorListenerAdapter() {
 				@Override
 				public void onAnimationStart(Animator animation) {
-					button.setVisibility(View.VISIBLE); // Make sure view is visible while animating
-					button.setEnabled(true); // Click events should be listened for immediately
+					button.setVisibility(View.VISIBLE); // Make sure View is visible while animating
+					button.setEnabled(true); // Click events should be accepted immediately
 				}
 
 				@Override
@@ -599,7 +611,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 			buttonAnimator.setDuration(BUTTON_ANIMATION_DURATION_MS);
 			buttonAnimator.start();
 		} else {
-			// If no Animator was supplied, just apply the end conditions
+			// If no Animator was supplied, just apply the enabled conditions
 			button.setVisibility(View.VISIBLE);
 			button.setEnabled(true);
 		}
@@ -609,14 +621,16 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * Updates the progress indicator to reflect the current member variables.
 	 */
 	private void regenerateProgressIndicator() {
-		progressIndicatorHelper.removeAllViews();
+		// Refresh the View by entirely removing the progress indicator so that it can be re-added
+		progressIndicatorWrapper.removeAllViews();
 
+		// Only re-add the indicator if one currently exists
 		if (progressIndicator != null) {
-			progressIndicatorHelper.addView((View) progressIndicator);
+			progressIndicatorWrapper.addView((View) progressIndicator);
+
+			// Make sure the number of pages and the displayed page is correct
 			progressIndicator.setNumberOfItems(pages.size());
-			if (pages.size() > 0) {
-				progressIndicator.setSelectedItem(getIndexOfCurrentPage(), false);
-			}
+			progressIndicator.setSelectedItem(getIndexOfCurrentPage(), false);
 		}
 	}
 
@@ -624,23 +638,23 @@ public abstract class IntroActivity extends AppCompatActivity {
 	// Abstract methods
 
 	/**
-	 * Called by {@link #onCreate(Bundle)} to generate the pages to display in this activity. The
-	 * returned collection is copied, so further changes to the collection will have no effect after
-	 * this method returns. The natural ordering of the returned collection is used for the order of
-	 * the pages.
+	 * Called by {@link #onCreate(Bundle)} to generate the pages displayed in this activity. The
+	 * returned Collection is copied, so further changes to the collection will have no effect after
+	 * this method returns. The total ordering of the returned collection is maintained in the
+	 * display of the pages.
 	 *
 	 * @param savedInstanceState
 	 * 		if this activity is being re-initialized after previously being shut down, then this Bundle
 	 * 		contains the data this activity most recently saved in {@link
 	 * 		#onSaveInstanceState(Bundle)}, otherwise null
-	 * @return the collection of pages to display, not null
+	 * @return the pages to display in the Activity, not null
 	 */
 	protected abstract Collection<Fragment> generatePages(Bundle savedInstanceState);
 
 	/**
-	 * Called by {@link #onCreate(Bundle)} to generate the behaviour of the final button. This
-	 * behaviour can be changed later using {@link #getFinalButtonAccessor()}. The IntroButton class
-	 * contains Behaviours which can be used to perform common tasks.
+	 * Called by {@link #onCreate(Bundle)} to generate the Behaviour of the final button. The {@link
+	 * IntroButton} class contains Behaviours which suit most needs. The Behaviour of the final
+	 * button can be changed later using {@link #getFinalButtonAccessor()}.
 	 *
 	 * @return the behaviour to use for the final button, not null
 	 */
@@ -650,19 +664,20 @@ public abstract class IntroActivity extends AppCompatActivity {
 	// Miscellaneous public methods
 
 	/**
-	 * Hides the status bar background but continues to display the icons. Views and ViewGroups
-	 * which declare the {@code android:fitsSystemWindows="false"} attribute will draw to the top of
-	 * the screen. The effect of this method varies depending on the current SDK version.
+	 * Hides the status bar background but continues to display the system icons. Views and
+	 * ViewGroups which declare the {@code android:fitsSystemWindows="false"} attribute will draw to
+	 * the top of the screen. The effect of this method varies depending on the current SDK
+	 * version.
 	 */
 	public final void hideStatusBar() {
 		StatusBarHelper.hideStatusBar(getWindow());
 	}
 
 	/**
-	 * Shows the status bar background and prevents views from being drawn behind the status bar
-	 * (including existing views). The primary dark color of the current theme will be used for the
-	 * status bar color (on SDK version 21 and up). If the current theme does not specify a primary
-	 * dark color, the status bar will be colored black.
+	 * Shows the status bar background and prevents Views from being drawn behind the status bar.
+	 * The primary dark color of the current theme will be used for the status bar color (on SDK
+	 * version 21 and higher). If the current theme does not specify a primary dark color, the
+	 * status bar will be colored black.
 	 */
 	public final void showStatusBar() {
 		final int statusBarColor = ColorHelper.getPrimaryDarkColor(this, Color.BLACK);
@@ -670,7 +685,10 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * @return a reference to the top most view of this activity
+	 * Returns the root View in the View hierarchy of this Activity. If this method is called before
+	 * {@code onCreate(Bundle)}, then null is returned.
+	 *
+	 * @return the root View of the View hierarchy
 	 */
 	public final RelativeLayout getRootView() {
 		return rootView;
@@ -688,13 +706,13 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Sets the PageTransformer which will be used to the pages of this intro screen when scrolled.
+	 * Sets the PageTransformer to use when scrolling.
 	 *
 	 * @param reverseDrawingOrder
-	 * 		true if the supplied PageTransformer requires page views to be drawn from last to first
+	 * 		true if the supplied PageTransformer requires page Views to be drawn from last to first
 	 * 		instead of first to last
 	 * @param transformer
-	 * 		the PageTransformer that will modify each page's animation properties
+	 * 		the transformer to use, null allowed
 	 */
 	public final void setPageTransformer(final boolean reverseDrawingOrder, final ViewPager
 			.PageTransformer transformer) {
@@ -705,7 +723,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	// Methods relating to the pages and navigation
 
 	/**
-	 * Returns a reference to the pages of this activity, as an unmodifiable collection.
+	 * Returns an unmodifiable Collection containing the pages.
 	 *
 	 * @return the pages of this activity
 	 */
@@ -734,21 +752,22 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * @return the first page of this activity
+	 * @return the first page of this Activity
 	 */
 	public final Fragment getFirstPage() {
 		return pages.get(0);
 	}
 
 	/**
-	 * @return the last page of this activity
+	 * @return the last page of this Activity
 	 */
 	public final Fragment getLastPage() {
 		return pages.get(pages.size() - 1);
 	}
 
 	/**
-	 * Returns the index of the specified page, or -1 if the page is not in this activity.
+	 * Returns the index of the specified page, or -1 if the page does not exist in the page
+	 * Collection.
 	 *
 	 * @param page
 	 * 		the page to get the index of
@@ -766,7 +785,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Changes which page is currently displayed.
+	 * Navigates to the page at the supplied index.
 	 *
 	 * @param pageIndex
 	 * 		the index of the page to display, counting from zero
@@ -778,21 +797,21 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Displays the last page, if not already displayed.
+	 * Navigates to the last page (if not already there).
 	 */
 	public final void goToLastPage() {
 		viewPager.setCurrentItem(pages.size() - 1);
 	}
 
 	/**
-	 * Displays the first page, if not already displayed.
+	 * Navigates to the first page (if not already there).
 	 */
 	public final void goToFirstPage() {
 		viewPager.setCurrentItem(0);
 	}
 
 	/**
-	 * Displays the next page, if not already displayed.
+	 * Navigates to the next page (if not already there).
 	 */
 	public final void goToNextPage() {
 		boolean isLastPage = viewPager.getCurrentItem() == (pages.size() - 1);
@@ -803,7 +822,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Displays the previous page, if not already displayed.
+	 * Navigates to the previous page (if not already there).
 	 */
 	public final void goToPreviousPage() {
 		boolean isFirstPage = viewPager.getCurrentItem() == 0;
@@ -814,7 +833,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * @return the current number of pages in this activity
+	 * @return the current number of pages
 	 */
 	public final int numberOfPages() {
 		return pages.size();
@@ -822,17 +841,20 @@ public abstract class IntroActivity extends AppCompatActivity {
 
 	/**
 	 * Sets the paging lock mode. This can be used to prevent the user from navigating to another
-	 * page by swiping, pressing buttons, or both.
+	 * page by swiping, pressing buttons, or both. The lock mode can also disable programmatic
+	 * commends.
 	 *
 	 * @param lockMode
 	 * 		the lock mode to use, not null
+	 * @throws IllegalArgumentException
+	 * 		if {@code lockMode} is null
 	 */
 	public final void setPagingLockMode(final LockMode lockMode) {
-		viewPager.setLockMode(lockMode);
+		viewPager.setLockMode(lockMode); // throws exception is lockMode is null
 	}
 
 	/**
-	 * @return the current lock mode for paging right
+	 * @return the current lock mode
 	 */
 	public final LockMode getPagingLockMode() {
 		return viewPager.getLockMode();
@@ -845,10 +867,10 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * Sets the background manager to use when scrolling through pages. The {@link
 	 * BackgroundManager#updateBackground(View, int, float)} method of the supplied manager will be
 	 * invoked whenever the user scrolls. Note that the BackgroundManager draws behind the pages,
-	 * therefore all pages should have a transparent background when using a BackgroundManager.
+	 * therefore the background will be obscured if the pages do not have transparent backgrounds.
 	 *
 	 * @param backgroundManager
-	 * 		the backgroundManager to use, null to use none
+	 * 		the backgroundManager to use, null to clear any existing manager
 	 */
 	public final void setBackgroundManager(BackgroundManager backgroundManager) {
 		this.backgroundManager = backgroundManager;
@@ -865,11 +887,13 @@ public abstract class IntroActivity extends AppCompatActivity {
 	// Methods relating to the progress indicator
 
 	/**
-	 * Sets the selection indicator to show the user's progress through the activity. The provides
+	 * Sets the selection indicator to show the user's progress through the Activity. The provided
 	 * selection indicator must be a subclass of {@link View}.
 	 *
 	 * @param selectionIndicator
 	 * 		the selection indicator to use, null to clear any existing indicator
+	 * @throws IllegalArgumentException
+	 * 		if {@code selectionIndicator} is not a View subclass
 	 */
 	public void setProgressIndicator(final SelectionIndicator selectionIndicator) {
 		if (!(selectionIndicator instanceof View)) {
@@ -882,15 +906,14 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * @return the selection indicator showing the user's progress through the activity, null if
-	 * there is none
+	 * @return the current selection indicator, may be null
 	 */
 	public SelectionIndicator getProgressIndicator() {
 		return progressIndicator;
 	}
 
 	/**
-	 * Enables or disables progress indicator animations
+	 * Enables/disables progress indicator page change animations.
 	 *
 	 * @param enableAnimations
 	 * 		true to enable animations, false to disable them
@@ -900,7 +923,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * @return true if progress indicator animations are enabled, false otherwise
+	 * @return true if progress indicator page change animations are enabled, false otherwise
 	 */
 	public boolean progressIndicatorAnimationsAreEnabled() {
 		return progressIndicatorAnimationsEnabled;
@@ -910,20 +933,20 @@ public abstract class IntroActivity extends AppCompatActivity {
 	// Methods relating to the buttons
 
 	/**
-	 * Called when the activity is created to define the AnimatorFactory to use whenever a button is
-	 * enabled or disabled. The default factory causes the buttons to fade in or fade out.
+	 * Called in {@code onCreate(Bundle)} to generate an AnimatorFactory for the buttons. The
+	 * factory will be used to animate the change whenever a button is enabled or disabled. The
+	 * default factory causes the buttons to fade in when enabled and fade out when disabled.
 	 *
-	 * @return an AnimatorFactory which supplies the animations to use when a button is enabled or
-	 * disabled, not null
+	 * @return an AnimatorFactory to use when buttons are enabled/disabled, not null
 	 */
-	public AnimatorFactory defineButtonAnimations() {
+	public AnimatorFactory generateButtonAnimatorFactory() {
 		return new FadeAnimatorFactory();
 	}
 
 	/**
 	 * Returns an an IntroButtonAccessor which can be used to modify and inspect the left button.
 	 *
-	 * @return the accessor, not null
+	 * @return the left button accessor, not null
 	 */
 	public IntroButtonAccessor getLeftButtonAccessor() {
 		return new IntroButtonAccessor(leftButton);
@@ -932,7 +955,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	/**
 	 * Returns an an IntroButtonAccessor which can be used to modify and inspect the right button.
 	 *
-	 * @return the accessor, not null
+	 * @return the right button accessor, not null
 	 */
 	public IntroButtonAccessor getRightButtonAccessor() {
 		return new IntroButtonAccessor(rightButton);
@@ -941,14 +964,15 @@ public abstract class IntroActivity extends AppCompatActivity {
 	/**
 	 * Returns an an IntroButtonAccessor which can be used to modify and inspect the final button.
 	 *
-	 * @return the accessor, not null
+	 * @return the final button accessor, not null
 	 */
 	public IntroButtonAccessor getFinalButtonAccessor() {
 		return new IntroButtonAccessor(finalButton);
 	}
 
 	/**
-	 * Disables the left button on all pages by making it invisible and un-clickable.
+	 * Disables the left button on all pages by making it invisible and un-clickable. This method
+	 * takes precedence over {@link #disableLeftButtonOnLastPage(boolean)}.
 	 *
 	 * @param disabled
 	 * 		true to disable the button, false to enable it
@@ -961,7 +985,10 @@ public abstract class IntroActivity extends AppCompatActivity {
 	/**
 	 * Sets whether or not the left button should be automatically disabled on the last page and
 	 * re-enabled when returning to a previous page. The {@link #disableLeftButton(boolean)} method
-	 * takes precedence over this method.
+	 * takes precedence over this method when disabling, however values passed to this method are
+	 * still stored. This means that if the left button is enabled using the other method after
+	 * false was passed to this method, then the left button will still be disabled on the last
+	 * page.
 	 *
 	 * @param disableButton
 	 * 		true to automatically disable the left button on the last page, false to prevent automatic
@@ -973,7 +1000,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Returns whether or not the left button is currently disabled on all pages.
+	 * Returns whether or not the left button is currently disabled on all pages. This method
+	 * does not take into account {@link #disableLeftButtonOnLastPage(boolean)} in any way.
 	 *
 	 * @return true if the button is currently entirely, false otherwise
 	 */
