@@ -11,22 +11,22 @@ public interface BackgroundManager {
 	/**
 	 * Performs the update operation. This method may be called frequently, therefore it should not
 	 * perform long running operations or block the UI thread.
-	 * <p>
+	 * <p/>
 	 * The leftPageIndex and offset parameters can be used to create backgrounds which depend on the
-	 * current scroll position. When scrolling between pages, there will always be a left page and a
-	 * right page. The index parameter is always with reference to the left page. The offset varies
-	 * between 0 and 1 as the right pages transitions to being the selected page. When the offset is
-	 * 0, the left page is entirely selected and the right page is unselected. When the offset is
-	 * 0.5, the left page has been half scrolled out and the right page has been half scrolling in.
-	 * When the offset is 1, the right page is entirely selected and the left page is unselected.
+	 * exact scroll position. When scrolling between pages, there will always be a left page and a
+	 * right page. The index parameter always refers to the left page. The offset parameter always
+	 * indicates what fraction of the right page is currently visible, and varies between 0 and 1.
+	 * When the offset is 0, the left page is entirely selected and the right page is not visible.
+	 * When the offset is 0.5, the left page has been half scrolled out and the right page has been
+	 * half scrolling in. When the offset is 1, the right page is entirely selected and the left
+	 * page is invisible.
 	 *
 	 * @param background
-	 * 		the View which is furthest back in the View hierarchy of the calling IntroActivity, not
-	 * 		null
+	 * 		the View to draw the background on, not null
 	 * @param index
 	 * 		the index of the current left page
 	 * @param offset
-	 * 		the proportion of the right page , as a value between 0 and 1
+	 * 		the fraction of the right page which is currently visible, as a value between 0 and 1
 	 */
 	void updateBackground(View background, int index, float offset);
 }
