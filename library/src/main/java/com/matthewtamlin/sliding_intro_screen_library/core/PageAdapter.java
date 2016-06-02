@@ -29,12 +29,12 @@ import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCall
  * android.support.v4.view.ViewPager ViewPager}. Instances of this class automatically listen for
  * changes to the dataset.
  */
-public class IntroAdapter extends FragmentPagerAdapter {
+public class PageAdapter extends FragmentPagerAdapter {
 	/**
 	 * Used to identify this class during debugging.
 	 */
 	@SuppressWarnings("unused")
-	private static final String TAG = "[IntroAdapter]";
+	private static final String TAG = "[PageAdapter]";
 
 	/**
 	 * The dataset of pages to adapt.
@@ -65,14 +65,14 @@ public class IntroAdapter extends FragmentPagerAdapter {
 	};
 
 	/**
-	 * Constructs a new IntroAdapter instance.
+	 * Constructs a new PageAdapter instance.
 	 *
 	 * @param fm
 	 * 		the FragmentManager for the Context this adapter is operating in
 	 * @param pages
 	 * 		the dataset of pages to adapt, null for an empty dataset
 	 */
-	public IntroAdapter(final FragmentManager fm, final ArrayListWithCallbacks<Fragment> pages) {
+	public PageAdapter(final FragmentManager fm, final ArrayListWithCallbacks<Fragment> pages) {
 		super(fm);
 
 		if (pages == null) {

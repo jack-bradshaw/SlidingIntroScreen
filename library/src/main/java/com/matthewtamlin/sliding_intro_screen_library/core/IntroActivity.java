@@ -244,7 +244,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	/**
 	 * Adapts the pages so that they can be displayed in the UI.
 	 */
-	private final IntroAdapter adapter = new IntroAdapter(getSupportFragmentManager(), pages);
+	private final PageAdapter adapter = new PageAdapter(getSupportFragmentManager(), pages);
 
 
 	// Background manager related variables
