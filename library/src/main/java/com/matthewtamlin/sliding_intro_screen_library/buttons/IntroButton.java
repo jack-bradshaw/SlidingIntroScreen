@@ -56,6 +56,7 @@ public class IntroButton extends Button {
 	/**
 	 * Used to identify this class during debugging.
 	 */
+	@SuppressWarnings("unused")
 	private static final String TAG = "[IntroButton]";
 
 	/**

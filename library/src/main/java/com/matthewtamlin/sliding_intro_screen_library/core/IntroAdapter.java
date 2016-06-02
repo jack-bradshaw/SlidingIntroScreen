@@ -32,6 +32,7 @@ public class IntroAdapter extends FragmentPagerAdapter
 	/**
 	 * Used to identify this class during debugging.
 	 */
+	@SuppressWarnings("unused")
 	private static final String TAG = "[IntroAdapter]";
 
 	/**

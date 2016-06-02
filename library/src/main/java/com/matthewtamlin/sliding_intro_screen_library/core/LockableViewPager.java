@@ -25,6 +25,7 @@ public class LockableViewPager extends ViewPager {
 	/**
 	 * Used to identify this class during debugging.
 	 */
+	@SuppressWarnings("unused")
 	private static final String TAG = "[LockableViewPager]";
 
 	/**

@@ -37,6 +37,7 @@ public final class ParallaxTransformer implements ViewPager.PageTransformer {
 	/**
 	 * Used to identify this class during debugging.
 	 */
+	@SuppressWarnings("unused")
 	private static final String TAG = "[ParallaxTransformer]";
 
 	/**

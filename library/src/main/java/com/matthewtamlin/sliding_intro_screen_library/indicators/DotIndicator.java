@@ -40,6 +40,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	/**
 	 * Used to identify this class during debugging.
 	 */
+	@SuppressWarnings("unused")
 	private static final String TAG = "[SelectionIndicator]";
 
 	/**
