@@ -153,6 +153,11 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 */
 	private LockableViewPager viewPager;
 
+	/**
+	 * The thin horizontal divider separating the navigation elements from the rest of the UI.
+	 */
+	private View horizontalDivider;
+
 
 	// Progress indicator variables
 
@@ -352,6 +357,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 */
 	private void bindViews() {
 		rootView = (RelativeLayout) findViewById(R.id.intro_activity_root);
+		horizontalDivider = findViewById(R.id.intro_activity_horizontalDivider);
 		viewPager = (LockableViewPager) findViewById(R.id.intro_activity_viewPager);
 		progressIndicatorHelper =
 				(FrameLayout) findViewById(R.id.intro_activity_progressIndicatorHolder);
@@ -668,6 +674,17 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 */
 	public final RelativeLayout getRootView() {
 		return rootView;
+	}
+
+	/**
+	 * Allows the visibility of the horizontal divider at the top of the navigation bar to be
+	 * changed.
+	 *
+	 * @param show
+	 * 		true to show the divider, false to hide it
+	 */
+	public final void changeHorizontalDividerVisibility(boolean show) {
+		horizontalDivider.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 	}
 
 	/**
