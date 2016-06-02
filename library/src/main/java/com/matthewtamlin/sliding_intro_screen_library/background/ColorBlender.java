@@ -5,11 +5,10 @@ import android.view.View;
 import com.matthewtamlin.android_utilities_library.helpers.ColorHelper;
 
 /**
- * A ColorBlender is a BackgroundManager which mixes colors together to create a continuous
- * scrolling effect when scrolling through the pages of an IntroActivity. The constructor accepts
- * an array of ARGB hex codes which are used for the backgrounds. The size of the array must
- * match the number of pages in the IntroActivity, or else exceptions will occur when the pages
- * are scrolled.
+ * A ColorBlender is a BackgroundManager which presents a variable color as the background. Each
+ * page has a color associated with it, which will be displayed when that page is fully selected.
+ * When the scrolling is between pages, the colors are blended together to create a continuous color
+ * effect.
  */
 public class ColorBlender implements BackgroundManager {
 	/**
@@ -18,17 +17,19 @@ public class ColorBlender implements BackgroundManager {
 	private final int[] colors;
 
 	/**
-	 * Constructs a new ColorBlender.
+	 * Constructs a new ColorBlender. The length of the array must match the number of pages in
+	 * the IntroActivity this BackgroundManager is used with. The colors are mapped to the pages
+	 * using the ordering of the array (e.g. page 1 maps to the color at index 0).
 	 *
 	 * @param colors
-	 * 		the colors to use for the backgrounds, not null
+	 * 		the background colors to use, not null
 	 * @throws IllegalArgumentException
 	 * 		if {@code colors} is null
 	 */
 	public ColorBlender(int[] colors) {
 		if (colors == null) {
 			throw new IllegalArgumentException("colors cannot be null");
-		} else if (colors.length <= 0) {
+		} else if (colors.length == 0) {
 			throw new IllegalArgumentException("colors must have at least one element");
 		}
 
