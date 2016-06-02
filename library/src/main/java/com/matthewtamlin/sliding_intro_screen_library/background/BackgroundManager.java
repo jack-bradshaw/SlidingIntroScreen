@@ -18,8 +18,8 @@ public interface BackgroundManager {
 	 * indicates what fraction of the right page is currently visible, and varies between 0 and 1.
 	 * When the offset is 0, the left page is entirely selected and the right page is not visible.
 	 * When the offset is 0.5, the left page has been half scrolled out and the right page has been
-	 * half scrolling in. When the offset is 1, the right page is entirely selected and the left
-	 * page is invisible.
+	 * half scrolling in. The offset will approach 1 but never reach it (if 1 were reached then
+	 * index would increment and offset would reset to 0).
 	 *
 	 * @param background
 	 * 		the View to draw the background on, not null
