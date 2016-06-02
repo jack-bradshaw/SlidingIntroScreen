@@ -5,6 +5,9 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.view.View;
 
+/**
+ * Creates fade in effects for appearing buttons and fade out effects for disappearing buttons.
+ */
 public class FadeAnimatorFactory implements AnimatorFactory {
 	@Override
 	public Animator newLeftButtonAppearAnimator(View leftButton) {
