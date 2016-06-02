@@ -641,6 +641,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 	protected abstract Behaviour generateFinalButtonBehaviour();
 
 
+	// Miscellaneous public methods
+
 	/**
 	 * Hides the status bar background but continues to display the icons. Views and ViewGroups
 	 * which declare the {@code android:fitsSystemWindows="false"} attribute will draw to the top of
@@ -661,18 +663,12 @@ public abstract class IntroActivity extends AppCompatActivity {
 		StatusBarHelper.showStatusBar(getWindow(), statusBarColor);
 	}
 
-
-	// Methods relating to the root view
-
 	/**
 	 * @return a reference to the top most view of this activity
 	 */
 	public final RelativeLayout getRootView() {
 		return rootView;
 	}
-
-
-	// Methods relating to the page transformer
 
 	/**
 	 * Sets the PageTransformer which will be used to the pages of this intro screen when scrolled.
@@ -689,7 +685,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 
-	// Methods relating to accessing pages and navigating between them
+	// Methods relating to the pages and navigation
 
 	/**
 	 * Returns a reference to the pages of this activity, as an unmodifiable collection.
