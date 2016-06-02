@@ -139,7 +139,7 @@ public class IntroButton extends Button {
 	 * @param context
 	 * 		the context this IntroButton will be operating in, not null
 	 * @param attrs
-	 * 		configuration attributes, null allowed
+	 * 		configuration attributes
 	 */
 	public IntroButton(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
@@ -153,11 +153,10 @@ public class IntroButton extends Button {
 	 * @param context
 	 * 		the context this IntroButton will be operating in, not null
 	 * @param attrs
-	 * 		configuration attributes, null allowed
+	 * 		configuration attributes
 	 * @param defStyleAttr
 	 * 		an attribute in the current theme that contains a reference to a style resource that
-	 * 		supplies defaults values for the StyledAttributes, or 0 to not look for defaults, null
-	 * 		allowed
+	 * 		supplies defaults values for the StyledAttributes, or 0 to not look for defaults
 	 */
 	public IntroButton(final Context context, final AttributeSet attrs, final int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
