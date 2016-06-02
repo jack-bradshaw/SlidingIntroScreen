@@ -625,12 +625,18 @@ public class IntroButton extends Button implements OnClickListener {
 		 * editsToMake} are committed when the next activity successfully launches.
 		 *
 		 * @param startNextActivity
-		 * 		an intent which starts the next activity
+		 * 		an intent which starts the next activity, not null
 		 * @param editsToMake
 		 * 		a shared preferences editor with pending changes, null to ignore this feature
+		 * @throws IllegalArgumentException
+		 * 		if {@code startNextActivity} is null
 		 */
 		public ProgressToNextActivity(Intent startNextActivity, SharedPreferences.Editor
 				editsToMake) {
+			if (startNextActivity == null) {
+				throw new IllegalArgumentException("startNextActivity cannot be null");
+			}
+
 			this.startNextActivity = startNextActivity;
 			this.editsToMake = editsToMake;
 		}
@@ -646,13 +652,11 @@ public class IntroButton extends Button implements OnClickListener {
 		@Override
 		public final void run() {
 			if (getActivity() != null && shouldLaunchActivity()) {
-				if (startNextActivity != null) {
-					if (editsToMake != null) {
-						editsToMake.apply();
-					}
-
-					getActivity().startActivity(startNextActivity);
+				if (editsToMake != null) {
+					editsToMake.apply();
 				}
+
+				getActivity().startActivity(startNextActivity);
 			}
 		}
 	}
