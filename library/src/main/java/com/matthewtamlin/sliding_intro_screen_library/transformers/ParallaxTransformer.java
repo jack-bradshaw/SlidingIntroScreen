@@ -55,7 +55,7 @@ public final class ParallaxTransformer implements ViewPager.PageTransformer {
 		if (pageIsSelected) {
 			pageRootView.invalidate();
 		} else if (pageIsScrolling) {
-			//TODO clarify how this scale works
+			// This value creates a parallax effect
 			final float n = 0.5f;
 
 			// Transform front image holder
