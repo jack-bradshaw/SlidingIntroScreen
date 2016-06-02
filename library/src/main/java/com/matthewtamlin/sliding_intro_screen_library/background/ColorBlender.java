@@ -46,7 +46,7 @@ public class ColorBlender implements BackgroundManager {
 		// The left color is always directly referenced by index
 		final int colorLeft = colors[index];
 
-		// The right color may be the same as the left color if the last index has been reached
+		// Must be careful to avoid index out of bounds exceptions
 		final boolean isLast = index == colors.length - 1;
 		final int colorRight = isLast ? colors[index] : colors[index + 1];
 
