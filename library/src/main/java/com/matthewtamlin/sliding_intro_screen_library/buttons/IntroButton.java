@@ -25,7 +25,6 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.matthewtamlin.android_utilities_library.helpers.PermissionsHelper;
@@ -37,7 +36,7 @@ import java.util.HashMap;
 /**
  * An IntroButton is a button designed to manipulate an IntroActivity. Each button has two main
  * components: a {@link Behaviour} and an {@link Appearance}.
- * <p>
+ * <p/>
  * The Behaviour is effectively a runnable which can manipulate an IntroActivity. When an
  * IntroButton is pressed, its current Behaviour is executed. By separating the on-click logic from
  * the Button, it is possible to write reusable actions to be used across multiple buttons.
@@ -45,7 +44,7 @@ import java.util.HashMap;
  * Behaviours, so that changing the Behaviour automatically updates the UI of the button. This
  * avoids needing to manually match the text and icon to the Behaviour, which reduces boilerplate
  * code and creates less opportunities for bugs to occur.
- * <p>
+ * <p/>
  * The Appearance determines how the button is displayed to the user, with regards to the
  * arrangement of icons and text within the button. The Appearance can only be set to one of the
  * predefined Appearances. Using an Appearance to change the text/icon display arrangement has
@@ -53,7 +52,7 @@ import java.util.HashMap;
  * loaded into the button once and stored in memory, then displayed when needed via a single method
  * call.
  */
-public class IntroButton extends Button implements OnClickListener {
+public class IntroButton extends Button {
 	/**
 	 * Used to identify this class during debugging.
 	 */
@@ -105,6 +104,24 @@ public class IntroButton extends Button implements OnClickListener {
 	private OnClickListener externalOnClickListener;
 
 	/**
+	 * Delegate to receive on-click events from this Button. Using a delegate hides the internal
+	 * implementation from the public class signature.
+	 */
+	private final OnClickListener internalOnClickListenerDelegate = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			if (behaviour != null) {
+				behaviour.setActivity(activity);
+				behaviour.run();
+			}
+
+			if (externalOnClickListener != null) {
+				externalOnClickListener.onClick(v);
+			}
+		}
+	};
+
+	/**
 	 * Constructs a new IntroButton instance. The supplied Context is used as the target for the
 	 * Behaviour if the Context is an instance of IntroActivity.
 	 *
@@ -151,8 +168,8 @@ public class IntroButton extends Button implements OnClickListener {
 	 * Initialise this IntroButton independent of the constructor used.
 	 */
 	private void init() {
-		// Deal with on click events internally then pass to the external delegate
-		super.setOnClickListener(this);
+		// Let the internal delegate deal with on-click events
+		super.setOnClickListener(internalOnClickListenerDelegate);
 
 		initialiseLabelsToDefault();
 		initialiseIconsToDefault();
@@ -226,7 +243,7 @@ public class IntroButton extends Button implements OnClickListener {
 	 * class can be used to reduce boilerplate code when implementing the interface. This method
 	 * does not accept null; to do nothing when the button is clicked, pass an instance of {@link
 	 * IntroButton.DoNothing}.
-	 * <p>
+	 * <p/>
 	 * See {@link Behaviour}.
 	 *
 	 * @param behaviour
@@ -252,7 +269,7 @@ public class IntroButton extends Button implements OnClickListener {
 
 	/**
 	 * Sets the Appearance of this IntroButton. The Appearance defines how the button is displayed.
-	 * <p>
+	 * <p/>
 	 * See {@link Appearance}.
 	 *
 	 * @param appearance
@@ -378,18 +395,6 @@ public class IntroButton extends Button implements OnClickListener {
 	public void setTypeface(final Typeface tf) {
 		super.setTypeface(tf);
 		updateUI();
-	}
-
-	@Override
-	public void onClick(final View v) {
-		if (behaviour != null) {
-			behaviour.setActivity(activity);
-			behaviour.run();
-		}
-
-		if (externalOnClickListener != null) {
-			externalOnClickListener.onClick(v);
-		}
 	}
 
 	@Override
@@ -600,7 +605,7 @@ public class IntroButton extends Button implements OnClickListener {
 	 * A Behaviour designed to launch a new activity. Subclasses this class and implement {@link
 	 * #shouldLaunchActivity()} to define validation conditions which must pass before the activity
 	 * is launched.
-	 * <p>
+	 * <p/>
 	 * This class provides a mechanism for preventing the IntroActivity from being shown after it
 	 * has been completed. The default constructor accepts a {@link android.content.SharedPreferences.Editor}
 	 * as a parameter. Any pending changes will be committed when the next activity successfully
