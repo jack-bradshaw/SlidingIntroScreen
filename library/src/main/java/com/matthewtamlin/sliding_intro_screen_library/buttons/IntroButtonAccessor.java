@@ -48,7 +48,7 @@ public final class IntroButtonAccessor {
 	 * 		if {@code behaviour} is null
 	 */
 	public final void setBehaviour(final IntroButton.Behaviour behaviour) {
-		button.setBehaviour(behaviour);
+		button.setBehaviour(behaviour); // throws IllegalArgumentException if behaviour is null
 	}
 
 	/**
@@ -74,7 +74,7 @@ public final class IntroButtonAccessor {
 	 * 		if {@code appearance} is null
 	 */
 	public final void setAppearance(final IntroButton.Appearance appearance) {
-		button.setAppearance(appearance);
+		button.setAppearance(appearance); // throws IllegalArgumentException if appearance is null
 	}
 
 	/**
@@ -162,18 +162,6 @@ public final class IntroButtonAccessor {
 	}
 
 	/**
-	 * Sets the typeface and style of the accessed IntroButton.
-	 *
-	 * @param tf
-	 * 		the typeface to use
-	 * @param style
-	 * 		the style to use
-	 */
-	public final void setTypeface(final Typeface tf, final int style) {
-		button.setTypeface(tf, style);
-	}
-
-	/**
 	 * Sets the typeface of the accessed IntroButton.
 	 *
 	 * @param tf
@@ -206,7 +194,7 @@ public final class IntroButtonAccessor {
 	 * the Behaviour.
 	 *
 	 * @param l
-	 * 		the listener to receive the callbacks, null to clear any listener
+	 * 		the listener to receive the callbacks, null to clear any existing listener
 	 */
 	public final void setOnClickListener(final View.OnClickListener l) {
 		button.setOnClickListener(l);
