@@ -222,15 +222,15 @@ public final class Dot extends RelativeLayout {
 	 * 		to not look for defaults.
 	 */
 	private void init(final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
+		// Use a TypedArray to process attrs
+		final TypedArray attributes = getContext()
+				.obtainStyledAttributes(attrs, R.styleable.Dot, defStyleAttr, defStyleRes);
+
 		// Convert default dimensions to px
 		final int defaultActiveDiameterPx = DimensionHelper.dpToPx(DEFAULT_ACTIVE_DIAMETER_DP,
 				getContext());
 		final int defaultInactiveDiameterPx =
 				DimensionHelper.dpToPx(DEFAULT_INACTIVE_DIAMETER_DP, getContext());
-
-		// Use a TypedArray to process attrs
-		final TypedArray attributes = getContext()
-				.obtainStyledAttributes(attrs, R.styleable.Dot, defStyleAttr, defStyleRes);
 
 		// Assign attributes to member variables
 		inactiveDiameterPx = attributes
