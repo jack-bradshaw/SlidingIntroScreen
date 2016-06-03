@@ -27,6 +27,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -37,9 +38,8 @@ import com.matthewtamlin.sliding_intro_screen_library.R;
 
 /**
  * A Dot is a {@code View} which shows a solid circular shape. Each Dot has two configurations,
- * active and inactive, and each configuration has two parameters, color and diameter. Each Dot can
- * be made to smoothly transition between configurations, and the duration of the transition can be
- * specified.
+ * active and inactive, and each configuration has two parameters, color and diameter. Dots can be
+ * made to smoothly transition between the two configurations.
  */
 public final class Dot extends RelativeLayout {
 	/**
@@ -49,34 +49,32 @@ public final class Dot extends RelativeLayout {
 	private static final String TAG = "[Dot]";
 
 	/**
-	 * Default value for the {@code inactiveDiameter} attribute. This value is used if the
-	 * attribute
-	 * is not supplied.
+	 * Default value for the {@code inactiveDiameter} attribute. This value is used if the attribute
+	 * is not supplied. This value has units of display-independent pixels.
 	 */
 	private static final int DEFAULT_INACTIVE_DIAMETER_DP = 6;
 
 	/**
 	 * Default value for the {@code activeDotDiameter} attribute. This value is used if the
-	 * attribute is not supplied.
+	 * attribute is not supplied. This value has units of display-independent pixels.
 	 */
 	private static final int DEFAULT_ACTIVE_DIAMETER_DP = 9;
 
 	/**
-	 * Default value for the {@code inactiveColor} attribute. This value is used if the
-	 * attribute is
-	 * not supplied.
+	 * Default value for the {@code inactiveColor} attribute. This value is used if the attribute is
+	 * not supplied. This value is an ARGB hex code.
 	 */
 	private static final int DEFAULT_INACTIVE_COLOR = Color.WHITE;
 
 	/**
 	 * Default value for the {@code activeColor} attribute. This value is used if the attribute is
-	 * not supplied.
+	 * not supplied. This valus is an ARGB hex code.
 	 */
 	private static final int DEFAULT_ACTIVE_COLOR = Color.WHITE;
 
 	/**
 	 * Default value for the {@code transitionDuration} attribute. This value is used if the
-	 * attribute is not supplied.
+	 * attribute is not supplied. This value is measured in milliseconds.
 	 */
 	private static final int DEFAULT_TRANSITION_DURATION_MS = 200;
 
@@ -97,12 +95,12 @@ public final class Dot extends RelativeLayout {
 	private int activeDiameterPx;
 
 	/**
-	 * The ARGB hex code of the solid color fill of this Dot when inactive.
+	 * The solid color fill of this Dot when inactive, as an ARGB hex code.
 	 */
 	private int inactiveColor;
 
 	/**
-	 * The ARGB hex code of the solid color fill of this Dot when active.
+	 * The solid color fill of this Dot when active, as an ARGB hex code.
 	 */
 	private int activeColor;
 
@@ -123,24 +121,23 @@ public final class Dot extends RelativeLayout {
 	private ShapeDrawable shape;
 
 	/**
-	 * Displays {@code shape}.
+	 * Displays the drawable representing this Dot.
 	 */
 	private ImageView drawableHolder;
 
 	/**
-	 * Reference to the current animation being performed on this Dot, null if no animation is
-	 * currently occurring.
+	 * The Animator currently acting on this Dot, null if not animating currently.
 	 */
 	private AnimatorSet currentAnimator = null;
 
 	/**
-	 * Constructs a new Dot instance. The following default parameters are used:<p/>
+	 * Constructs a new Dot instance. The following default parameters are used:<ul>
 	 * <li>inactiveDiameter: 6dp</li> <li>activeDiameter: 9dp</li> <li>inactiveColor: opaque white
 	 * (i.e. ARGB 0xFFFFFFFF)</li> <li>activeColor: opaque white (i.e. ARGB 0xFFFFFFFF)</li>
-	 * <li>transitionDuration: 200ms</li> <li>initiallyActive: false</li>
+	 * <li>transitionDuration: 200ms</li> <li>initiallyActive: false</li></ul>
 	 *
 	 * @param context
-	 * 		the context in which this Dot is operating
+	 * 		the context in which this Dot is operating, not null
 	 */
 	public Dot(final Context context) {
 		super(context);
@@ -149,13 +146,13 @@ public final class Dot extends RelativeLayout {
 
 	/**
 	 * Constructs a new Dot instance. If an attribute specific to this class is not provided, the
-	 * relevant default is used. The defaults are:<p/> <li>inactiveDiameter: 6dp</li>
+	 * relevant default is used. The defaults are:<ul> <li>inactiveDiameter: 6dp</li>
 	 * <li>activeDiameter: 9dp</li> <li>inactiveColor: opaque white (i.e. ARGB 0xFFFFFFFF)</li>
 	 * <li>activeColor: opaque white (i.e. ARGB 0xFFFFFFFF)</li> <li>transitionDuration: 200ms</li>
-	 * <li>initiallyActive: false</li>
+	 * <li>initiallyActive: false</li></ul>
 	 *
 	 * @param context
-	 * 		the context in which this Dot is operating
+	 * 		the context in which this Dot is operating, not null
 	 * @param attrs
 	 * 		configuration attributes
 	 */
@@ -166,13 +163,13 @@ public final class Dot extends RelativeLayout {
 
 	/**
 	 * Constructs a new Dot instance. If an attribute specific to this class is not provided, the
-	 * relevant default is used. The defaults are:<p/> <li>inactiveDiameter: 6dp</li>
+	 * relevant default is used. The defaults are:<ul> <li>inactiveDiameter: 6dp</li>
 	 * <li>activeDiameter: 9dp</li> <li>inactiveColor: opaque white (i.e. ARGB 0xFFFFFFFF)</li>
 	 * <li>activeColor: opaque white (i.e. ARGB 0xFFFFFFFF)</li> <li>transitionDuration: 200ms</li>
-	 * <li>initiallyActive: false</li>
+	 * <li>initiallyActive: false</li></ul>
 	 *
 	 * @param context
-	 * 		the context in which this Dot is operating
+	 * 		the context in which this Dot is operating, not null
 	 * @param attrs
 	 * 		configuration attributes
 	 * @param defStyleAttr
@@ -192,7 +189,7 @@ public final class Dot extends RelativeLayout {
 	 * <li>initiallyActive: false</li>
 	 *
 	 * @param context
-	 * 		the context in which this Dot is operating
+	 * 		the context in which this Dot is operating, not null
 	 * @param attrs
 	 * 		configuration attributes
 	 * @param defStyleAttr
@@ -200,8 +197,7 @@ public final class Dot extends RelativeLayout {
 	 * 		supplies defaults values for the StyledAttributes, or 0 to not look for defaults
 	 * @param defStyleRes
 	 * 		a resource identifier of a style resource that supplies default values for the
-	 * 		StyledAttributes, used only if defStyleAttr is 0 or can not be found in the theme. Can
-	 * 		be 0
+	 * 		StyledAttributes, used only if defStyleAttr is 0 or can not be found in the theme. Can be 0
 	 * 		to not look for defaults.
 	 */
 	@TargetApi(21)
@@ -212,8 +208,8 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * Initialise this Dot. The provided attributes are read and assigned to member variables, and
-	 * the UI is created. This method should only be invoked during construction.
+	 * Initialises the member variables of this Dot and creates the UI. This method should only be
+	 * invoked during construction.
 	 *
 	 * @param attrs
 	 * 		configuration attributes
@@ -222,12 +218,11 @@ public final class Dot extends RelativeLayout {
 	 * 		supplies defaults values for the StyledAttributes, or 0 to not look for defaults
 	 * @param defStyleRes
 	 * 		a resource identifier of a style resource that supplies default values for the
-	 * 		StyledAttributes, used only if defStyleAttr is 0 or can not be found in the theme. Can
-	 * 		be 0
+	 * 		StyledAttributes, used only if defStyleAttr is 0 or can not be found in the theme. Can be 0
 	 * 		to not look for defaults.
 	 */
 	private void init(final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
-		// Convert default dimensions from dp to px
+		// Convert default dimensions to px
 		final int defaultActiveDiameterPx = DimensionHelper.dpToPx(DEFAULT_ACTIVE_DIAMETER_DP,
 				getContext());
 		final int defaultInactiveDiameterPx =
@@ -258,18 +253,20 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * Updates the UI to reflect the current values of the member variables.
+	 * Recreates the UI to reflect the current values of the member variables.
 	 */
 	private void reflectParametersInView() {
-		// Reset root view
+		// Reset root View so that the UI can be entirely recreated
 		removeAllViews();
 
-		// Make root bounds big enough to accommodate the shape in any state
+		// Make the root View bounds big enough to encompass the maximum diameter
 		final int maxDimension = Math.max(inactiveDiameterPx, activeDiameterPx);
 		setLayoutParams(new LayoutParams(maxDimension, maxDimension));
+
+		// Set the gravity to centre for simplicity
 		setGravity(Gravity.CENTER);
 
-		// Create drawable
+		// Create the drawable based on the current member variables
 		final int diameter = (state == State.ACTIVE) ? activeDiameterPx : inactiveDiameterPx;
 		final int color = (state == State.ACTIVE) ? activeColor : inactiveColor;
 		shape = new ShapeDrawable(new OvalShape());
@@ -277,26 +274,26 @@ public final class Dot extends RelativeLayout {
 		shape.setIntrinsicHeight(diameter);
 		shape.getPaint().setColor(color);
 
-		// Add drawable to drawableHolder, and add drawableHolder to root view
+		// Add the drawable to the drawable holder
 		drawableHolder = new ImageView(getContext());
-		drawableHolder.setImageDrawable(null); // Forces drawableHolder to redraw shape
+		drawableHolder.setImageDrawable(null); // Forces redraw
 		drawableHolder.setImageDrawable(shape);
+
+		// Add the drawable holder to root View
 		addView(drawableHolder);
 	}
 
 	/**
-	 * Plays animations to transition this Dot between states. The state of this Dot is updated
-	 * when
-	 * the animation is starts, ends, or is cancelled.
+	 * Plays animations to transition the size and color of this Dot.
 	 *
 	 * @param startSize
 	 * 		the width and height of this Dot at the start of the animation, measured in pixels
 	 * @param endSize
 	 * 		the width and height of this Dot at the end of the animation, measured in pixels
 	 * @param startColor
-	 * 		the ARGB hex code of the colour of this Dot at the start of the animation
+	 * 		the colour of this Dot at the start of the animation, as an ARGB hex code
 	 * @param endColor
-	 * 		the ARGB hex code of the colour of this Dot at the end of the animation
+	 * 		the colour of this Dot at the end of the animation, as an ARGB hex code
 	 * @param duration
 	 * 		the duration of the animation, measured in milliseconds
 	 * @throws IllegalArgumentException
@@ -312,15 +309,18 @@ public final class Dot extends RelativeLayout {
 			throw new IllegalArgumentException("duration cannot be less than 0");
 		}
 
+		// To avoid conflicting animations, cancel any existing animation
 		if (currentAnimator != null) {
 			currentAnimator.cancel();
 		}
 
+		// Use an animator set to coordinate shape and color change animations
 		currentAnimator = new AnimatorSet();
 		currentAnimator.setDuration(duration);
 		currentAnimator.addListener(new AnimatorListenerAdapter() {
 			@Override
 			public void onAnimationStart(Animator animation) {
+				// The state must be updated to reflect the transition
 				if (state == State.INACTIVE) {
 					state = State.TRANSITIONING_TO_ACTIVE;
 				} else if (state == State.ACTIVE) {
@@ -330,31 +330,31 @@ public final class Dot extends RelativeLayout {
 
 			@Override
 			public void onAnimationEnd(Animator animation) {
-				// Make sure state is stable
+				// Make sure state is stable (i.e. unchanging) at the end of the animation
 				if (!state.isStable()) {
 					state = state.transitioningTo();
 				}
 
-				// Ensure that color and size reflect final state
+				// Make sure the properties are correct
 				changeSize(endSize);
 				changeColor(endColor);
 
-				// Indicate that animation is finished
+				// Declare the animation finished
 				currentAnimator = null;
 			}
 
 			@Override
 			public void onAnimationCancel(Animator animation) {
-				// Make sure state is stable
+				// Make sure state is stable (i.e. unchanging) at the end of the animation
 				if (!state.isStable()) {
 					state = state.transitioningFrom();
 				}
 
-				// Ensure that color and size reflect final state
+				// Make sure the properties are correct
 				changeSize(startSize);
 				changeColor(startColor);
 
-				// Indicate that animation is finished
+				// Declare the animation finished
 				currentAnimator = null;
 			}
 		});
@@ -382,7 +382,7 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * Updates the size of {@code shape} and ensures the UI shows the new size.
+	 * Utility for updating the size of the Dot and reflecting the change in the UI.
 	 *
 	 * @param newSizePx
 	 * 		the desired size, measured in pixels
@@ -395,7 +395,7 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * Updates the color of {@code shape} and ensures the UI shows the new color.
+	 * Utility for updating the color of the Dot and reflecting the change in the UI.
 	 *
 	 * @param newColor
 	 * 		the desired color, as an ARGB hex code
@@ -405,10 +405,11 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * Sets the inactive diameter of this Dot and updates the UI to reflect the changes.
+	 * Sets the inactive diameter of this Dot and updates the UI to reflect the changes. The update
+	 * is instantaneous and does not trigger any animations.
 	 *
 	 * @param inactiveDiameterPx
-	 * 		the diameter of this Dot when inactive, measured in pixels, not less than 0
+	 * 		the diameter to use for this Dot when inactive, measured in pixels, not less than 0
 	 * @return this Dot
 	 * @throws IllegalArgumentException
 	 * 		if {@code inactiveDiameterPx} is less than 0
@@ -424,17 +425,21 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * Sets the inactive diameter of this Dot and updates the UI to reflect the changes.
+	 * Sets the inactive diameter of this Dot and updates the UI to reflect the changes. The update
+	 * is instantaneous and does not trigger any animations.
 	 *
 	 * @param inactiveDiameterDp
-	 * 		the diameter of this Dot when inactive, measured in display-independent pixels, not
-	 * 		less
-	 * 		than 0
+	 * 		the diameter to use for this Dot when inactive, measured in display-independent pixels, not
+	 * 		less than 0
 	 * @return this Dot
 	 * @throws IllegalArgumentException
-	 * 		if {@code inactiveDiameterPx} is less than 0
+	 * 		if {@code inactiveDiameterDp} is less than 0
 	 */
 	public Dot setInactiveDiameterDp(final int inactiveDiameterDp) {
+		if (inactiveDiameterDp < 0) {
+			throw new IllegalArgumentException("inactiveDiameterDp cannot be less than 0");
+		}
+
 		setInactiveDiameterPx(DimensionHelper.dpToPx(inactiveDiameterDp, getContext()));
 		return this;
 	}
@@ -447,10 +452,11 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * Sets the active diameter of this Dot and updates the UI to reflect the changes.
+	 * Sets the active diameter of this Dot and updates the UI to reflect the changes. The update is
+	 * instantaneous and does not trigger any animations.
 	 *
 	 * @param activeDiameterPx
-	 * 		the diameter of this Dot when active, measured in pixels, not less than 0
+	 * 		the diameter to use for this Dot when active, measured in pixels, not less than 0
 	 * @return this Dot
 	 * @throws IllegalArgumentException
 	 * 		if {@code activeDiameterPx} is less than 0
@@ -466,17 +472,21 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * Sets the active diameter of this Dot and updates the UI to reflect the changes.
+	 * Sets the active diameter of this Dot and updates the UI to reflect the changes. The update is
+	 * instantaneous and does not trigger any animations.
 	 *
 	 * @param activeDiameterDp
-	 * 		the diameter of this Dot when active, measured in display-independent pixels, not less
-	 * 		than
-	 * 		0
+	 * 		the diameter to use for this Dot when active, measured in display-independent pixels, not
+	 * 		less than 0
 	 * @return this Dot
 	 * @throws IllegalArgumentException
-	 * 		if {@code activeDiameterPx} is less than 0
+	 * 		if {@code activeDiameterDp} is less than 0
 	 */
 	public Dot setActiveDiameterDp(final int activeDiameterDp) {
+		if (activeDiameterDp < 0) {
+			throw new IllegalArgumentException("activeDiameterDp cannot be less than 0");
+		}
+
 		setActiveDiameterPx(activeDiameterDp);
 		return this;
 	}
@@ -489,10 +499,11 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * Sets the inactive color of this Dot and updates the UI to reflect the changes.
+	 * Sets the inactive color of this Dot and updates the UI to reflect the changes. The update is
+	 * instantaneous and does not trigger any animations.
 	 *
 	 * @param inactiveColor
-	 * 		the ARGB hex code of this Dot when inactive
+	 * 		the color to use for this Dot when inactive, as an ARGB hex code
 	 * @return this Dot
 	 */
 	public Dot setInactiveColor(final int inactiveColor) {
@@ -509,10 +520,11 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * Sets the active color of this Dot and updates the UI to reflect the changes.
+	 * Sets the active color of this Dot and updates the UI to reflect the changes. The update is
+	 * instantaneous and does not trigger any animations.
 	 *
 	 * @param activeColor
-	 * 		the ARGB hex code of this Dot when active
+	 * 		the color to use for this Dot when active, as an ARGB hex code
 	 * @return this Dot
 	 */
 	public Dot setActiveColor(final int activeColor) {
@@ -529,10 +541,10 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * Sets the amount of time to use when animating this Dot between active and inactive.
+	 * Sets the length of time to use for animations between active and inactive.
 	 *
 	 * @param transitionDurationMs
-	 * 		the amount of time to use, measured in milliseconds, not less than 0
+	 * 		the length to use for the animations, measured in milliseconds, not less than 0
 	 * @return this Dot
 	 * @throws IllegalArgumentException
 	 * 		if {@code transitionDurationMs} is less than 0
@@ -547,7 +559,7 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * @return the amount of time to use when animating between active and inactive, measured in
+	 * @return the length of time to use for animations between active and inactive, measured in
 	 * milliseconds
 	 */
 	public int getTransitionDuration() {
@@ -569,46 +581,60 @@ public final class Dot extends RelativeLayout {
 			setActive(animate);
 		} else if (state != State.INACTIVE) {
 			setInactive(animate);
+		} else {
+			Log.e(TAG, "[Animating trying to start from illegal state]");
 		}
 	}
 
 	/**
-	 * Sets the state of this Dot to inactive (if not already in this state).
+	 * Transitions this Dot to inactive. Animations are shown if the Dot is not already inactive.
 	 *
 	 * @param animate
 	 * 		whether or not the transition should be animated
 	 */
 	public void setInactive(final boolean animate) {
+		// Any existing animation will conflict with this animations and must be cancelled
 		if (currentAnimator != null) {
 			currentAnimator.cancel();
 		}
 
-		if (animate && (transitionDurationMs > 0) && (state != State.INACTIVE)) {
-			animateDotChange(activeDiameterPx, inactiveDiameterPx, activeColor,
-					inactiveColor, transitionDurationMs);
+		// Animate only if the animation is requested, is necessary, and will actually display
+		final boolean shouldAnimate =
+				animate && (state != State.INACTIVE) && (transitionDurationMs > 0);
+
+		if (shouldAnimate) {
+			animateDotChange(activeDiameterPx, inactiveDiameterPx, activeColor, inactiveColor,
+					transitionDurationMs);
 		} else {
+			// The UI must still be changed, just without animations
 			changeSize(inactiveDiameterPx);
 			changeColor(inactiveColor);
 			state = State.INACTIVE;
 		}
-
 	}
 
 	/**
-	 * Sets the state of this Dot to active (if not already in this state).
+	 * Transitions this Dot to active. Animations are shown if the Dot is not already active.
 	 *
 	 * @param animate
 	 * 		whether or not the transition should be animated
 	 */
 	public void setActive(final boolean animate) {
+		// Any existing animation will conflict with this animations and must be cancelled
 		if (currentAnimator != null) {
 			currentAnimator.cancel();
 		}
 
-		if (animate && (transitionDurationMs > 0) && (state != State.ACTIVE)) {
+		// Animate only if the animation is requested, is necessary, and will actually display
+		final boolean shouldAnimate =
+				animate && (state != State.ACTIVE) && (transitionDurationMs > 0);
+
+
+		if (shouldAnimate) {
 			animateDotChange(inactiveDiameterPx, activeDiameterPx, inactiveColor, activeColor,
 					transitionDurationMs);
 		} else {
+			// The UI must still be changed, just without animations
 			changeSize(activeDiameterPx);
 			changeColor(activeColor);
 			state = State.ACTIVE;
@@ -616,7 +642,7 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * Returns the current state of this Dot. This method is intended to be used in testing.
+	 * Returns the current state of this Dot. This method exists for testing purposes only.
 	 *
 	 * @return the current state
 	 */
@@ -625,7 +651,7 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * Returns the current diameter of this Dot. This method is intended to be used in testing.
+	 * Returns the current diameter of this Dot. This method exists for testing purposes only.
 	 * Results will be inconsistent if this Dot is currently transitioning between active and
 	 * inactive.
 	 *
@@ -636,8 +662,7 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * Returns the current color of this Dot. This method is intended to be used in testing.
-	 * Results
+	 * Returns the current color of this Dot. This method exists for testing purposes only. Results
 	 * will be inconsistent if this Dot is currently transitioning between active and inactive.
 	 *
 	 * @return the current color, as an ARGB hex code
@@ -647,42 +672,55 @@ public final class Dot extends RelativeLayout {
 	}
 
 	/**
-	 * @return the default attribute for inactiveDiameter, measured in display-independent pixels
+	 * Returns the default inactive diameter. This method exists for testing purposes only.
+	 *
+	 * @return the default inactive diameter, measured in display-independent pixels
 	 */
 	protected int getDefaultInactiveDiameterDp() {
 		return DEFAULT_INACTIVE_DIAMETER_DP;
 	}
 
 	/**
-	 * @return the default attribute for activeDiameter, measured in display-independent pixels
+	 * Returns the default active diameter. This method exists for testing purposes only.
+	 *
+	 * @return the default active diameter, measured in display-independent pixels
 	 */
 	protected int getDefaultActiveDiameterDp() {
 		return DEFAULT_ACTIVE_DIAMETER_DP;
 	}
 
 	/**
-	 * @return the default attribute for inactiveColor, as an ARGB hex code
+	 * Returns the default inactive color. This method exists for testing purposes only.
+	 *
+	 * @return the default inactive color, as an ARGB hex code
 	 */
 	protected int getDefaultInactiveColor() {
 		return DEFAULT_INACTIVE_COLOR;
 	}
 
 	/**
-	 * @return the default attribute for activeColor, as an ARGB hex code
+	 * Returns the default active color. This method exists for testing purposes only.
+	 *
+	 * @return the default active color, as an ARGB hex code
 	 */
 	protected int getDefaultActiveColor() {
 		return DEFAULT_ACTIVE_COLOR;
 	}
 
 	/**
-	 * @return the default attribute for transitionDuration, measured in milliseconds
+	 * Returns the default transition duration. This method exists for testing purposes only.
+	 *
+	 * @return the default transition duration, measured in milliseconds
 	 */
 	protected int getDefaultTransitionDuration() {
 		return DEFAULT_TRANSITION_DURATION_MS;
 	}
 
 	/**
-	 * @return the default attribute for initiallyActive
+	 * Returns whether or not Dots are active by default. This method exists for testing purposes
+	 * only.
+	 *
+	 * @return true if Dots are active by default default, false otherwise
 	 */
 	protected boolean getDefaultInitiallyActive() {
 		return DEFAULT_INITIALLY_ACTIVE;
@@ -705,28 +743,28 @@ public final class Dot extends RelativeLayout {
 
 		/**
 		 * A Dot in this State does not currently reflect either the active or inactive parameters,
-		 * and is transitioning to the active state.
+		 * and is transitioning towards the active state.
 		 */
 		TRANSITIONING_TO_ACTIVE(false, ACTIVE, INACTIVE),
 
 		/**
 		 * A Dot in this State does not currently reflect either the active or inactive parameters,
-		 * and is transitioning to the inactive state.
+		 * and is transitioning towards the inactive state.
 		 */
 		TRANSITIONING_TO_INACTIVE(false, INACTIVE, ACTIVE);
 
 		/**
-		 * Indicates whether or not a dot in this State has constant size and color.
+		 * Indicates whether or not a Dot in this State has constant size and color.
 		 */
 		private final boolean isStable;
 
 		/**
-		 * The State this State is transitioning to, null for stable states.
+		 * The State this State is transitioning towards, null if this State is stable.
 		 */
 		private final State to;
 
 		/**
-		 * The State this State is transitioning from, null for stable states.
+		 * The State this State is transitioning from, null if this State is stable.
 		 */
 		private final State from;
 
@@ -734,7 +772,7 @@ public final class Dot extends RelativeLayout {
 		 * Constructs a new State instance.
 		 *
 		 * @param isStable
-		 * 		whether or not a dot in this State has constant size and color
+		 * 		whether or not a Dot in this State has constant size and color
 		 * @param to
 		 * 		the State this State is transitioning to, null if this State is stable
 		 * @param from
@@ -747,23 +785,23 @@ public final class Dot extends RelativeLayout {
 		}
 
 		/**
-		 * @return whether or not a dot in this State has constant size and color
+		 * @return whether or not a Dot in this State has constant size and color
 		 */
-		protected boolean isStable() {
+		public boolean isStable() {
 			return isStable;
 		}
 
 		/**
-		 * @return the State this State is transitioning to, null if this State is stable
+		 * @return the State this State is transitioning towards, null if this State is stable
 		 */
-		protected State transitioningTo() {
+		public State transitioningTo() {
 			return to;
 		}
 
 		/**
 		 * @return the State this State is transitioning from, null if this State is stable
 		 */
-		protected State transitioningFrom() {
+		public State transitioningFrom() {
 			return from;
 		}
 	}
