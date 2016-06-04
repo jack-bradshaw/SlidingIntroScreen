@@ -17,13 +17,13 @@
 package com.matthewtamlin.sliding_intro_screen_library.indicators;
 
 /**
- * A selection indicator is a visual representation of the selected item in a finite collection.
+ * A visual representation of the selected item in a finite collection.
  */
 public interface SelectionIndicator {
 	/**
-	 * Sets the index of the currently selected item and updates the UI to reflect the change.
-	 * The {@code index} parameter must not be less than zero, and it must not be equal to or
-	 * greater than the current size of the indicator.
+	 * Sets the index of the currently selected item and updates the UI to reflect the change. The
+	 * {@code index} parameter must not be less than zero, and it must not be equal to or greater
+	 * than the current size of the indicator.
 	 *
 	 * @param index
 	 * 		the index of the selected item, counting from zero
