@@ -154,7 +154,7 @@ public final class Dot extends RelativeLayout {
 	 * @param context
 	 * 		the context in which this Dot is operating, not null
 	 * @param attrs
-	 * 		configuration attributes
+	 * 		configuration attributes, null allowed
 	 */
 	public Dot(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
@@ -171,10 +171,10 @@ public final class Dot extends RelativeLayout {
 	 * @param context
 	 * 		the context in which this Dot is operating, not null
 	 * @param attrs
-	 * 		configuration attributes
+	 * 		configuration attributes, null allowed
 	 * @param defStyleAttr
-	 * 		an attribute in the current theme that contains a reference to a style resource that
-	 * 		supplies defaults values for the StyledAttributes, or 0 to not look for defaults
+	 * 		an attribute in the current theme which supplies default attributes, pass 0	to
+	 * 		ignore
 	 */
 	public Dot(final Context context, final AttributeSet attrs, final int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
@@ -191,14 +191,12 @@ public final class Dot extends RelativeLayout {
 	 * @param context
 	 * 		the context in which this Dot is operating, not null
 	 * @param attrs
-	 * 		configuration attributes
+	 * 		configuration attributes, null allowed
 	 * @param defStyleAttr
-	 * 		an attribute in the current theme that contains a reference to a style resource that
-	 * 		supplies defaults values for the StyledAttributes, or 0 to not look for defaults
+	 * 		an attribute in the current theme which supplies default attributes, pass 0	to ignore
 	 * @param defStyleRes
-	 * 		a resource identifier of a style resource that supplies default values for the
-	 * 		StyledAttributes, used only if defStyleAttr is 0 or can not be found in the theme. Can be 0
-	 * 		to not look for defaults.
+	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is zero,
+	 * 		pass 0 to ignore
 	 */
 	@TargetApi(21)
 	public Dot(final Context context, final AttributeSet attrs, final int defStyleAttr,
@@ -212,14 +210,12 @@ public final class Dot extends RelativeLayout {
 	 * invoked during construction.
 	 *
 	 * @param attrs
-	 * 		configuration attributes
+	 * 		configuration attributes, null allowed
 	 * @param defStyleAttr
-	 * 		an attribute in the current theme that contains a reference to a style resource that
-	 * 		supplies defaults values for the StyledAttributes, or 0 to not look for defaults
+	 * 		an attribute in the current theme which supplies default attributes, pass 0	to ignore
 	 * @param defStyleRes
-	 * 		a resource identifier of a style resource that supplies default values for the
-	 * 		StyledAttributes, used only if defStyleAttr is 0 or can not be found in the theme. Can be 0
-	 * 		to not look for defaults.
+	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is zero,
+	 * 		pass 0 to ignore
 	 */
 	private void init(final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
 		// Use a TypedArray to process attrs
