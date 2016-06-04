@@ -578,7 +578,7 @@ public final class Dot extends RelativeLayout {
 		} else if (state != State.INACTIVE) {
 			setInactive(animate);
 		} else {
-			Log.e(TAG, "[Animating trying to start from illegal state]");
+			Log.e(TAG, "[Animation trying to start from illegal state]");
 		}
 	}
 
