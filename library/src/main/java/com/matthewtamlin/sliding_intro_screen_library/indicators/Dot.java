@@ -228,7 +228,7 @@ public final class Dot extends RelativeLayout {
 		final int defaultInactiveDiameterPx =
 				DimensionHelper.dpToPx(DEFAULT_INACTIVE_DIAMETER_DP, getContext());
 
-		// Assign attributes to member variables
+		// Assign provided attributes to member variables, or use the defaults if necessary
 		inactiveDiameterPx = attributes
 				.getDimensionPixelSize(R.styleable.Dot_inactiveDiameter,
 						defaultInactiveDiameterPx);
