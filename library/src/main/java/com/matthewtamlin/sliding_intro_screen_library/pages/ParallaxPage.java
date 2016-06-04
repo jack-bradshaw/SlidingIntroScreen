@@ -26,18 +26,16 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
-import com.matthewtamlin.sliding_intro_screen_library.transformers.ParallaxTransformer;
 import com.matthewtamlin.sliding_intro_screen_library.R;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
+import com.matthewtamlin.sliding_intro_screen_library.transformers.MultiViewParallaxTransformer;
 
 /**
- * An {@link Page} with three elements: a front image, a back image and text. The front and back
- * images are centred at the top the Page, such that the front image is drawn on top of the back
- * image. The text is drawn over both images. This class can be used in an {@link IntroActivity}
- * with a {@link ParallaxTransformer} to create a parallax scrolling effect, where the images
- * transition at different speeds. To allow the use of custom transformers, the resource ids of the
- * views can be accessed using the {@link #getFrontImageHolderResId()}, {@link
- * #getBackImageHolderResId()} and {@link #getTextHolderResId()} methods.
+ * An Fragment with three visual elements: a front image, a back image and text. The Views are drawn
+ * such that the back image is drawn behind the front image, and the text is drawn on top of both.
+ * The images are positioned in the centre-top of the layout, and the text is positioned at the
+ * exact centre. This class can be used in a {@link IntroActivity} with a {@link
+ * MultiViewParallaxTransformer} to create a parallax scrolling effect between the images.
  */
 public class ParallaxPage extends Fragment {
 	/**
@@ -82,32 +80,30 @@ public class ParallaxPage extends Fragment {
 	protected CharSequence text = null;
 
 	/**
-	 * Required default empty constructor.
-	 */
-	public ParallaxPage() {
-		super();
-	}
-
-	/**
-	 * @return a new instance of ParallaxPage.
+	 * @return a new ParallaxPage instance
 	 */
 	public static ParallaxPage newInstance() {
 		return new ParallaxPage();
 	}
 
+	/**
+	 * Constructs a new ParallaxPage instance. This is an empty public constructor, as required by
+	 * the Android fragment framework.
+	 */
+	public ParallaxPage() {
+		super();
+	}
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
-
 		rootView =
 				(FrameLayout) inflater.inflate(R.layout.fragment_parallax_page, container, false);
 		frontImageHolder = (ImageView) rootView.findViewById(R.id.page_fragment_imageHolderFront);
 		backImageHolder = (ImageView) rootView.findViewById(R.id.page_fragment_imageHolderBack);
 		textHolder = (TextView) rootView.findViewById(R.id.page_fragment_textHolder);
 
-		notifyFrontImageChanged();
-		notifyBackImageChanged();
-		notifyTextChanged();
+		reflectParametersInView();
 
 		return rootView;
 	}
@@ -119,14 +115,37 @@ public class ParallaxPage extends Fragment {
 	}
 
 	/**
+	 * Updates the UI of this ParallaxPage to reflect the current member variables
+	 */
+	private void reflectParametersInView() {
+		if (frontImageHolder != null) {
+			// The image will not update unless it is first reset by supplying null
+			frontImageHolder.setImageBitmap(null);
+			frontImageHolder.setImageBitmap(frontImage);
+		}
+
+		if (backImageHolder != null) {
+			// The image will not update unless it is first reset by supplying null
+			backImageHolder.setImageBitmap(null);
+			backImageHolder.setImageBitmap(backImage);
+		}
+
+		if (textHolder != null) {
+			// The text will not update unless it is first reset by supplying null
+			textHolder.setText(null);
+			textHolder.setText(text);
+		}
+	}
+
+	/**
 	 * Sets the front image of this ParallaxPage.
 	 *
 	 * @param frontImage
-	 * 		the image to display
+	 * 		the image to display, null to display none
 	 */
 	public void setFrontImage(final Bitmap frontImage) {
 		this.frontImage = frontImage;
-		notifyFrontImageChanged();
+		reflectParametersInView();
 	}
 
 	/**
@@ -137,21 +156,21 @@ public class ParallaxPage extends Fragment {
 	}
 
 	/**
-	 * @return the resource id of the view which holds the front image
+	 * @return the View which holds the front image, null if the View has not yet been created
 	 */
-	public int getFrontImageHolderResId() {
-		return frontImageHolder.getId();
+	public View getFrontImageHolder() {
+		return frontImageHolder;
 	}
 
 	/**
 	 * Sets the back image of this ParallaxPage.
 	 *
 	 * @param backImage
-	 * 		the image to display
+	 * 		the image to display, null to display none
 	 */
 	public void setBackImage(final Bitmap backImage) {
 		this.backImage = backImage;
-		notifyBackImageChanged();
+		reflectParametersInView();
 	}
 
 	/**
@@ -162,21 +181,21 @@ public class ParallaxPage extends Fragment {
 	}
 
 	/**
-	 * @return the resource id of the view which holds the back image
+	 * @return the View which holds the back image, null if the View has not yet been created
 	 */
-	public int getBackImageHolderResId() {
-		return backImageHolder.getId();
+	public View getBackImageHolder() {
+		return backImageHolder;
 	}
 
 	/**
-	 * Sets and displays the text of this ParallaxPage.
+	 * Sets the text of this ParallaxPage.
 	 *
 	 * @param text
-	 * 		the text to display
+	 * 		the text to display, null to display none
 	 */
 	public void setText(final CharSequence text) {
 		this.text = text;
-		notifyTextChanged();
+		reflectParametersInView();
 	}
 
 	/**
@@ -187,45 +206,9 @@ public class ParallaxPage extends Fragment {
 	}
 
 	/**
-	 * @return the resource id of the view which holds the text
+	 * @return the View which holds the text, null if the View has not yet been created
 	 */
-	public int getTextHolderResId() {
-		return textHolder.getId();
-	}
-
-	/**
-	 * Updates the UI of this ParallaxPage to reflect the image supplied to {@link
-	 * #setFrontImage(Bitmap)}. There is no need to explicitly call this method after calling {@link
-	 * #setFrontImage(Bitmap)}.
-	 */
-	public void notifyFrontImageChanged() {
-		if (frontImageHolder != null) {
-			frontImageHolder.setImageBitmap(null); // Forces reset
-			frontImageHolder.setImageBitmap(frontImage);
-		}
-	}
-
-	/**
-	 * Updates the UI of this ParallaxPage to reflect the image supplied to {@link #setBackImage
-	 * (Bitmap)}. There is no need to explicitly call this method after calling {@link
-	 * #setBackImage(Bitmap)}.
-	 */
-	public void notifyBackImageChanged() {
-		if (backImageHolder != null) {
-			backImageHolder.setImageBitmap(null); // Forces reset
-			backImageHolder.setImageBitmap(backImage);
-		}
-	}
-
-	/**
-	 * Updates the UI of this ParallaxPage to reflect the text supplied to {@link
-	 * #setText(CharSequence)}. There is no need to explicitly call this method after calling {@link
-	 * #setText(CharSequence)}.
-	 */
-	public void notifyTextChanged() {
-		if (textHolder != null) {
-			textHolder.setText(null); // Forces reset
-			textHolder.setText(text);
-		}
+	public View getTextHolder() {
+		return textHolder;
 	}
 }
