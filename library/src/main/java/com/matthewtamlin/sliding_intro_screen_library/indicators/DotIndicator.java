@@ -149,7 +149,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	 */
 	public DotIndicator(final Context context) {
 		super(context);
-		init(null);
+		init(null, 0, 0);
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	 */
 	public DotIndicator(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		init(attrs);
+		init(attrs, 0, 0);
 	}
 
 	/**
@@ -188,22 +188,51 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	public DotIndicator(final Context context, final AttributeSet attrs, final int
 			defStyleAttr) {
 		super(context, attrs, defStyleAttr);
-		init(attrs);
+		init(attrs, defStyleAttr, 0);
 	}
 
 	/**
-	 * Initialises this DotIndicator. The provided attributes are read and assigned to member
-	 * variables, and the UI is created. This method should only be invoked during construction.
+	 * Constructs a new DotIndicator instance. If an attribute specific to this class is not
+	 * provided, the relevant default is used. The defaults are:<ul><li>numberOfDots: 1</li>
+	 * <li>selectedDotIndex: 0</li> <li>unselectedDotDiameter: 6dp</li> <li>selectedDotDiameter:
+	 * 9dp</li> <li>unselectedDotColor: opaque white (i.e. ARGB 0xFFFFFFFF)</li>
+	 * <li>selectedDotColor: opaque white (i.e. ARGB 0xFFFFFFFF)</li> <li>spacingBetweenDots:
+	 * 7dp</li> <li>dotTransitionDuration: 200ms</li></ul>
+	 *
+	 * @param context
+	 * 		the context in which this SelectionIndicator is operating
+	 * @param attrs
+	 * 		configuration attributes, null allowed
+	 * @param defStyleAttr
+	 * 		an attribute in the current theme which supplies default attributes, pass 0	to ignore
+	 * @param defStyleRes
+	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is zero,
+	 * 		pass 0 to ignore
+	 */
+	@TargetApi(21)
+	public DotIndicator(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
+		init(attrs, defStyleAttr, defStyleRes);
+	}
+
+	/**
+	 * Initialises the member variables of this DotIndicator and creates the UI. This method should
+	 * only be invoked during construction.
 	 *
 	 * @param attrs
 	 * 		configuration attributes, null allowed
+	 * @param defStyleAttr
+	 * 		an attribute in the current theme which supplies default attributes, pass 0	to ignore
+	 * @param defStyleRes
+	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is zero,
+	 * 		pass 0 to ignore
 	 */
-	private void init(final AttributeSet attrs) {
+	private void init(final AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		// Use a TypedArray to process attrs
-		final TypedArray attributes =
-				getContext().obtainStyledAttributes(attrs, R.styleable.DotIndicator);
+		final TypedArray attributes = getContext().obtainStyledAttributes(attrs, R.styleable
+				.DotIndicator, defStyleAttr, defStyleRes);
 
-		// Need to convert all default dimensions to px from dp
+		// Need to convert all default dimensions to px
 		final int defaultSelectedDotDiameterPx =
 				DimensionHelper.dpToPx(DEFAULT_SELECTED_DOT_DIAMETER_DP, getContext());
 		final int defaultUnselectedDotDiameterPx = DimensionHelper.dpToPx(
