@@ -121,8 +121,9 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	private int selectedDotColor;
 
 	/**
-	 * The spacing between the edges of consecutive dots. The spacing is applied as if all dots are
-	 * unselected.
+	 * The spacing between dots. The spacing is measured as the distance between the edges of
+	 * consecutive dots. The spacing is applied as if all dots are unselected, and when a dot
+	 * changes size to become selected, it stays fixed at its centre.
 	 */
 	private int spacingBetweenDotsPx;
 
@@ -240,7 +241,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 		final int defaultSpacingBetweenDotsPx =
 				DimensionHelper.dpToPx(DEFAULT_SPACING_BETWEEN_DOTS_DP, getContext());
 
-		// Assign attributes to member variables
+		// Assign provided attributes to member variables, or use the defaults if necessary
 		numberOfDots = attributes
 				.getInt(R.styleable.DotIndicator_numberOfDots, DEFAULT_NUMBER_OF_DOTS);
 		selectedDotIndex = attributes
@@ -274,51 +275,60 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Constructs and displays dots based on current member variables. Calling this method will
-	 * remove and recreate all existing dots.
+	 * Constructs and displays dots based on current member variables.
 	 */
 	private void reflectParametersInView() {
-		dots.clear();
+		// Reset the root View and the dot Collection so that the UI can be entirely recreated
 		removeAllViews();
+		dots.clear();
 
+		// Create the dots incrementally from left to right
 		for (int i = 0; i < numberOfDots; i++) {
+			// Create a dot and set its properties
 			Dot dot = new Dot(getContext());
-			dot.setInactiveDiameterPx(unselectedDotDiameterPx).setActiveDiameterPx(
-					selectedDotDiameterPx)
-					.setActiveColor(selectedDotColor).setInactiveColor(unselectedDotColor)
+			dot.setInactiveDiameterPx(unselectedDotDiameterPx)
+					.setActiveDiameterPx(selectedDotDiameterPx)
+					.setActiveColor(selectedDotColor)
+					.setInactiveColor(unselectedDotColor)
 					.setTransitionDuration(dotTransitionDuration);
 
+
+			// Make the dot active if necessary
 			if (i == selectedDotIndex) {
 				dot.setActive(false);
 			} else {
 				dot.setInactive(false);
 			}
 
+			// Create the positioning parameters
 			int maxDiameterDimension = Math.max(selectedDotDiameterPx, unselectedDotDiameterPx);
 			int startMargin = i * (spacingBetweenDotsPx + unselectedDotDiameterPx);
 			LayoutParams params = new LayoutParams(maxDiameterDimension, maxDiameterDimension);
 			params.setMargins(startMargin, 0, 0, 0);
 
+			// RTL layout support
 			if (Build.VERSION.SDK_INT >= 17) {
 				params.setMarginStart(startMargin);
 			}
 
+			// Apply the positioning parameters and add the dot to the UI
 			dot.setLayoutParams(params);
-			dots.add(i, dot);
 			addView(dot);
+
+			// Keep a record of the dot for later use
+			dots.add(i, dot);
 		}
 	}
 
 	/**
-	 * Forces a redraw of all dots. All existing dots are destroyed and recreated. The new dots will
-	 * reflect the current parameters.
+	 * Forces the View to entirely destroy and recreate the UI.
 	 */
 	public void redrawDots() {
 		reflectParametersInView();
 	}
 
 	/**
-	 * Sets the diameter to use for each unselected dot.
+	 * Sets the diameter to use for the unselected dots.
 	 *
 	 * @param unselectedDotDiameterPx
 	 * 		the diameter to use, measured in pixels
@@ -329,7 +339,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Sets the diameter to use for each unselected dot.
+	 * Sets the diameter to use for the unselected dots.
 	 *
 	 * @param unselectedDotDiameterDp
 	 * 		the diameter to use, measured in display-independent pixels
@@ -340,9 +350,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Returns the diameter currently used for each unselected dot.
-	 *
-	 * @return the diameter currently used, measured in pixels
+	 * @return the current unselected dot diameter, measured in pixels
 	 */
 	public int getUnselectedDotDiameter() {
 		return unselectedDotDiameterPx;
@@ -371,16 +379,14 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Returns the diameter currently used for the selected dot.
-	 *
-	 * @return the diameter currently used, measured in pixels
+	 * @return the current selected dot diameter, measured in pixels
 	 */
 	public int getSelectedDotDiameter() {
 		return selectedDotDiameterPx;
 	}
 
 	/**
-	 * Sets the color to use for each unselected dot.
+	 * Sets the color to use for the unselected dots.
 	 *
 	 * @param unselectedDotColor
 	 * 		the color to use, as an ARGB hex code
@@ -391,9 +397,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Returns the color currently used for each unselected dot.
-	 *
-	 * @return the color currently used, as an ARGB hex code
+	 * @return the current unselected dot color, as an ARGB hex code
 	 */
 	public int getUnselectedDotColor() {
 		return unselectedDotColor;
@@ -411,17 +415,16 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Returns the color currently used for the selected dot.
-	 *
-	 * @return the color currently used, as an ARGB hex code
+	 * @return the current unselected dot color, as an ARGB hex code
 	 */
 	public int getSelectedDotColor() {
 		return selectedDotColor;
 	}
 
 	/**
-	 * Sets the spacing between consecutive dots, as measured from the edges of the unselected
-	 * dots.
+	 * Sets the spacing between dots. The spacing is measured as the distance between the edges of
+	 * consecutive unselected dots. The spacing is applied as if all dots are unselected, and when a
+	 * dot changes size to become selected, it stays fixed at its centre.
 	 *
 	 * @param spacingBetweenDotsPx
 	 * 		the spacing to use, measured in pixels
@@ -432,8 +435,9 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Sets the spacing between consecutive dots, as measured from the edges of the unselected
-	 * dots.
+	 * Sets the spacing between dots. The spacing is measured as the distance between the edges of
+	 * consecutive unselected dots. The spacing is applied as if all dots are unselected, and when a
+	 * dot changes size to become selected, it stays fixed at its centre.
 	 *
 	 * @param spacingBetweenDotsDp
 	 * 		the spacing to use, measured in display-independent pixels
@@ -444,8 +448,9 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Returns the spacing between consecutive dots, as measured from the edges of the unselected
-	 * dots.
+	 * Returns the current spacing between dots. The spacing is measured as the distance between the
+	 * edges of consecutive unselected dots. The spacing is applied as if all dots are unselected,
+	 * and when a dot changes size to become selected, it stays fixed at its centre.
 	 *
 	 * @return the current spacing, measured in pixels
 	 */
@@ -453,26 +458,16 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 		return spacingBetweenDotsPx;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws IndexOutOfBoundsException
-	 * 		if {@code index} is too large for the current indicator size
-	 * @throws IllegalArgumentException
-	 * 		if {@code index} is less than 0
-	 */
 	@Override
 	public void setSelectedItem(final int index, final boolean animate) {
-		if (selectedDotIndex < 0) {
-			throw new IllegalArgumentException("newActiveItemIndex must be greater than 0");
-		}
-
 		try {
 			dots.get(this.selectedDotIndex).setInactive(animate);
 			dots.get(index).setActive(animate);
 		} catch (IndexOutOfBoundsException e) {
+			// Catch and rethrow the exception to avoid showing the internal implementation
 			throw new IndexOutOfBoundsException();
 		}
+
 		this.selectedDotIndex = index;
 	}
 
@@ -483,7 +478,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 
 	@Override
 	public void setNumberOfItems(final int numberOfItems) {
-		this.numberOfDots = numberOfItems;
+		numberOfDots = numberOfItems;
 		reflectParametersInView();
 	}
 
@@ -494,7 +489,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 
 	@Override
 	public void setTransitionDuration(final int transitionDurationMs) {
-		this.dotTransitionDuration = transitionDurationMs;
+		dotTransitionDuration = transitionDurationMs;
 		reflectParametersInView();
 	}
 
