@@ -137,7 +137,7 @@ public final class Dot extends RelativeLayout {
 	 * <li>transitionDuration: 200ms</li> <li>initiallyActive: false</li></ul>
 	 *
 	 * @param context
-	 * 		the context in which this Dot is operating, not null
+	 * 		the Context in which this Dot is operating, not null
 	 */
 	public Dot(final Context context) {
 		super(context);
@@ -152,7 +152,7 @@ public final class Dot extends RelativeLayout {
 	 * <li>initiallyActive: false</li></ul>
 	 *
 	 * @param context
-	 * 		the context in which this Dot is operating, not null
+	 * 		the Context in which this Dot is operating, not null
 	 * @param attrs
 	 * 		configuration attributes, null allowed
 	 */
@@ -169,7 +169,7 @@ public final class Dot extends RelativeLayout {
 	 * <li>initiallyActive: false</li></ul>
 	 *
 	 * @param context
-	 * 		the context in which this Dot is operating, not null
+	 * 		the Context in which this Dot is operating, not null
 	 * @param attrs
 	 * 		configuration attributes, null allowed
 	 * @param defStyleAttr
@@ -189,7 +189,7 @@ public final class Dot extends RelativeLayout {
 	 * <li>initiallyActive: false</li>
 	 *
 	 * @param context
-	 * 		the context in which this Dot is operating, not null
+	 * 		the Context in which this Dot is operating, not null
 	 * @param attrs
 	 * 		configuration attributes, null allowed
 	 * @param defStyleAttr
