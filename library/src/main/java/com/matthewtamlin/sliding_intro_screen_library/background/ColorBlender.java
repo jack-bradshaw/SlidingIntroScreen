@@ -42,7 +42,7 @@ public class ColorBlender implements BackgroundManager {
 	 * @throws IllegalArgumentException
 	 * 		if {@code colors} is null
 	 */
-	public ColorBlender(int[] colors) {
+	public ColorBlender(final int[] colors) {
 		if (colors == null) {
 			throw new IllegalArgumentException("colors cannot be null");
 		} else if (colors.length == 0) {
@@ -53,7 +53,7 @@ public class ColorBlender implements BackgroundManager {
 	}
 
 	@Override
-	public void updateBackground(View background, int index, float offset) {
+	public void updateBackground(final View background, final int index, final float offset) {
 		// Check that index doesn't exceed array bounds before progressing
 		if (index > colors.length - 1) {
 			throw new IllegalArgumentException("index is too large");
