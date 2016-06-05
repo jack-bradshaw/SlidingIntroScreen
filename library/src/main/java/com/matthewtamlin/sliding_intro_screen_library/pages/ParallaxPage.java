@@ -47,37 +47,37 @@ public class ParallaxPage extends Fragment {
 	/**
 	 * The root view of this Fragment.
 	 */
-	protected FrameLayout rootView;
+	private FrameLayout rootView;
 
 	/**
 	 * The View which displays the front image.
 	 */
-	protected ImageView frontImageHolder;
+	private ImageView frontImageHolder;
 
 	/**
 	 * The View which displays the back image.
 	 */
-	protected ImageView backImageHolder;
+	private ImageView backImageHolder;
 
 	/**
 	 * The View which displays the text.
 	 */
-	protected TextView textHolder;
+	private TextView textHolder;
 
 	/**
 	 * The current front image.
 	 */
-	protected Bitmap frontImage = null;
+	private Bitmap frontImage = null;
 
 	/**
 	 * The current back image.
 	 */
-	protected Bitmap backImage = null;
+	private Bitmap backImage = null;
 
 	/**
 	 * The current text.
 	 */
-	protected CharSequence text = null;
+	private CharSequence text = null;
 
 	/**
 	 * @return a new ParallaxPage instance
