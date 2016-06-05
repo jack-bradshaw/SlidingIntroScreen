@@ -962,7 +962,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 *
 	 * @return an AnimatorFactory to use when buttons are enabled/disabled, not null
 	 */
-	public AnimatorFactory generateButtonAnimatorFactory() {
+	protected AnimatorFactory generateButtonAnimatorFactory() {
 		return new FadeAnimatorFactory();
 	}
 
