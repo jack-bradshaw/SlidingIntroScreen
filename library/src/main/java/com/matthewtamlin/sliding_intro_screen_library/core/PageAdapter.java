@@ -21,8 +21,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks;
-import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks
-		.OnListChangedListener;
+import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks.OnListChangedListener;
 
 /**
  * Adapts a collection of Fragments so that they can be displayed in an {@link
