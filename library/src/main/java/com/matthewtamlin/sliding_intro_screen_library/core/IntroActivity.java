@@ -720,6 +720,29 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 
+	// Methods for listing to page changes
+
+	/**
+	 * Registers a listener to receive a callback whenever the page changes.
+	 *
+	 * @param listener
+	 * 		the listener to register
+	 */
+	public final void addPageChangeListener(final OnPageChangeListener listener) {
+		viewPager.addOnPageChangeListener(listener);
+	}
+
+	/**
+	 * Unregisters a listener to prevent it from receiving further page change callbacks.
+	 *
+	 * @param listener
+	 * 		the listener to unregister
+	 */
+	public final void removePageChangeListener(final OnPageChangeListener listener) {
+		viewPager.removeOnPageChangeListener(listener);
+	}
+	
+
 	// Methods relating to the pages and navigation
 
 	/**
@@ -1000,8 +1023,8 @@ public abstract class IntroActivity extends AppCompatActivity {
 	}
 
 	/**
-	 * Returns whether or not the left button is currently disabled on all pages. This method
-	 * does not take into account {@link #disableLeftButtonOnLastPage(boolean)} in any way.
+	 * Returns whether or not the left button is currently disabled on all pages. This method does
+	 * not take into account {@link #disableLeftButtonOnLastPage(boolean)} in any way.
 	 *
 	 * @return true if the button is currently entirely, false otherwise
 	 */
