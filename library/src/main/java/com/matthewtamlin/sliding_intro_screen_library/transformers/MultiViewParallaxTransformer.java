@@ -100,7 +100,7 @@ public class MultiViewParallaxTransformer implements ViewPager.PageTransformer {
 	 * 		the parallax factor to apply
 	 * @return this MultiViewParallaxTransformer
 	 */
-	public MultiViewParallaxTransformer withParallaxView(int id, float parallaxFactor) {
+	public MultiViewParallaxTransformer withParallaxView(final int id, final float parallaxFactor) {
 		parallaxFactors.put(id, parallaxFactor);
 		return this;
 	}
@@ -113,7 +113,7 @@ public class MultiViewParallaxTransformer implements ViewPager.PageTransformer {
 	 * 		the resource ID of the Views to remove the effect from
 	 * @return this MultiViewParallaxTransformer
 	 */
-	public MultiViewParallaxTransformer withoutParallaxView(int id) {
+	public MultiViewParallaxTransformer withoutParallaxView(final int id) {
 		parallaxFactors.remove(id);
 		return this;
 	}
