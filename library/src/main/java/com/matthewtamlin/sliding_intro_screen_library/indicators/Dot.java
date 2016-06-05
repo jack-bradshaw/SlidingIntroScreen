@@ -194,8 +194,8 @@ public final class Dot extends RelativeLayout {
 	 * @param defStyleAttr
 	 * 		an attribute in the current theme which supplies default attributes, pass 0	to ignore
 	 * @param defStyleRes
-	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is 0,
-	 * 		pass 0 to ignore
+	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is 0, pass
+	 * 		0 to ignore
 	 */
 	@TargetApi(21)
 	public Dot(final Context context, final AttributeSet attrs, final int defStyleAttr,
@@ -213,8 +213,8 @@ public final class Dot extends RelativeLayout {
 	 * @param defStyleAttr
 	 * 		an attribute in the current theme which supplies default attributes, pass 0	to ignore
 	 * @param defStyleRes
-	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is 0,
-	 * 		pass 0 to ignore
+	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is 0, pass
+	 * 		0 to ignore
 	 */
 	private void init(final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
 		// Use a TypedArray to process attrs
