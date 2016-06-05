@@ -40,7 +40,7 @@ public class ColorBlender implements BackgroundManager {
 	 * @param colors
 	 * 		the background colors to use, not null
 	 * @throws IllegalArgumentException
-	 * 		if {@code colors} is null
+	 * 		if {@code colors} is null or if the length of colors is less than 1
 	 */
 	public ColorBlender(final int[] colors) {
 		if (colors == null) {

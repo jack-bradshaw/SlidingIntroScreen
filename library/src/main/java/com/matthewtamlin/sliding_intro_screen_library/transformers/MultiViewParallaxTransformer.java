@@ -130,6 +130,7 @@ public class MultiViewParallaxTransformer implements ViewPager.PageTransformer {
 	 * 		the resource ID of the child View
 	 * @return the child view of {@code parentView} with the resource ID of {@code id}, null if no
 	 * such child view exists
+	 * @throws IllegalArgumentException if {@code rootView} is null
 	 */
 	public View getViewToTransform(final View rootView, final int id) {
 		if (rootView == null) {
