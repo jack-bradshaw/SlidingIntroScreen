@@ -82,7 +82,8 @@ public class MultiViewParallaxTransformer implements ViewPager.PageTransformer {
 	/**
 	 * Applies a parallax effect to all Views with the provided resource ID. The parallax factor
 	 * determines how fast the affected views are translated, relative to a View with no parallax
-	 * effect.
+	 * effect. It is recommended that this method not be called while the Views are being
+	 * transformed.
 	 * <p/>
 	 * Parallax factors less than 1 cause the affected Views to move slower than non-affected Views,
 	 * and parallax factors greater than 1 cause the affected Views to move faster than non-affected
