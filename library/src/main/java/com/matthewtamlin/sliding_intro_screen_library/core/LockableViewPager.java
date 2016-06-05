@@ -32,7 +32,7 @@ public class LockableViewPager extends ViewPager {
 	private static final String TAG = "[LockableViewPager]";
 
 	/**
-	 * Defines which actions are prevented from changing the page.
+	 * Specifies which actions are currently prevented from changing the page.
 	 */
 	private LockMode lockMode = LockMode.UNLOCKED;
 
@@ -42,7 +42,7 @@ public class LockableViewPager extends ViewPager {
 	 * @param context
 	 * 		the Context in which this LockableViewPager is operating, not null
 	 */
-	public LockableViewPager(Context context) {
+	public LockableViewPager(final Context context) {
 		super(context);
 	}
 
@@ -55,7 +55,7 @@ public class LockableViewPager extends ViewPager {
 	 * 		an attribute in the current theme that contains a reference to a style resource that
 	 * 		supplies defaults values for the StyledAttributes, or 0 to not look for defaults
 	 */
-	public LockableViewPager(Context context, AttributeSet attrs) {
+	public LockableViewPager(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 	}
 
