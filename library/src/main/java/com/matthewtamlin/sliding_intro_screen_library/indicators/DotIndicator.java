@@ -207,8 +207,8 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	 * @param defStyleAttr
 	 * 		an attribute in the current theme which supplies default attributes, pass 0	to ignore
 	 * @param defStyleRes
-	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is 0,
-	 * 		pass 0 to ignore
+	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is 0, pass
+	 * 		0 to ignore
 	 */
 	@TargetApi(21)
 	public DotIndicator(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -225,8 +225,8 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	 * @param defStyleAttr
 	 * 		an attribute in the current theme which supplies default attributes, pass 0	to ignore
 	 * @param defStyleRes
-	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is 0,
-	 * 		pass 0 to ignore
+	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is 0, pass
+	 * 		0 to ignore
 	 */
 	private void init(final AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		// Use a TypedArray to process attrs
