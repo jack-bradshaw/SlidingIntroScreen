@@ -27,7 +27,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 
-import com.matthewtamlin.android_utilities_library.helpers.PermissionsHelper;
 import com.matthewtamlin.sliding_intro_screen_library.R;
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
 
@@ -225,8 +224,9 @@ public class IntroButton extends Button {
 	 * Updates the UI of this IntroButton to match the current state.
 	 */
 	private void updateUI() {
-		final AppearanceManipulator manipulator =
-				appearance == null ? null : appearance.getManipulator();
+		final AppearanceManipulator manipulator = appearance == null ?
+				null :
+				appearance.getManipulator();
 
 		if (manipulator != null) {
 			manipulator.setButton(this);
@@ -302,11 +302,11 @@ public class IntroButton extends Button {
 	 * @param behaviourClass
 	 * 		the Behaviour class to associate the label with, null to use the current Behaviour
 	 */
-	public void setLabel(final CharSequence label,
-			final Class<? extends Behaviour> behaviourClass) {
+	public void setLabel(final CharSequence label, final Class<? extends Behaviour>
+			behaviourClass) {
 		// Use the current Behaviour class if null was supplied
 		final Class<? extends Behaviour> behaviourClassToSet = (behaviourClass == null) ?
-				this.behaviour.getClass() :
+				behaviour.getClass() :
 				behaviourClass;
 
 		labels.put(behaviourClassToSet, label);
@@ -323,8 +323,10 @@ public class IntroButton extends Button {
 	 */
 	public CharSequence getLabel(final Class<? extends Behaviour> behaviourClass) {
 		// Use the current Behaviour class if null was supplied
-		final Class behaviourClassToGet = (behaviourClass == null) ? this.behaviour.getClass() :
+		final Class behaviourClassToGet = (behaviourClass == null) ?
+				behaviour.getClass() :
 				behaviourClass;
+
 		return labels.get(behaviourClassToGet);
 	}
 
@@ -341,9 +343,8 @@ public class IntroButton extends Button {
 	 */
 	public void setIcon(final Drawable icon, final Class<? extends Behaviour> behaviourClass) {
 		// Use the current Behaviour class if null was supplied
-		final Class<? extends Behaviour> behaviourClassToSet =
-				(behaviourClass == null) ? this.behaviour.getClass() :
-						behaviourClass;
+		final Class<? extends Behaviour> behaviourClassToSet = (behaviourClass == null) ?
+				behaviour.getClass() : behaviourClass;
 
 		icons.put(behaviourClassToSet, icon);
 		updateUI();
@@ -359,8 +360,10 @@ public class IntroButton extends Button {
 	 */
 	public Drawable getIcon(final Class<? extends Behaviour> behaviourClass) {
 		// Use the current Behaviour class if null was supplied
-		final Class behaviourClassToSet =
-				(behaviourClass == null) ? this.behaviour.getClass() : behaviourClass;
+		final Class behaviourClassToSet = (behaviourClass == null) ?
+				behaviour.getClass() :
+				behaviourClass;
+
 		return icons.get(behaviourClassToSet);
 	}
 
@@ -485,7 +488,7 @@ public class IntroButton extends Button {
 		 * 		an AppearanceManipulator which makes the target IntroButton reflect this
 		 * 		Appearance,	not null
 		 */
-		Appearance(AppearanceManipulator manipulator) {
+		Appearance(final AppearanceManipulator manipulator) {
 			this.manipulator = manipulator;
 		}
 
@@ -637,7 +640,7 @@ public class IntroButton extends Button {
 		 * @throws IllegalArgumentException
 		 * 		if {@code startNextActivity} is null
 		 */
-		public ProgressToNextActivity(Intent startNextActivity, SharedPreferences.Editor
+		public ProgressToNextActivity(final Intent startNextActivity, final SharedPreferences.Editor
 				editsToMake) {
 			if (startNextActivity == null) {
 				throw new IllegalArgumentException("startNextActivity cannot be null");
@@ -720,7 +723,7 @@ public class IntroButton extends Button {
 		 * @param requestCode
 		 * 		the request code for receiving the result of the permission request
 		 */
-		public RequestPermissions(String[] permissions, int requestCode) {
+		public RequestPermissions(final String[] permissions, final int requestCode) {
 			this.permissions = permissions;
 			this.requestCode = requestCode;
 		}
@@ -732,9 +735,7 @@ public class IntroButton extends Button {
 		@Override
 		public final void run() {
 			if (getActivity() != null) {
-				if (!PermissionsHelper.permissionsAreGranted(getActivity(), permissions)) {
-					getActivity().requestPermissions(permissions, requestCode);
-				}
+				getActivity().requestPermissions(permissions, requestCode);
 			}
 		}
 	}
