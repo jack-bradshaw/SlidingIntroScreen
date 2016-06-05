@@ -656,7 +656,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * IntroButton} class contains Behaviours which suit most needs. The Behaviour of the final
 	 * button can be changed later using {@link #getFinalButtonAccessor()}.
 	 *
-	 * @return the behaviour to use for the final button, not null
+	 * @return the Behaviour to use for the final button, not null
 	 */
 	protected abstract Behaviour generateFinalButtonBehaviour();
 
