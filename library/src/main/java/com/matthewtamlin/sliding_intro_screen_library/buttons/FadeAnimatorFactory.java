@@ -25,32 +25,32 @@ import android.view.View;
  */
 public class FadeAnimatorFactory implements AnimatorFactory {
 	@Override
-	public Animator newLeftButtonAppearAnimator(View leftButton) {
+	public Animator newLeftButtonAppearAnimator(final View leftButton) {
 		return createFade(leftButton, 0, 1);
 	}
 
 	@Override
-	public Animator newLeftButtonDisappearAnimator(View leftButton) {
+	public Animator newLeftButtonDisappearAnimator(final View leftButton) {
 		return createFade(leftButton, 1, 0);
 	}
 
 	@Override
-	public Animator newRightButtonAppearAnimator(View rightButton) {
+	public Animator newRightButtonAppearAnimator(final View rightButton) {
 		return createFade(rightButton, 0, 1);
 	}
 
 	@Override
-	public Animator newRightButtonDisappearAnimator(View rightButton) {
+	public Animator newRightButtonDisappearAnimator(final View rightButton) {
 		return createFade(rightButton, 1, 0);
 	}
 
 	@Override
-	public Animator newFinalButtonAppearAnimator(View finalButton) {
+	public Animator newFinalButtonAppearAnimator(final View finalButton) {
 		return createFade(finalButton, 0, 1);
 	}
 
 	@Override
-	public Animator newFinalButtonDisappearAnimator(View finalButton) {
+	public Animator newFinalButtonDisappearAnimator(final View finalButton) {
 		return createFade(finalButton, 1, 0);
 	}
 
@@ -66,7 +66,7 @@ public class FadeAnimatorFactory implements AnimatorFactory {
 	 * 		the alpha to use at the end of the animation
 	 * @return the fade animation, not null
 	 */
-	private Animator createFade(final View button, float startAlpha, float endAlpha) {
+	private Animator createFade(final View button, final float startAlpha, final float endAlpha) {
 		final ValueAnimator fadeAnimator = ValueAnimator.ofFloat(startAlpha, endAlpha);
 
 		fadeAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
