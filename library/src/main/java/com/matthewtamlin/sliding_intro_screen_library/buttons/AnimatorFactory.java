@@ -80,9 +80,9 @@ public interface AnimatorFactory {
 
 	/**
 	 * Creates a new Animator which can be used to make the final button of a IntroActivity appear.
-	 * The Animator adheres to the following conditions: <ul> <li>At the start of the animation,
-	 * the button is invisible to the user.</li> <li>At the end of the animation, the button is
-	 * visible to the user.</li> <li>The animation displays properly when the duration is set to 150
+	 * The Animator adheres to the following conditions: <ul> <li>At the start of the animation, the
+	 * button is invisible to the user.</li> <li>At the end of the animation, the button is visible
+	 * to the user.</li> <li>The animation displays properly when the duration is set to 150
 	 * milliseconds.</li> </ul>
 	 *
 	 * @param finalButton
