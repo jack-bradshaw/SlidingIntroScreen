@@ -35,7 +35,7 @@ import static android.widget.RelativeLayout.LayoutParams.MATCH_PARENT;
 /**
  * Displays a set of dots to indicate the selected item in a set.
  */
-public class DotIndicator extends RelativeLayout implements SelectionIndicator {
+public final class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	/**
 	 * Used to identify this class during debugging.
 	 */
@@ -186,8 +186,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	 * @param defStyleAttr
 	 * 		an attribute in the current theme which supplies default attributes, pass 0	to ignore
 	 */
-	public DotIndicator(final Context context, final AttributeSet attrs, final int
-			defStyleAttr) {
+	public DotIndicator(final Context context, final AttributeSet attrs, final int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		init(attrs, defStyleAttr, 0);
 	}
@@ -211,7 +210,8 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	 * 		0 to ignore
 	 */
 	@TargetApi(21)
-	public DotIndicator(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+	public DotIndicator(final Context context, final AttributeSet attrs, final int defStyleAttr,
+			final int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
 		init(attrs, defStyleAttr, defStyleRes);
 	}
@@ -228,7 +228,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is 0, pass
 	 * 		0 to ignore
 	 */
-	private void init(final AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+	private void init(final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
 		// Use a TypedArray to process attrs
 		final TypedArray attributes = getContext().obtainStyledAttributes(attrs, R.styleable
 				.DotIndicator, defStyleAttr, defStyleRes);
@@ -285,7 +285,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 		// Create the dots incrementally from left to right
 		for (int i = 0; i < numberOfDots; i++) {
 			// Create a dot and set its properties
-			Dot dot = new Dot(getContext());
+			final Dot dot = new Dot(getContext());
 			dot.setInactiveDiameterPx(unselectedDotDiameterPx)
 					.setActiveDiameterPx(selectedDotDiameterPx)
 					.setActiveColor(selectedDotColor)
@@ -301,9 +301,9 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 			}
 
 			// Create the positioning parameters
-			int maxDiameterDimension = Math.max(selectedDotDiameterPx, unselectedDotDiameterPx);
-			int startMargin = i * (spacingBetweenDotsPx + unselectedDotDiameterPx);
-			LayoutParams params = new LayoutParams(maxDiameterDimension, maxDiameterDimension);
+			final int maxDiameterDim = Math.max(selectedDotDiameterPx, unselectedDotDiameterPx);
+			final int startMargin = i * (spacingBetweenDotsPx + unselectedDotDiameterPx);
+			LayoutParams params = new LayoutParams(maxDiameterDim, maxDiameterDim);
 			params.setMargins(startMargin, 0, 0, 0);
 
 			// RTL layout support
@@ -321,7 +321,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Forces the View to entirely destroy and recreate the UI.
+	 * Destroys the UI and recreates it.
 	 */
 	public void redrawDots() {
 		reflectParametersInView();
