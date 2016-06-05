@@ -741,7 +741,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	public final void removePageChangeListener(final OnPageChangeListener listener) {
 		viewPager.removeOnPageChangeListener(listener);
 	}
-	
+
 
 	// Methods relating to the pages and navigation
 
