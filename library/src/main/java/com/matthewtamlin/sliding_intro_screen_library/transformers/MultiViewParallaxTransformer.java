@@ -131,7 +131,7 @@ public class MultiViewParallaxTransformer implements ViewPager.PageTransformer {
 	 * @return the child view of {@code parentView} with the resource ID of {@code id}, null if no
 	 * such child view exists
 	 */
-	public View getViewToTransform(View rootView, int id) {
+	public View getViewToTransform(final View rootView, final int id) {
 		if (rootView == null) {
 			throw new IllegalArgumentException("rootView cannot be null");
 		}
@@ -171,7 +171,7 @@ class ChildViewCache {
 	 * @throws IllegalArgumentException
 	 * 		if {@code parentView} is null
 	 */
-	public ChildViewCache(View parentView) {
+	public ChildViewCache(final View parentView) {
 		if (parentView == null) {
 			throw new IllegalArgumentException("parentView cannot be null");
 		}
