@@ -33,9 +33,9 @@ public class ColorBlender implements BackgroundManager {
 	private final int[] colors;
 
 	/**
-	 * Constructs a new ColorBlender. The length of the array must match the number of pages in
-	 * the IntroActivity this BackgroundManager is used with. The colors are mapped to the pages
-	 * using the ordering of the array (e.g. page 1 maps to the color at index 0).
+	 * Constructs a new ColorBlender. The length of the array must match the number of pages in the
+	 * IntroActivity this BackgroundManager is used with. The colors are mapped to the pages using
+	 * the ordering of the array (e.g. page 1 maps to the color at index 0).
 	 *
 	 * @param colors
 	 * 		the background colors to use, not null
