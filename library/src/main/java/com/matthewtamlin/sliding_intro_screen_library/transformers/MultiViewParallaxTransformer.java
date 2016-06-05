@@ -132,7 +132,7 @@ public class MultiViewParallaxTransformer implements ViewPager.PageTransformer {
 	 * such child view exists
 	 * @throws IllegalArgumentException if {@code rootView} is null
 	 */
-	public View getViewToTransform(final View rootView, final int id) {
+	private View getViewToTransform(final View rootView, final int id) {
 		if (rootView == null) {
 			throw new IllegalArgumentException("rootView cannot be null");
 		}
