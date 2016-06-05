@@ -68,7 +68,7 @@ public final class Dot extends RelativeLayout {
 
 	/**
 	 * Default value for the {@code activeColor} attribute. This value is used if the attribute is
-	 * not supplied. This valus is an ARGB hex code.
+	 * not supplied. This value is an ARGB hex code.
 	 */
 	private static final int DEFAULT_ACTIVE_COLOR = Color.WHITE;
 
