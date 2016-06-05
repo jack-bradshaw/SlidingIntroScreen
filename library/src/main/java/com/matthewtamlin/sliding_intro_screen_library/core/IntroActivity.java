@@ -106,7 +106,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	/**
 	 * The page index to use when there is no state to restore.
 	 */
-	private final static int DEFAULT_CURRENT_PAGE_INDEX = 0;
+	private static final int DEFAULT_CURRENT_PAGE_INDEX = 0;
 
 	/**
 	 * The Appearance to use for the left button until it is explicitly set.
@@ -329,13 +329,13 @@ public abstract class IntroActivity extends AppCompatActivity {
 		reflectMemberVariablesInAllButtons();
 
 		// When the activity is displayed (and the final page isn't shown) the final button
-		// disappear animation needs to occur so that animations display properly later
-		boolean lastPage = getIndexOfCurrentPage() + 1 == pages.size();
+		// disappear animation needs to occur so that appear animation displays properly later
+		final boolean lastPage = getIndexOfCurrentPage() + 1 == pages.size();
 
 		if (hasFocus && !lastPage) {
-			Animator finalAnimator =
+			final Animator finalButtonAnimator =
 					buttonAnimatorFactory.newFinalButtonDisappearAnimator(finalButton);
-			finalAnimator.start();
+			finalButtonAnimator.start();
 		}
 	}
 
@@ -534,7 +534,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 			// animations finish
 			buttonAnimator.addListener(new AnimatorListenerAdapter() {
 				@Override
-				public void onAnimationStart(Animator animation) {
+				public void onAnimationStart(final Animator animation) {
 					button.setVisibility(View.VISIBLE); // Make sure View is visible while animating
 					button.setEnabled(false); // Click events should be ignored immediately
 				}
@@ -595,13 +595,13 @@ public abstract class IntroActivity extends AppCompatActivity {
 			// animations finish
 			buttonAnimator.addListener(new AnimatorListenerAdapter() {
 				@Override
-				public void onAnimationStart(Animator animation) {
+				public void onAnimationStart(final Animator animation) {
 					button.setVisibility(View.VISIBLE); // Make sure View is visible while animating
 					button.setEnabled(true); // Click events should be accepted immediately
 				}
 
 				@Override
-				public void onAnimationCancel(Animator animation) {
+				public void onAnimationCancel(final Animator animation) {
 					// Restore button to disabled mode
 					button.setVisibility(View.INVISIBLE);
 					button.setEnabled(false);
@@ -701,7 +701,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * @param show
 	 * 		true to show the divider, false to hide it
 	 */
-	public final void changeHorizontalDividerVisibility(boolean show) {
+	public final void changeHorizontalDividerVisibility(final boolean show) {
 		horizontalDivider.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 	}
 
@@ -763,7 +763,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * @throws IndexOutOfBoundsException
 	 * 		if the index exceeds the size of the page dataset
 	 */
-	public final Fragment getPage(int pageIndex) {
+	public final Fragment getPage(final int pageIndex) {
 		return pages.get(pageIndex);
 	}
 
@@ -796,7 +796,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * 		the page to get the index of
 	 * @return the index of {@code page}, counting from zero
 	 */
-	public final int getIndexOfPage(Fragment page) {
+	public final int getIndexOfPage(final Fragment page) {
 		return pages.indexOf(page);
 	}
 
@@ -837,7 +837,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * Navigates to the next page (if not already there).
 	 */
 	public final void goToNextPage() {
-		boolean isLastPage = viewPager.getCurrentItem() == (pages.size() - 1);
+		final boolean isLastPage = viewPager.getCurrentItem() == (pages.size() - 1);
 
 		if (!isLastPage) {
 			viewPager.setCurrentItem(viewPager.getCurrentItem() + 1, true);
@@ -848,7 +848,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * Navigates to the previous page (if not already there).
 	 */
 	public final void goToPreviousPage() {
-		boolean isFirstPage = viewPager.getCurrentItem() == 0;
+		final boolean isFirstPage = viewPager.getCurrentItem() == 0;
 
 		if (!isFirstPage) {
 			viewPager.setCurrentItem(viewPager.getCurrentItem() - 1, true);
@@ -895,7 +895,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * @param backgroundManager
 	 * 		the backgroundManager to use, null to clear any existing manager
 	 */
-	public final void setBackgroundManager(BackgroundManager backgroundManager) {
+	public final void setBackgroundManager(final BackgroundManager backgroundManager) {
 		this.backgroundManager = backgroundManager;
 	}
 
