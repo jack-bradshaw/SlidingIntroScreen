@@ -22,7 +22,7 @@ package com.matthewtamlin.sliding_intro_screen_library.indicators;
 public interface SelectionIndicator {
 	/**
 	 * Sets the index of the currently selected item and updates the UI to reflect the change. The
-	 * {@code index} parameter must not be less than zero, and it must not be equal to or greater
+	 * {@code index} parameter must not be less than 0, and it must not be equal to or greater
 	 * than the current size of the indicator.
 	 *
 	 * @param index
