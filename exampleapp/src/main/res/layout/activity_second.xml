@@ -17,7 +17,7 @@
         android:text="Second activity successfully launched"/>
 
     <Button
-        android:id="@+id/clear_shared_prefs"
+        android:id="@+id/clear_shared_prefs_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Clear shared preferences flag"/>

@@ -21,14 +21,18 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+/**
+ * A ViewPager which can be locked to prevent navigation. Multiple locking modes are supported.
+ */
 public class LockableViewPager extends ViewPager {
 	/**
 	 * Used to identify this class during debugging.
 	 */
+	@SuppressWarnings("unused")
 	private static final String TAG = "[LockableViewPager]";
 
 	/**
-	 * Determines how the page can be changed.
+	 * Specifies which actions are currently prevented from changing the page.
 	 */
 	private LockMode lockMode = LockMode.UNLOCKED;
 
@@ -36,9 +40,9 @@ public class LockableViewPager extends ViewPager {
 	 * Constructs a new LockableViewPager instance.
 	 *
 	 * @param context
-	 * 		the Context in which this LockableViewPager is operating
+	 * 		the Context in which this LockableViewPager is operating, not null
 	 */
-	public LockableViewPager(Context context) {
+	public LockableViewPager(final Context context) {
 		super(context);
 	}
 
@@ -46,21 +50,22 @@ public class LockableViewPager extends ViewPager {
 	 * Constructs a new LockableViewPager instance.
 	 *
 	 * @param context
-	 * 		the Context in which this LockableViewPager is operating
+	 * 		the Context in which this LockableViewPager is operating, not null
 	 * @param attrs
 	 * 		an attribute in the current theme that contains a reference to a style resource that
 	 * 		supplies defaults values for the StyledAttributes, or 0 to not look for defaults
 	 */
-	public LockableViewPager(Context context, AttributeSet attrs) {
+	public LockableViewPager(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 	}
 
 	/**
-	 * Sets the lock mode. Use this method to prevent the user from changing the page in different
-	 * ways.
+	 * Sets the lock mode to allow/disallow different methods of changing the page.
 	 *
 	 * @param lockMode
 	 * 		the lock mode to use, not null
+	 * @throws IllegalArgumentException
+	 * 		if {@code lockMode} is null
 	 */
 	public void setLockMode(final LockMode lockMode) {
 		if (lockMode == null) {
@@ -71,7 +76,7 @@ public class LockableViewPager extends ViewPager {
 	}
 
 	/**
-	 * @return the current lock mode
+	 * @return the current lock mode, not null
 	 */
 	public LockMode getLockMode() {
 		return lockMode;
@@ -79,16 +84,19 @@ public class LockableViewPager extends ViewPager {
 
 	@Override
 	public boolean onInterceptTouchEvent(final MotionEvent ev) {
+		// Uses the current lock mode to prevent touch events if necessary
 		return !lockMode.allowsTouch() || super.onInterceptTouchEvent(ev);
 	}
 
 	@Override
 	public boolean onTouchEvent(final MotionEvent ev) {
+		// Uses the current lock mode to prevent touch events if necessary
 		return !lockMode.allowsTouch() || super.onTouchEvent(ev);
 	}
 
 	@Override
 	public void fakeDragBy(final float xOffset) {
+		// Uses the lock mode to prevent programmatic commands from changing the page if necessary
 		if (lockMode.allowsCommands()) {
 			super.fakeDragBy(xOffset);
 		}
@@ -96,6 +104,7 @@ public class LockableViewPager extends ViewPager {
 
 	@Override
 	public void setCurrentItem(final int item) {
+		// Uses the lock mode to prevent programmatic commands from changing the page if necessary
 		if (lockMode.allowsCommands()) {
 			super.setCurrentItem(item);
 		}
@@ -111,6 +120,7 @@ public class LockableViewPager extends ViewPager {
 	 */
 	@Override
 	public void setCurrentItem(final int item, final boolean smoothScroll) {
+		// Uses the lock mode to prevent programmatic commands from changing the page if necessary
 		if (lockMode.allowsCommands()) {
 			super.setCurrentItem(item, smoothScroll);
 		}
@@ -121,27 +131,27 @@ public class LockableViewPager extends ViewPager {
 	 */
 	public enum LockMode {
 		/**
-		 * Ignore page change touch events.
+		 * Prevent touch events from changing the page.
 		 */
 		TOUCH_LOCKED(false, true),
 
 		/**
-		 * Ignore programmatic commands to change the page, including fake drag commands.
+		 * Prevent programmatic commands from changing the page, including fake drag events.
 		 */
 		COMMAND_LOCKED(true, false),
 
 		/**
-		 * Ignore touch events and programmatic commands to change the page.
+		 * Prevent both touch events and programmatic commands from changing the page.
 		 */
 		FULLY_LOCKED(false, false),
 
 		/**
-		 * Not locked.
+		 * Do not prevent the page from changing.
 		 */
 		UNLOCKED(true, true);
 
 		/**
-		 * Indicates whether or not this LockMode allows page change touch events.
+		 * Indicates whether or not this LockMode allows touch events to change the page.
 		 */
 		private final boolean allowsTouch;
 
@@ -154,7 +164,7 @@ public class LockableViewPager extends ViewPager {
 		 * Constructs a new LockMode instance.
 		 *
 		 * @param allowsTouch
-		 * 		whether or not this LockMode allows page change touch events
+		 * 		whether or not this LockMode allows touch events to change the page
 		 * @param allowsCommands
 		 * 		whether or not this LockMode allows programmatic commands to change the page
 		 */
@@ -164,7 +174,7 @@ public class LockableViewPager extends ViewPager {
 		}
 
 		/**
-		 * @return true if this LockMode allows page change touch events, false otherwise
+		 * @return true if this LockMode allows touch events to change the page, false otherwise
 		 */
 		public final boolean allowsTouch() {
 			return allowsTouch;

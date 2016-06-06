@@ -1,9 +1,24 @@
+/*
+ * Copyright 2016 Matthew Tamlin
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.matthewtamlin.sliding_intro_screen_library.buttons;
 
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.View;
-
 
 /**
  * Provides indirect access to an IntroButton, to allow limited modification and inspection. Each
@@ -48,7 +63,7 @@ public final class IntroButtonAccessor {
 	 * 		if {@code behaviour} is null
 	 */
 	public final void setBehaviour(final IntroButton.Behaviour behaviour) {
-		button.setBehaviour(behaviour);
+		button.setBehaviour(behaviour); // throws IllegalArgumentException if behaviour is null
 	}
 
 	/**
@@ -74,7 +89,7 @@ public final class IntroButtonAccessor {
 	 * 		if {@code appearance} is null
 	 */
 	public final void setAppearance(final IntroButton.Appearance appearance) {
-		button.setAppearance(appearance);
+		button.setAppearance(appearance); // throws IllegalArgumentException if appearance is null
 	}
 
 	/**
@@ -90,9 +105,9 @@ public final class IntroButtonAccessor {
 
 	/**
 	 * Sets the text to be displayed by the accessed IntroButton. The text will only be displayed
-	 * when its Appearance is set to {@code Appearance.TEXT_ONLY}, {@code Appearance.ICON_TEXT_LEFT}
+	 * when the Appearance is set to {@code Appearance.TEXT_ONLY}, {@code Appearance.ICON_TEXT_LEFT}
 	 * or {@code Appearance.ICON_TEXT_RIGHT}. The text is linked to a Behaviour class, and will only
-	 * be used when the button is using an instance of that Behaviour class.
+	 * be shown when the button is using an instance of that Behaviour class.
 	 *
 	 * @param text
 	 * 		the text to display
@@ -118,9 +133,9 @@ public final class IntroButtonAccessor {
 
 	/**
 	 * Sets the icon to be displayed by the accessed IntroButton. The icon will only be displayed
-	 * when its Appearance is set to {@code Appearance.ICON_ONLY}, {@code Appearance.ICON_TEXT_LEFT}
+	 * when the Appearance is set to {@code Appearance.ICON_ONLY}, {@code Appearance.ICON_TEXT_LEFT}
 	 * or {@code Appearance.ICON_TEXT_RIGHT}. The icon is linked to a Behaviour class, and will only
-	 * be used when the IntroButton is using an instance of that Behaviour class.
+	 * be shown when the IntroButton is using an instance of that Behaviour class.
 	 *
 	 * @param icon
 	 * 		the icon to display
@@ -162,18 +177,6 @@ public final class IntroButtonAccessor {
 	}
 
 	/**
-	 * Sets the typeface and style of the accessed IntroButton.
-	 *
-	 * @param tf
-	 * 		the typeface to use
-	 * @param style
-	 * 		the style to use
-	 */
-	public final void setTypeface(final Typeface tf, final int style) {
-		button.setTypeface(tf, style);
-	}
-
-	/**
 	 * Sets the typeface of the accessed IntroButton.
 	 *
 	 * @param tf
@@ -206,7 +209,7 @@ public final class IntroButtonAccessor {
 	 * the Behaviour.
 	 *
 	 * @param l
-	 * 		the listener to receive the callbacks, null to clear any listener
+	 * 		the listener to receive the callbacks, null to clear any existing listener
 	 */
 	public final void setOnClickListener(final View.OnClickListener l) {
 		button.setOnClickListener(l);

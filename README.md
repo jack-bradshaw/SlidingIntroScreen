@@ -1,53 +1,60 @@
 # SlidingIntroScreen
-A library to simplify the creation of introduction screens in Android apps. This library is simple to use, well documented and highly extensible. While default classes are provided for all components, the framework allows custom implementations in case the defaults don't satisfy. [This example](exampleapp/example.gif) (gif) was created by subclassing one activity and overriding a few methods. See the example code [here](exampleapp/src/main/java/com/matthewtamlin/exampleapp/ExampleActivity.java).
+A library designed to simplify the creation of introduction screens in Android apps. The design of the library is heavily interface driven which provides a great level of customisation. This is balanced against usability by providing at least one default implementation for each component. Even without creating custom components, it is possible to create beautiful and unique introductions for your app. The beauty and simplicity of the library is shown in [this](exampleapp/example.gif) example, which was created by subclassing just one Activity. The code for the example can be found [here](exampleapp/src/main/java/com/matthewtamlin/exampleapp/ExampleActivity.java).
 
-![Example of an intro](exampleapp/example.png)
+![Example of an introduction screen](exampleapp/example.png)
 
 ## Installation
-Add `compile 'com.matthew-tamlin:sliding-intro-screen:2.1.2'` to your gradle build file to use the latest version. Older version are available in the [maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen/view).
+Releases are made available through jCentre. Add `compile 'com.matthew-tamlin:sliding-intro-screen:3.0.0'` to your gradle build file to use the latest version. Older versions are available in the [maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen/view).
 
-## Quick start
-The main class in this library is [IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/core/IntroActivity.java). To use `IntroActivity` you must subclass it and override `generatePages()` and `generateFinalButtonBehaviour()`. These methods are called by `onCreate()` to define the appearance and behaviour of your activity. In `generatePages()` you initialise your pages and return them in a Collection. In `generateFinalButtonBehaviour()` you return the behaviour you want to be executed when the user presses the done button. A behaviour is just a runnable with a reference to the activity. The `IntroButton.ProgressToNextActivity` class is designed to simplify moving to the next activity, but if you prefer you can implement the `IntroButton.Behaviour` interface and do whatever you want.
+## Quick Start
+[IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/core/IntroActivity.java) is the primary class of this library because it coordinates and displays all the other components. The UI features two main components: a series of Fragments (referred to as pages) hosted in a ViewPager, and a navigation bar. The pages display the content of the introduction screen, and the navigation bar displays the user's progress through the introduction. The navigation bar contains three configurable buttons known as the left button, right button and final button. The left and right buttons are shown on all but the last page, and the final button is shown on only the last page. 
 
-The javadoc of the IntroActivity class will give you a more in depth understanding of how to use the library. The other features of the library include:
+IntroActivity is an abstract class, therefore to use it you must create a subclass and implement both `generatePages()` and `generateFinalButtonBehaviour()`. These methods are called by `onCreate()` to define the activity's appearance and behaviour. The pages to display are created in `generatePages()`, and the Behaviour of the final button is created in `generateFinalButtonBehaviour()`. A Behaviour is just a Runnable which holds a reference to an IntroActivity, which allows it to manipulate the activity when run. This is further explained in the IntroButton section below. 
+
+The other methods of the `IntroActivity` class provide further customisation options, such as:
 - Hiding/showing the status bar.
-- Easy customisation of the buttons, in terms of appearance and behaviour.
-- Locking the page to touch and/or programmatic commands.
-- Support for custom progress indicators.
+- Programatically changing the page.
+- Locking the page to touch events and/or programmatic commands (such as button presses).
+- Hiding/showing the horizontal divider atop the navigation bar.
+- Changing the page transformer.
+- Adding/removing page change listeners.
+- Accessing the pages.
+- Hiding/showing the navigation buttons.
 
-## Other classes
-The other components of this library you should be aware of are:
-- [Page](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/pages/Page.java)
-- [IntroButton](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/core/IntroButton.java)
-- [DotIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/indicators/DotIndicator.java) and [SelectionIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/indicators/SelectionIndicator.java)
+The Javadoc of the IntroActivity class contains further information, and the [example app](exampleapp/src/main/java/com/matthewtamlin/exampleapp/ExampleActivity.java) demonstrates how the class is used in practice.
 
-### Page
-The `Page` class extends `Fragment` and is used to display the content of your intro screen. Each page contains a color it would like to have drawn behind it, and the hosting `IntroActivity` blends these colors together when scrolling to create a continuous color effect. The `ParallaxPage` class is provided to simplify building an interface with parallax effects. Should you desire custom page layouts and behaviours, just subclass `Page` and use your subclass in `IntroActivity`.
+## Other Components
+The other notable components of this library are:
+- [IntroButton](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/buttons/IntroButton.java)
+- [SelectionIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/indicators/SelectionIndicator.java)
+- [BackgroundManager](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/background/BackgroundManager.java) 
+- [AnimatorFactory](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/buttons/AnimatorFactory.java)
+- [MultiViewParallaxTransformer](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/transformers/MultiViewParallaxTransformer.java)
 
 ### IntroButton
-The `IntroButton` class differs from the Android framework button in a few ways. An `IntroButton` has two properties called Appearance and Behaviour which define how the button looks and how it functions when it is pressed.
+The IntroButton class has two important properties: appearance and behaviour. These properties define how the button displays and how it behaves when pressed. Separating appearance and behaviour from the button itself allows buttons to be configured dynamically, and avoids boilerplate code. The appearance of a button is defined using the `IntroButton.Appearance` enum, and the behaviour of a button is defined using the `IntroButton.Behaviour` interface.
 
-The Appearance of an `IntroButton` defines how the text in the button is positioned relative to any icon in it. The appearance can be set to show only text, show only an icon, show both with the icon to the left of the text, or show both with the icon to the right of the text. Using the appearance property to change the icon/text relationship is better than manually setting the text and icon each time the apperarance needs to change, because it allows the `IntroButton` to manage the data internally and you don't have to worry about loading drawables each time you change the button. 
+The appearance of an `IntroButton` defines how text and icons are displayed within the button. The appearance can be set to show just text, just an icon, or both. In the case of both, the appearance also defines whether the icon shows to the left or the right of the text. Using an Appearance object to configure how the button displays has advantages over manually changing the text/icon. The IntroButton class is designed to store text and icons internally, so that these resources do not need to be externally cached. When the Appearance changes to display an icon, the icon is loaded from inside the button. This reduces boilerplate code, eliminates the need to externally cache resources, and reduces occportunities for bugs to occur.
 
-The Behaviour of an `IntroButton` defines the actions to take when the button is clicked. `IntroButton` still supports the `OnClickListener` interface, however using behaviours has important advantages. `Behaviour` is actually just an interface with three method signatures: `IntroActivity getActivity()`, `void setActivity(IntroActivity)` and `void run()`. Unlike regular `Runnable` implementations, the `run()` method can get a reference to an `IntroActivity` so that it may perform some action on it. This decouples the actions to take from any individual View or Activity, so that reusable operations can be written. The following concrete implementations are defined in the `IntroButton` class and can be passed to any `IntroButton`:
-- `GoToPreviousPage` makes the target activity move back a page (unless the first page is currently displayed).
-- `GoToNextPage` makes the target activiity move forward a page (unless the last page is currently displayed).
-- `GoToFirstPage` makes the target activity move to the first page.
-- `GoToLastPage` makes the target activity advance to the last page.
-- `DoNothing` performs no operation. 
-- `CloseApp` terminates the app affinity.
-- `RequestPermissions` displays the standard permission request dialog to the user. The target app should override `onRequestPermissionsResult(int, String[], int[])`
+The behaviour of an IntroButton defines the actions to take when the button is clicked. The behaviour of an IntroButton is set by passing the button an implementation of the Behaviour interface. Using a separate object to define the behaviour decouples the on-click actions from the buttons, and makes code more reusable. The Behaviour interface extends the Runnable interface and has two extra methods: `IntroActivity getActivity()` and `void setActivity(IntroActivity)`. Using these extra methods, the `run()` method can obtain a reference to an IntroActivity to manipulate. Passing Behaviours to the navigation buttons of an IntroActivity is the simplest way to manipulate the IntroActivity when the buttons are pressed. The following concrete implementations of the Behaviour interface meet the most common needs:
+- `IntroButton.GoToPreviousPage` makes the target IntroActivity display the previous page (unless the first page is currently displayed).
+- `IntroButton.GoToNextPage` makes the target IntroActivity display the next page (unless the last page is currently displayed).
+- `IntroButton.GoToFirstPage` makes the target IntroActivity return to the first page.
+- `IntroButton.GoToLastPage` makes the target IntroActivity advance to the last page.
+- `IntroButton.DoNothing` performs no operation. 
+- `IntroButton.CloseApp` terminates the app affinity, effectively closing the app.
+- `IntroButton.RequestPermissions` displays the standard permission request dialog to the user. The exact permissions to request are provided to the constructor, along with a request code to use when receiving the result.
+- `IntroButton.ProgressToNextActivity` ends the introduction and progresses to the next Activity in the app.
 
-In addition to these concrete classes, the most useful class is the `ProgressToNextActivity` abstract class. Implementations of this class must implent the `shouldLaunchActivity()` method.  The next activity will only be launched if the validation criteria defined in the method returns true. The class' default constructor accepts a `SharedPreferences.Editor` object. When the next activity is successfully launched, any pending changes in the editor are applied. This allows a shared perferences flag to be automatically set, so that the intro screen won't be displayed a second time if the user successfully completes it.
+The `ProgressToNextActivity` is one of the most useful classes in the library. The default constructor accepts a `SharedPreferences.Editor` paramater which can be used to make sure the introduction is only shown once. Any pending changes in the editor are committed when the next activity is successfully launched, which allows a shared preferences flag to be automatically set when the introduction completes. By checking the status of this flag each time the IntroActivity is created, the introduction can be skipped if the user has previously completed it. The class also contains a method called `shouldLaunchActivity()` which defines validation logic. By default this method returns true, but subclasses can override it to define conditions which must pass before the next activity is launched.
 
-If the above implementations are not sufficient for your purposes, you can either implement the `Behaviour` interface or subclass the `IntroButton.BehaviourAdapter` class. The adapter contains a simple getter/setter combo for `getActivity()` and `setActivity()`, and declares `run()` as abstract. This removes the need to write the same getter/setter boilerplate code for each `Behaviour` you define.
+If the above implementations are not sufficient, the interface can be directly implemented or the `IntroButton.BehaviourAdapter` class can be extended. The adapter class provides a simple getter/setter mechanism for `getActivity()` and `setActivity()`, and declares `run()` as abstract. This removes the need to write the same getter/setter boilerplate code for each Behaviour. The `run()` implementation simply needs to call `getActivity()` and perform the desired action on the retured activity (after doing a null check).
 
-### DotIndicator and SelectionIndicator
-At the bottom of each `IntroActivity` is a `SelectionIndicator` which displays the current progress through the activity. This library provides one concrete implementation of the `SelectionIndicator` interface called `DotIndicator`. By default, all `IntroActivity` instances have a `DotIndicator`. The methods of the `IntroActivity` provide a mechanism for setting a new indicator and modifying the existing one. Have a look into the Javadoc of `DotIndicator` to see the ways in which it can be customised. 
+### SelectionIndicator
+In the centre of the navigation bar within each IntroActivity is a SelectionIndicator. This is a visual element which displays the user's current progress through the introduction. The IntroActivity class provides methods for setting a new indicator, or modifying the existing one. SelectionIndicator itself is an interface, therfore custom indicators can be used. By default, a [DotIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/indicators/DotIndicator.java) is used, as shown in the above example image.
 
-The `DotIndicator` class can be used in other contexts as well and isn't limited to this library. To create a `DotIndicator` in your custom layout, add:
-
-```java
+The `DotIndicator` class does not need to be used in an IntroActivity. To create a `DotIndicator` in any layout, just add the following XML:
+```xml
 <com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator>
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,17 +62,24 @@ The `DotIndicator` class can be used in other contexts as well and isn't limited
             app:selectedDotIndex=YOUR_INT_HERE/>
 ```
 
-The default `DotIndicator` replicates the functionality of similar indicators in Google-made apps, however if you want to further customise it then the following attributes can be added:
+By default, the `DotIndicator` replicates the functionality of similar indicators in Google-made apps. The following attributes can be added to the XML declaration to customise the indicator:
+- `app:unselectedDotDiameter` and `app:selectedDotDiameter` to set the dot diameterss.
+- `app:unselectedDotColor` and `app:selectedDotColor `to set the dot colors.
+- `app:dotTransitionDuration` to set the animation time when transitioning dots between selected and unselected.
+- `add:spacingBetweenDots` to change the distance between each dot.
 
-- `app:unselectedDotDiameter` and `app:selectedDotDiameter` to set the diameters of the dots
-- `app:unselectedDotColor` and `app:selectedDotColor `to set the colors of the dots
-- `app:dotTransitionDuration` to set the time for animating the change between selected and unselected 
-- `add:spacingBetweenDots` to change the distance between each dot
+Alternatively, the indicator can be created programmatically with `DotIndicator myIndicator = new DotIndicator(context);`. The class provides methods for modifying the properties, similar to the aforementioned attributes.
 
-Alternatively, the indicator can be created programmatically with `DotIndicator i = new DotIndicator(context);`. Methods exist to modify the properties, similar to the aforementioned attributes.
+### BackgroundManager
+Unless the individual pages define their own backgrounds, it is highly recommended that the background of the IntroActivity be changed (by default it is grey). The background of an IntroActivity can be changed in two ways: by manually changing the background color of the root View, or by supplying a BackgroundManager to the activity. The former approach is simpler and less error prone, and is ideal when a static background is all that is needed. The latter approach is ideal when a dynamic background is desired. 
+
+The BackgroundManager interface defines a single method: `updateBackground(View background, int index, float offset)`. This method is called by IntroActivity each time the scroll position changes, which allows the background to be dependent on the user's progress through the introduction. The [ColorBlender](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/background/ColorBlender.java) class paints a variable color on the background, and blends colors together to create a continuous color scrolling effect as the user progresses. An example of this effect is shown [here](exampleapp/src/main/java/com/matthewtamlin/exampleapp/ExampleActivity.java).
+
+### AnimatorFactory
+The buttons of an IntroActivity must sometimes switch between enabled and disabled, such is the case when the last page is reached. By default, the left and right buttons are disabled on the last page and the final button is enabled. Rather than have a jarring transition between visible and invisible, the change is transitioned smoothly using Animators supplied by an a AnimatorFactory. The default AnimatorFactory causes the buttons to smoothly fade in and out, however custom implementations of the AnimatorFactory can be used by overriding `generateButtonAnimatorFactory()` in IntroActivity. To make sure the animations always display correctly, the AnimatorFactory cannot be changed after the activity is created.
 
 ## Licensing
 This library is licenced under the Apache v2.0 licence. Have a look at [the license](LICENSE) for details.
 
 ## Compatibility
-This library is compatible with Android 11 and up. The 2.0.0 update breaks compatibility with previous versions of the library.
+This library is compatible with Android 11 and up. The 3.0.0 update breaks compatibility with previous versions of the library.

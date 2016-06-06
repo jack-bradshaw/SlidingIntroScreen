@@ -25,10 +25,8 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.matthewtamlin.android_utilities_library.helpers.PermissionsHelper;
 import com.matthewtamlin.sliding_intro_screen_library.R;
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
 
@@ -37,7 +35,7 @@ import java.util.HashMap;
 /**
  * An IntroButton is a button designed to manipulate an IntroActivity. Each button has two main
  * components: a {@link Behaviour} and an {@link Appearance}.
- * <p>
+ * <p/>
  * The Behaviour is effectively a runnable which can manipulate an IntroActivity. When an
  * IntroButton is pressed, its current Behaviour is executed. By separating the on-click logic from
  * the Button, it is possible to write reusable actions to be used across multiple buttons.
@@ -45,7 +43,7 @@ import java.util.HashMap;
  * Behaviours, so that changing the Behaviour automatically updates the UI of the button. This
  * avoids needing to manually match the text and icon to the Behaviour, which reduces boilerplate
  * code and creates less opportunities for bugs to occur.
- * <p>
+ * <p/>
  * The Appearance determines how the button is displayed to the user, with regards to the
  * arrangement of icons and text within the button. The Appearance can only be set to one of the
  * predefined Appearances. Using an Appearance to change the text/icon display arrangement has
@@ -53,10 +51,11 @@ import java.util.HashMap;
  * loaded into the button once and stored in memory, then displayed when needed via a single method
  * call.
  */
-public class IntroButton extends Button implements OnClickListener {
+public class IntroButton extends Button {
 	/**
 	 * Used to identify this class during debugging.
 	 */
+	@SuppressWarnings("unused")
 	private static final String TAG = "[IntroButton]";
 
 	/**
@@ -70,26 +69,23 @@ public class IntroButton extends Button implements OnClickListener {
 	private static final Appearance DEFAULT_APPEARANCE = Appearance.TEXT_ONLY;
 
 	/**
-	 * The current Behaviour to execute when clicked.
+	 * The current Behaviour.
 	 */
 	private Behaviour behaviour = DEFAULT_BEHAVIOUR;
 
 	/**
-	 * The current Appearance of this IntroButton.
+	 * The current Appearance.
 	 */
 	private Appearance appearance = DEFAULT_APPEARANCE;
 
 	/**
-	 * The text labels to display in this IntroButton when the appearance is set to {@code
-	 * Appearance.TEXT_ONLY}, {@code Appearance.ICON_TEXT_LEFT} or {@code Appearance
-	 * .ICON_TEXT_RIGHT}. Each Behaviour may have a different label set.
+	 * The text labels to display in this IntroButton. Each text label is mapped to a class of
+	 * Behaviour.
 	 */
 	private final HashMap<Class<? extends Behaviour>, CharSequence> labels = new HashMap<>();
 
 	/**
-	 * The icons to display in this IntroButton when the appearance is set to {@code
-	 * Appearance.ICON_ONLY}, {@code Appearance.ICON_TEXT_LEFT} or {@code Appearance
-	 * .ICON_TEXT_RIGHT}.
+	 * The icons to display in this IntroButton. Each icon is mapped to a class of Behaviour.
 	 */
 	private final HashMap<Class<? extends Behaviour>, Drawable> icons = new HashMap<>();
 
@@ -99,17 +95,36 @@ public class IntroButton extends Button implements OnClickListener {
 	private IntroActivity activity;
 
 	/**
-	 * External on-click listener to receive on-click events after the event has been handled by the
-	 * Behaviour.
+	 * The OnClickListener which has been registered to receive on-click events from this Button.
+	 * On-click events are delivered to this listener after they are handled by the Behaviour.
 	 */
 	private OnClickListener externalOnClickListener;
 
 	/**
-	 * Constructs a new IntroButton instance. The supplied Context is used as the target for the
-	 * Behaviour if the Context is an instance of IntroActivity.
+	 * Receives on-click events from this Button and runs the Behaviour. After the Behaviour has
+	 * been executed, the event is passed to the externalOnClickListener. Using a delegate hides the
+	 * internal implementation from the public class signature.
+	 */
+	private final OnClickListener internalOnClickListenerDelegate = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			if (behaviour != null) {
+				behaviour.setActivity(activity);
+				behaviour.run();
+			}
+
+			if (externalOnClickListener != null) {
+				externalOnClickListener.onClick(v);
+			}
+		}
+	};
+
+	/**
+	 * Constructs a new IntroButton instance. The supplied Context is used as the Behaviour target
+	 * if the Context is an instance of IntroActivity.
 	 *
 	 * @param context
-	 * 		the context this IntroButton will be operating in
+	 * 		the context this IntroButton will be operating in, not null
 	 */
 	public IntroButton(final Context context) {
 		super(context);
@@ -121,7 +136,7 @@ public class IntroButton extends Button implements OnClickListener {
 	 * Behaviour if the Context is an instance of IntroActivity.
 	 *
 	 * @param context
-	 * 		the context this IntroButton will be operating in
+	 * 		the context this IntroButton will be operating in, not null
 	 * @param attrs
 	 * 		configuration attributes
 	 */
@@ -135,7 +150,7 @@ public class IntroButton extends Button implements OnClickListener {
 	 * Behaviour if the Context is an instance of IntroActivity.
 	 *
 	 * @param context
-	 * 		the context this IntroButton will be operating in
+	 * 		the context this IntroButton will be operating in, not null
 	 * @param attrs
 	 * 		configuration attributes
 	 * @param defStyleAttr
@@ -148,11 +163,11 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * Initialise this IntroButton independent of the constructor used.
+	 * Performs initialisation of this IntroButton.
 	 */
 	private void init() {
-		// Deal with on click events internally then pass to the external delegate
-		super.setOnClickListener(this);
+		// Let the internal delegate deal with on-click events
+		super.setOnClickListener(internalOnClickListenerDelegate);
 
 		initialiseLabelsToDefault();
 		initialiseIconsToDefault();
@@ -165,7 +180,7 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * Initialises {@code labels} to use the default values stored in the string resources file.
+	 * Initialises {@code labels} by loading default values stored in the string resources file.
 	 */
 	private void initialiseLabelsToDefault() {
 		labels.put(GoToPreviousPage.class,
@@ -185,7 +200,7 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * Initialises {@code icons} to use the default images stored in the drawables resources
+	 * Initialises {@code icons} by loading the default images stored in the drawable resources
 	 * folder.
 	 */
 	private void initialiseIconsToDefault() {
@@ -206,12 +221,12 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * Updates the UI of this IntroButton to match the current {@code appearance}, {@code label} and
-	 * {@code icon} member variables.
+	 * Updates the UI of this IntroButton to match the current state.
 	 */
 	private void updateUI() {
-		final AppearanceManipulator manipulator =
-				appearance == null ? null : appearance.getManipulator();
+		final AppearanceManipulator manipulator = appearance == null ?
+				null :
+				appearance.getManipulator();
 
 		if (manipulator != null) {
 			manipulator.setButton(this);
@@ -226,7 +241,7 @@ public class IntroButton extends Button implements OnClickListener {
 	 * class can be used to reduce boilerplate code when implementing the interface. This method
 	 * does not accept null; to do nothing when the button is clicked, pass an instance of {@link
 	 * IntroButton.DoNothing}.
-	 * <p>
+	 * <p/>
 	 * See {@link Behaviour}.
 	 *
 	 * @param behaviour
@@ -252,7 +267,7 @@ public class IntroButton extends Button implements OnClickListener {
 
 	/**
 	 * Sets the Appearance of this IntroButton. The Appearance defines how the button is displayed.
-	 * <p>
+	 * <p/>
 	 * See {@link Appearance}.
 	 *
 	 * @param appearance
@@ -277,10 +292,10 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * Sets the text label to be displayed by this IntroButton. The text will only be displayed when
-	 * its Appearance is set to {@code Appearance.TEXT_ONLY}, {@code Appearance.ICON_TEXT_LEFT} or
-	 * {@code Appearance.ICON_TEXT_RIGHT}. The label is linked to a Behaviour class, and will only
-	 * be used when this IntroButton is using an instance of that Behaviour class.
+	 * Sets the text label to be displayed by this IntroButton. The label will only be displayed
+	 * when the Appearance is set to {@code Appearance.TEXT_ONLY}, {@code Appearance.ICON_TEXT_LEFT}
+	 * or {@code Appearance.ICON_TEXT_RIGHT}. The label is linked to a Behaviour class, and will
+	 * only be shown when this IntroButton is using an instance of that Behaviour class.
 	 *
 	 * @param label
 	 * 		the text label to display
@@ -289,9 +304,11 @@ public class IntroButton extends Button implements OnClickListener {
 	 */
 	public void setLabel(final CharSequence label, final Class<? extends Behaviour>
 			behaviourClass) {
-		final Class<? extends Behaviour> behaviourClassToSet =
-				(behaviourClass == null) ? this.behaviour.getClass() :
-						behaviourClass;
+		// Use the current Behaviour class if null was supplied
+		final Class<? extends Behaviour> behaviourClassToSet = (behaviourClass == null) ?
+				behaviour.getClass() :
+				behaviourClass;
+
 		labels.put(behaviourClassToSet, label);
 		updateUI();
 	}
@@ -305,8 +322,11 @@ public class IntroButton extends Button implements OnClickListener {
 	 * @return the label for the Behaviour class, null if there is none
 	 */
 	public CharSequence getLabel(final Class<? extends Behaviour> behaviourClass) {
-		final Class behaviourClassToGet = (behaviourClass == null) ? this.behaviour.getClass() :
+		// Use the current Behaviour class if null was supplied
+		final Class behaviourClassToGet = (behaviourClass == null) ?
+				behaviour.getClass() :
 				behaviourClass;
+
 		return labels.get(behaviourClassToGet);
 	}
 
@@ -314,7 +334,7 @@ public class IntroButton extends Button implements OnClickListener {
 	 * Sets the icon to be displayed by this IntroButton. The icon will only be displayed when its
 	 * Appearance is set to {@code Appearance.ICON_ONLY}, {@code Appearance.ICON_TEXT_LEFT} or
 	 * {@code Appearance.ICON_TEXT_RIGHT}. The icon is linked to a Behaviour class, and will only be
-	 * used when this IntroButton is using an instance of that Behaviour class.
+	 * shown when this IntroButton is using an instance of that Behaviour class.
 	 *
 	 * @param icon
 	 * 		the icon to display
@@ -322,9 +342,10 @@ public class IntroButton extends Button implements OnClickListener {
 	 * 		the Behaviour class to associate the icon with, null to use the current Behaviour
 	 */
 	public void setIcon(final Drawable icon, final Class<? extends Behaviour> behaviourClass) {
-		final Class<? extends Behaviour> behaviourClassToSet =
-				(behaviourClass == null) ? this.behaviour.getClass() :
-						behaviourClass;
+		// Use the current Behaviour class if null was supplied
+		final Class<? extends Behaviour> behaviourClassToSet = (behaviourClass == null) ?
+				behaviour.getClass() : behaviourClass;
+
 		icons.put(behaviourClassToSet, icon);
 		updateUI();
 	}
@@ -338,17 +359,20 @@ public class IntroButton extends Button implements OnClickListener {
 	 * @return the icon for the Behaviour class, null if there is none
 	 */
 	public Drawable getIcon(final Class<? extends Behaviour> behaviourClass) {
-		final Class behaviourClassToSet =
-				(behaviourClass == null) ? this.behaviour.getClass() : behaviourClass;
+		// Use the current Behaviour class if null was supplied
+		final Class behaviourClassToSet = (behaviourClass == null) ?
+				behaviour.getClass() :
+				behaviourClass;
+
 		return icons.get(behaviourClassToSet);
 	}
 
 	/**
-	 * Sets the IntroActivity to be manipulated by this IntroButton. This replaces any previously
-	 * supplied activity.
+	 * Sets the IntroActivity to be manipulated by this IntroButton. The supplied activity will
+	 * replace any previously supplied activity. To clear the activity, supply null.
 	 *
 	 * @param activity
-	 * 		the IntroActivity to manipulate, null to clear any existing activity
+	 * 		the IntroActivity to manipulate, null allowed
 	 */
 	public void setActivity(final IntroActivity activity) {
 		this.activity = activity;
@@ -381,24 +405,14 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	@Override
-	public void onClick(final View v) {
-		if (behaviour != null) {
-			behaviour.setActivity(activity);
-			behaviour.run();
-		}
-
-		if (externalOnClickListener != null) {
-			externalOnClickListener.onClick(v);
-		}
-	}
-
-	@Override
 	public void setOnClickListener(final OnClickListener l) {
+		// Intercept the listener and save it as member variable. On-click events will be passed
+		// to the external listener after they have been handled by the internal delegate.
 		externalOnClickListener = l;
 	}
 
 	/**
-	 * The different appearances an IntroButton can have. The Appearance of an IntroButton
+	 * All the different appearances an IntroButton can take. The Appearance of an IntroButton
 	 * determines whether or not it should display a label, an icon, or both. In the case of both,
 	 * it also determines whether the icon appears to the left or the right of the label.
 	 */
@@ -410,7 +424,9 @@ public class IntroButton extends Button implements OnClickListener {
 			@Override
 			public void manipulateAppearance() {
 				final IntroButton button = getButton();
-				button.setText(button.getLabel(null));
+				final CharSequence text = button.getLabel(null); // Use the current Behaviour
+
+				button.setText(text);
 				button.setCompoundDrawables(null, null, null, null);
 			}
 		}),
@@ -422,9 +438,10 @@ public class IntroButton extends Button implements OnClickListener {
 			@Override
 			public void manipulateAppearance() {
 				final IntroButton button = getButton();
+				final Drawable icon = button.getIcon(null); // Use the current Behaviour
+
 				button.setText(null);
-				button.setCompoundDrawablesWithIntrinsicBounds(button.getIcon(null), null, null,
-						null);
+				button.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
 			}
 		}),
 
@@ -435,9 +452,10 @@ public class IntroButton extends Button implements OnClickListener {
 			@Override
 			public void manipulateAppearance() {
 				final IntroButton button = getButton();
+				final Drawable icon = button.getIcon(null); // Use the current Behaviour
+
 				button.setText(button.getLabel(null));
-				button.setCompoundDrawablesWithIntrinsicBounds(button.getIcon(null), null, null,
-						null);
+				button.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
 			}
 		}),
 
@@ -448,14 +466,18 @@ public class IntroButton extends Button implements OnClickListener {
 			@Override
 			public void manipulateAppearance() {
 				final IntroButton button = getButton();
-				button.setText(button.getLabel(null));
-				button.setCompoundDrawablesWithIntrinsicBounds(null, null, button.getIcon(null),
-						null);
+
+				// Use the current Behaviour
+				final CharSequence text = button.getLabel(null);
+				final Drawable icon = button.getIcon(null);
+
+				button.setText(text);
+				button.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
 			}
 		});
 
 		/**
-		 * An AppearanceManipulator which can make an IntroButton to reflect this Appearance.
+		 * An AppearanceManipulator which makes the target IntroButton reflect this Appearance.
 		 */
 		private final AppearanceManipulator manipulator;
 
@@ -463,15 +485,15 @@ public class IntroButton extends Button implements OnClickListener {
 		 * Constructs a new Appearance instance.
 		 *
 		 * @param manipulator
-		 * 		an AppearanceManipulator which can make an IntroButton to reflect this Appearance, not
-		 * 		null
+		 * 		an AppearanceManipulator which makes the target IntroButton reflect this
+		 * 		Appearance,	not null
 		 */
-		Appearance(AppearanceManipulator manipulator) {
+		Appearance(final AppearanceManipulator manipulator) {
 			this.manipulator = manipulator;
 		}
 
 		/**
-		 * Returns an AppearanceManipulator which can make an IntroButton to reflect this
+		 * Returns an AppearanceManipulator which makes the target IntroButton reflect this
 		 * Appearance.
 		 *
 		 * @return the AppearanceManipulator, not null
@@ -482,27 +504,27 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * A Behaviour is a Runnable which can manipulate an IntroButton when run. Pass concrete
-	 * instances of this interface to the {@link #setBehaviour(Behaviour)} method of an IntroButton
-	 * to define its on-click behaviour.
+	 * A Runnable which can manipulate an IntroButton. Pass concrete instances of this interface to
+	 * the {@link #setBehaviour(Behaviour)} method of an IntroButton to define its on-click
+	 * behaviour.
 	 */
 	public interface Behaviour extends Runnable {
 		/**
-		 * Sets an activity to be manipulated by this Behaviour.
+		 * Sets the activity to be manipulated by this Behaviour.
 		 *
 		 * @param activity
-		 * 		the activity to be manipulated, null to clear any activity which has been set
+		 * 		the target activity, null to clear any existing target
 		 */
 		void setActivity(IntroActivity activity);
 
 		/**
-		 * @return the activity to be manipulated by this Beaviour, null if none has been set
+		 * @return the target activity of this Behaviour, null if none has been set
 		 */
 		IntroActivity getActivity();
 
 		/**
 		 * Starts executing this Behaviour. The IntroActivity supplied to {@link
-		 * #setActivity(IntroActivity)} should be manipulated in some way.
+		 * #setActivity(IntroActivity)} is manipulated in some way.
 		 */
 		@Override
 		void run();
@@ -510,10 +532,10 @@ public class IntroButton extends Button implements OnClickListener {
 
 	/**
 	 * A partial implementation of the Behaviour interface, designed to eliminate boilerplate code
-	 * in full implementations. This class features a simple getter/setter combo for the target
-	 * IntroActivity, so that subclasses simply need to implement {@code run()} and use {@code
-	 * getActivity()} to obtain the activity to manipulate. Subclasses should perform null checks on
-	 * the result of {@code getActivity()}.
+	 * in full implementations. This class features a simple getter/setter combination for the
+	 * target IntroActivity, so that subclasses simply need to implement {@code run()} and use
+	 * {@code getActivity()}. Subclasses should always perform a null check on the result of {@code
+	 * getActivity()}.
 	 */
 	public abstract static class BehaviourAdapter implements Behaviour {
 		/**
@@ -533,15 +555,12 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * A Behaviour which displays the previous page of the target IntroActivity.
+	 * A Behaviour which displays the previous page of the target activity. No action is taken if
+	 * the first page is currently displayed.
 	 */
 	public static final class GoToPreviousPage extends BehaviourAdapter {
-		/**
-		 * Returns to the previous page of the supplied IntroActivity, unless the first page is
-		 * currently displayed.
-		 */
 		@Override
-		public void run() {
+		public final void run() {
 			if (getActivity() != null) {
 				getActivity().goToPreviousPage();
 			}
@@ -549,15 +568,12 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * A Behaviour which displays the next page of the target IntroActivity.
+	 * A Behaviour which displays the next page of the target IntroActivity. No action is taken if
+	 * the last page is currently displayed.
 	 */
 	public static final class GoToNextPage extends BehaviourAdapter {
-		/**
-		 * Advances to the next page of the supplied activity, unless the last page is currently
-		 * displayed.
-		 */
 		@Override
-		public void run() {
+		public final void run() {
 			if (getActivity() != null) {
 				getActivity().goToNextPage();
 			}
@@ -565,15 +581,12 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * A Behaviour which displays the first page of the target IntroActivity.
+	 * A Behaviour which displays the first page of the target IntroActivity. No action is taken if
+	 * the first page is currently displayed.
 	 */
 	public static final class GoToFirstPage extends BehaviourAdapter {
-		/**
-		 * Returns to the first page of the supplied activity, unless the first page is currently
-		 * displayed.
-		 */
 		@Override
-		public void run() {
+		public final void run() {
 			if (getActivity() != null) {
 				getActivity().goToFirstPage();
 			}
@@ -581,15 +594,12 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * A Behaviour which displays the last page of the target IntroActivity.
+	 * A Behaviour which displays the last page of the target IntroActivity. No action is taken if
+	 * the last page is currently displayed.
 	 */
 	public static final class GoToLastPage extends BehaviourAdapter {
-		/**
-		 * Advances to the last page of the supplied activity, unless the last page is currently
-		 * displayed.
-		 */
 		@Override
-		public void run() {
+		public final void run() {
 			if (getActivity() != null) {
 				getActivity().goToLastPage();
 			}
@@ -597,26 +607,25 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * A Behaviour designed to launch a new activity. Subclasses this class and implement {@link
-	 * #shouldLaunchActivity()} to define validation conditions which must pass before the activity
-	 * is launched.
-	 * <p>
-	 * This class provides a mechanism for preventing the IntroActivity from being shown after it
-	 * has been completed. The default constructor accepts a {@link android.content.SharedPreferences.Editor}
-	 * as a parameter. Any pending changes will be committed when the next activity successfully
-	 * launches, allowing a shared preferences flag to be set. By checking the status of this flag
-	 * each time the IntroActivity is launched, the IntroActivity can be bypassed if it has already
-	 * been completed.
+	 * A Behaviour designed to launch a new activity and record the completion of an IntroActivity.
+	 * The default constructor accepts a {@link android.content.SharedPreferences.Editor}. Any
+	 * pending changes in the editor are committed when the next activity is successfully launched,
+	 * which allows a shared preferences flag to be set. By checking the status of this flag each
+	 * time the IntroActivity is launched, the IntroActivity can be skipped if it was previously
+	 * completed.
+	 * <p/>
+	 * To define validation conditions which must pass before the next activity is launched,
+	 * subclass this class and override {@link #shouldLaunchActivity()}.
 	 */
-	public static abstract class ProgressToNextActivity extends BehaviourAdapter {
+	public static class ProgressToNextActivity extends BehaviourAdapter {
 		/**
 		 * The intent to start the next activity.
 		 */
 		private final Intent startNextActivity;
 
 		/**
-		 * A shared preferences editor with pending changes. The changes are committed when the
-		 * intent is successfully launched.
+		 * A shared preferences editor with pending changes. The changes are committed when the next
+		 * activity is successfully launched.
 		 */
 		private final SharedPreferences.Editor editsToMake;
 
@@ -625,34 +634,41 @@ public class IntroButton extends Button implements OnClickListener {
 		 * editsToMake} are committed when the next activity successfully launches.
 		 *
 		 * @param startNextActivity
-		 * 		an intent which starts the next activity
+		 * 		an intent which starts the next activity, not null
 		 * @param editsToMake
-		 * 		a shared preferences editor with pending changes, null to ignore this feature
+		 * 		a shared preferences editor with pending changes, null allowed
+		 * @throws IllegalArgumentException
+		 * 		if {@code startNextActivity} is null
 		 */
-		public ProgressToNextActivity(Intent startNextActivity, SharedPreferences.Editor
+		public ProgressToNextActivity(final Intent startNextActivity, final SharedPreferences.Editor
 				editsToMake) {
+			if (startNextActivity == null) {
+				throw new IllegalArgumentException("startNextActivity cannot be null");
+			}
+
 			this.startNextActivity = startNextActivity;
 			this.editsToMake = editsToMake;
 		}
 
 		/**
-		 * Determines whether the next activity should launch. Implement this method to define
+		 * Contains validation logic which determines whether or not the next activity should
+		 * launch. By default, this class always returns true. Override this method to define
 		 * validation conditions which must pass before the next activity is launched.
 		 *
 		 * @return true if the next activity should launch, false otherwise
 		 */
-		public abstract boolean shouldLaunchActivity();
+		public boolean shouldLaunchActivity() {
+			return true;
+		}
 
 		@Override
 		public final void run() {
 			if (getActivity() != null && shouldLaunchActivity()) {
-				if (startNextActivity != null) {
-					if (editsToMake != null) {
-						editsToMake.apply();
-					}
-
-					getActivity().startActivity(startNextActivity);
+				if (editsToMake != null) {
+					editsToMake.apply();
 				}
+
+				getActivity().startActivity(startNextActivity);
 			}
 		}
 	}
@@ -662,7 +678,7 @@ public class IntroButton extends Button implements OnClickListener {
 	 */
 	public static final class DoNothing extends BehaviourAdapter {
 		@Override
-		public void run() {
+		public final void run() {
 			// Do nothing
 		}
 	}
@@ -671,9 +687,9 @@ public class IntroButton extends Button implements OnClickListener {
 	 * A Behaviour which closes the current app.
 	 */
 	@TargetApi(16)
-	public static class CloseApp extends BehaviourAdapter {
+	public static final class CloseApp extends BehaviourAdapter {
 		@Override
-		public void run() {
+		public final void run() {
 			if (getActivity() != null) {
 				getActivity().finishAffinity();
 			}
@@ -681,14 +697,14 @@ public class IntroButton extends Button implements OnClickListener {
 	}
 
 	/**
-	 * A Behaviour for requesting permissions. Pass the permissions to request to the constructor,
+	 * A Behaviour for requesting permissions. Pass the desired permissions to the constructor,
 	 * along with a request code which can be used to receive the result. If this Behaviour is used,
 	 * then {@link android.support.v7.app.AppCompatActivity#onRequestPermissionsResult(int,
-	 * String[], int[])} should be overridden in the target activity so that the request result can
-	 * be received.
+	 * String[], int[])} should be overridden in the target activity so that the result of the
+	 * request can be received.
 	 */
 	@TargetApi(23)
-	public static class RequestPermissions extends BehaviourAdapter {
+	public static final class RequestPermissions extends BehaviourAdapter {
 		/**
 		 * The permissions to request when this Behaviour is run.
 		 */
@@ -703,11 +719,11 @@ public class IntroButton extends Button implements OnClickListener {
 		 * Constructs a new RequestPermissions instance.
 		 *
 		 * @param permissions
-		 * 		the permissions to request when this Behaviour is run
+		 * 		the permissions to request when this Behaviour is run, null allowed
 		 * @param requestCode
-		 * 		the request code to use when requesting the permissions
+		 * 		the request code for receiving the result of the permission request
 		 */
-		public RequestPermissions(String[] permissions, int requestCode) {
+		public RequestPermissions(final String[] permissions, final int requestCode) {
 			this.permissions = permissions;
 			this.requestCode = requestCode;
 		}
@@ -717,11 +733,9 @@ public class IntroButton extends Button implements OnClickListener {
 		 * for cases where no activity has been set.
 		 */
 		@Override
-		public void run() {
+		public final void run() {
 			if (getActivity() != null) {
-				if (!PermissionsHelper.permissionsAreGranted(getActivity(), permissions)) {
-					getActivity().requestPermissions(permissions, requestCode);
-				}
+				getActivity().requestPermissions(permissions, requestCode);
 			}
 		}
 	}

@@ -36,6 +36,7 @@ public class Page extends Fragment {
 	/**
 	 * Used to identify this class during debugging.
 	 */
+	@SuppressWarnings("unused")
 	private static final String TAG = "[Page]";
 
 	/**

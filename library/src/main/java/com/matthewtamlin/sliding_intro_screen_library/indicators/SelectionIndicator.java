@@ -17,11 +17,13 @@
 package com.matthewtamlin.sliding_intro_screen_library.indicators;
 
 /**
- * A selection indicator is a visual representation of the selected item in a finite collection.
+ * A visual representation of the selected item in a finite collection.
  */
 public interface SelectionIndicator {
 	/**
-	 * Sets the index of the currently selected item and updates the UI to reflect the change.
+	 * Sets the index of the currently selected item and updates the UI to reflect the change. The
+	 * {@code index} parameter must not be less than 0, and it must not be equal to or greater than
+	 * the current size of the indicator.
 	 *
 	 * @param index
 	 * 		the index of the selected item, counting from zero
@@ -37,7 +39,8 @@ public interface SelectionIndicator {
 
 	/**
 	 * Sets the number of items represented by this indicator and updates the UI to reflect the
-	 * change. This number should be equal to the size of the collection being represented.
+	 * change. This number should be equal to the size of the Collection being represented by the
+	 * indicator.
 	 *
 	 * @param numberOfItems
 	 * 		the number of items in the set this indicator represents, not negative
@@ -66,7 +69,7 @@ public interface SelectionIndicator {
 	 * Changes the visibility of this indicator.
 	 *
 	 * @param show
-	 * 		true to make this indicator visible, false otherwise
+	 * 		true to make this indicator visible, false to make it invisible
 	 */
 	void setVisibility(boolean show);
 

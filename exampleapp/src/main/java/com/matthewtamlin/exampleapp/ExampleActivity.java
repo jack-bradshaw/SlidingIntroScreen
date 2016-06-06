@@ -24,10 +24,12 @@ import android.support.v4.app.Fragment;
 
 import com.matthewtamlin.android_utilities_library.helpers.BitmapHelper;
 import com.matthewtamlin.android_utilities_library.helpers.ScreenSizeHelper;
-import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
+import com.matthewtamlin.sliding_intro_screen_library.background.BackgroundManager;
+import com.matthewtamlin.sliding_intro_screen_library.background.ColorBlender;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
 import com.matthewtamlin.sliding_intro_screen_library.pages.ParallaxPage;
-import com.matthewtamlin.sliding_intro_screen_library.transformers.ParallaxTransformer;
+import com.matthewtamlin.sliding_intro_screen_library.transformers.MultiViewParallaxTransformer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,114 +40,123 @@ import java.util.Collection;
  */
 public class ExampleActivity extends IntroActivity {
 	/**
-	 * Colors to use for the blended background.
+	 * Colors to use for the blended background: blue, pink, purple.
 	 */
-	private static final int[] COLORS = {0xff304FFE, 0xffcc0066, 0xff9900ff};
+	private static final int[] BACKGROUND_COLORS = {0xff304FFE, 0xffcc0066, 0xff9900ff};
 
 	/**
 	 * Name of the shared preferences which hold a key for preventing the intro screen from
 	 * displaying again once completed.
 	 */
-	public static final String DONT_DISPLAY_AGAIN_NAME = "display_only_once_spfile";
+	public static final String DISPLAY_ONCE_PREFS = "display_only_once_spfile";
 
 	/**
-	 * Key to use in {@code DONT_DISPLAY_AGAIN_NAME} to prevent the intro screen from displaying
-	 * again once completed.
+	 * Key to use in {@code DISPLAY_ONCE_PREFS} to prevent the intro screen from displaying again
+	 * once completed.
 	 */
-	public static final String DONT_DISPLAY_AGAIN_KEY = "display_only_once_spkey";
-
-	/**
-	 * The activity to launch after the intro screen.
-	 */
-	private Intent nextActivity;
+	public static final String DISPLAY_ONCE_KEY = "display_only_once_spkey";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.NoActionBar);
-
-		nextActivity = new Intent(this, SecondActivity.class);
-
+		setTheme(R.style.NoActionBar); // Looks good when the status bar is hidden
 		super.onCreate(savedInstanceState);
 
-		setPageTransformer(false, new ParallaxTransformer());
-		hideStatusBar();
-
-		if (useHasCompletedIntroBefore()) {
+		// Skip to the next Activity if the user has previously completed the introduction
+		if (introductionCompletedPreviously()) {
+			final Intent nextActivity = new Intent(this, SecondActivity.class);
 			startActivity(nextActivity);
 		}
+
+		hideStatusBar();
+		configureTransformer();
+		configureBackground();
 	}
 
 	/**
-	 * Called by {@link #onCreate(Bundle)} to generate the pages to display in this activity. The
-	 * returned collection is copied, so further changes to the collection will have no effect after
-	 * this method returns. The natural ordering of the returned collection is used for the order of
-	 * the pages.
+	 * Called by {@link #onCreate(Bundle)} to generate the pages displayed in this activity. The
+	 * returned Collection is copied, so further changes to the collection will have no effect after
+	 * this method returns. The total ordering of the returned collection is maintained in the
+	 * display of the pages.
 	 *
 	 * @param savedInstanceState
 	 * 		if this activity is being re-initialized after previously being shut down, then this Bundle
 	 * 		contains the data this activity most recently saved in {@link
 	 * 		#onSaveInstanceState(Bundle)}, otherwise null
-	 * @return the collection of pages to display, not null
+	 * @return the pages to display in the Activity, not null
 	 */
 	@Override
 	protected Collection<Fragment> generatePages(Bundle savedInstanceState) {
-		// This variable holds the pages while we create them
+		// This variable holds the pages while they are being created
 		final ArrayList<Fragment> pages = new ArrayList<>();
 
-		// Load some bitmaps into memory efficiently
+		// Get the screen dimensions so that Bitmaps can be loaded efficiently
 		final int screenWidth = ScreenSizeHelper.getScreenWidth(getWindowManager());
 		final int screenHeight = ScreenSizeHelper.getScreenHeight(getWindowManager());
-		final Bitmap frontDots = BitmapHelper
-				.decodeSampledBitmapFromResource(getResources(), R.raw.front, screenWidth,
-						screenHeight);
-		final Bitmap backDots = BitmapHelper
-				.decodeSampledBitmapFromResource(getResources(), R.raw.back, screenWidth,
-						screenHeight);
 
-		// Create the pages
-		for (int color : COLORS) {
+		// Load the Bitmap resources into memory
+		final Bitmap frontDots = BitmapHelper.decodeSampledBitmapFromResource(getResources(),
+				R.raw.front, screenWidth, screenHeight);
+		final Bitmap backDots = BitmapHelper.decodeSampledBitmapFromResource(getResources(),
+				R.raw.back, screenWidth, screenHeight);
+
+		// Create as many pages as there are background colors
+		for (int i = 0; i < BACKGROUND_COLORS.length; i++) {
 			final ParallaxPage newPage = ParallaxPage.newInstance();
 			newPage.setFrontImage(frontDots);
 			newPage.setBackImage(backDots);
 			pages.add(newPage);
 		}
 
-		// Return the pages so that they can be displayed in the activity
 		return pages;
 	}
 
 	/**
-	 * Called by {@link #onCreate(Bundle)} to generate the behaviour of the final button. This
-	 * behaviour can be changed later using {@link #setFinalButtonBehaviour(IntroButton.Behaviour)}.
-	 * The {@link IntroButton.ProgressToNextActivity} class is designed to simplify the
-	 * implementation.
+	 * Called by {@link #onCreate(Bundle)} to generate the Behaviour of the final button. The {@link
+	 * IntroButton} class contains Behaviours which suit most needs. The Behaviour of the final
+	 * button can be changed later using {@link #getFinalButtonAccessor()}.
 	 *
-	 * @return the behaviour to use for the final button, not null
+	 * @return the Behaviour to use for the final button, not null
 	 */
 	@Override
 	protected IntroButton.Behaviour generateFinalButtonBehaviour() {
-		/* We create a pending shared preference edit. This edit will be applied when the intro
-		 * screen is successfully completed. This can be used to prevent the screen being displayed
-		 * twice
+		/* The pending changes to the shared preferences editor will be applied when the
+		 * introduction is successfully completed. By setting a flag in the pending edits and
+		 * checking the status of the flag when the activity starts, the introduction screen can
+		 * be skipped if it has previously been completed.
 		 */
-		final SharedPreferences sp = getSharedPreferences(DONT_DISPLAY_AGAIN_NAME, MODE_PRIVATE);
-		final SharedPreferences.Editor pendingEdits =
-				sp.edit().putBoolean(DONT_DISPLAY_AGAIN_KEY, true);
+		final SharedPreferences sp = getSharedPreferences(DISPLAY_ONCE_PREFS, MODE_PRIVATE);
+		final SharedPreferences.Editor pendingEdits = sp.edit().putBoolean(DISPLAY_ONCE_KEY, true);
 
-		// Pass the pending edits to a Behaviour class
-		return new IntroButton.ProgressToNextActivity(nextActivity, pendingEdits) {
-			@Override
-			public boolean shouldLaunchActivity() {
-				return true;
-			}
-		};
+		// Define the next activity intent and create the Behaviour to use for the final button
+		final Intent nextActivity = new Intent(this, SecondActivity.class);
+		return new IntroButton.ProgressToNextActivity(nextActivity, pendingEdits);
 	}
 
 	/**
-	 * @return true if the user has completed the intro once before, false otherwise
+	 * Checks for a shared preference flag indicating that the introduction has been completed
+	 * previously.
+	 *
+	 * @return true if the introduction has been completed before, false otherwise
 	 */
-	private boolean useHasCompletedIntroBefore() {
-		SharedPreferences sp = getSharedPreferences(DONT_DISPLAY_AGAIN_NAME, MODE_PRIVATE);
-		return sp.getBoolean(DONT_DISPLAY_AGAIN_KEY, false);
+	private boolean introductionCompletedPreviously() {
+		final SharedPreferences sp = getSharedPreferences(DISPLAY_ONCE_PREFS, MODE_PRIVATE);
+		return sp.getBoolean(DISPLAY_ONCE_KEY, false);
+	}
+
+	/**
+	 * Sets this IntroActivity to use a MultiViewParallaxTransformer page transformer.
+	 */
+	private void configureTransformer() {
+		final MultiViewParallaxTransformer transformer = new MultiViewParallaxTransformer();
+		transformer.withParallaxView(R.id.page_fragment_imageHolderFront, 1.2f);
+		setPageTransformer(false, transformer);
+	}
+
+	/**
+	 * Sets this IntroActivity to use a ColorBlender background manager.
+	 */
+	private void configureBackground() {
+		final BackgroundManager backgroundManager = new ColorBlender(BACKGROUND_COLORS);
+		setBackgroundManager(backgroundManager);
 	}
 }

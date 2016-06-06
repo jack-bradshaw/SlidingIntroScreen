@@ -16,6 +16,7 @@
 
 package com.matthewtamlin.sliding_intro_screen_library.indicators;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -32,53 +33,60 @@ import java.util.ArrayList;
 import static android.widget.RelativeLayout.LayoutParams.MATCH_PARENT;
 
 /**
- * Displays a set of dots to indicate the selected item in a set. The properties and behaviours of
- * the dots can be configured using the methods of this class. The default appearance and behaviour
- * replicate the functionality of indicators in Google-made apps.
+ * Displays a set of dots to indicate the selected item in a set.
  */
-public class DotIndicator extends RelativeLayout implements SelectionIndicator {
+public final class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	/**
 	 * Used to identify this class during debugging.
 	 */
-	private static final String TAG = "[SelectionIndicator]";
+	@SuppressWarnings("unused")
+	private static final String TAG = "[DotIndicator]";
 
 	/**
-	 * Default value for the attribute {@code numberOfDots}.
+	 * Default value for the {@code numberOfDots} attribute. This value is used if the attribute is
+	 * not supplied.
 	 */
 	private static final int DEFAULT_NUMBER_OF_DOTS = 1;
 
 	/**
-	 * Default value for the {@code selectedDotIndex} attribute.
+	 * Default value for the {@code selectedDotIndex} attribute. This value is used if the attribute
+	 * is not supplied.
 	 */
 	private static final int DEFAULT_SELECTED_DOT_INDEX = 0;
 
 	/**
-	 * Default value for the {@code unselectedDotDiameter} attribute.
+	 * Default value for the {@code unselectedDotDiameter} attribute. This value is used if the
+	 * attribute is not supplied. This value has units of display-independent pixels.
 	 */
 	private static final int DEFAULT_UNSELECTED_DOT_DIAMETER_DP = 6;
 
 	/**
-	 * Default value for the {@code selectedDotDiameter} attribute.
+	 * Default value for the {@code selectedDotDiameter} attribute. This value is used if the
+	 * attribute is not supplied. This value has units of display-independent pixels.
 	 */
 	private static final int DEFAULT_SELECTED_DOT_DIAMETER_DP = 9;
 
 	/**
-	 * Default value for the {@code unselectedDotColor} attribute.
+	 * Default value for the {@code unselectedDotColor} attribute. This value is used if the
+	 * attribute is not supplied. This value is an ARGB hex code.
 	 */
 	private static final int DEFAULT_UNSELECTED_DOT_COLOR = Color.WHITE;
 
 	/**
-	 * Default value for the {@code selectedDotColor} attribute.
+	 * Default value for the {@code selectedDotColor} attribute. This value is used if the attribute
+	 * is not supplied. This value is an ARGB hex code.
 	 */
 	private static final int DEFAULT_SELECTED_DOT_COLOR = Color.WHITE;
 
 	/**
-	 * Default value for the {@code spacingBetweenDots} attribute.
+	 * Default value for the {@code spacingBetweenDots} attribute. This value is used if the
+	 * attribute is not supplied. This value has units of display-independent pixels.
 	 */
 	private static final int DEFAULT_SPACING_BETWEEN_DOTS_DP = 7;
 
 	/**
-	 * Default value for the {@code dotTransitionDuration} attribute.
+	 * Default value for the {@code dotTransitionDuration} attribute. This value is used if the
+	 * attribute is not supplied. This value has units of milliseconds.
 	 */
 	private static final int DEFAULT_DOT_TRANSITION_DURATION_MS = 200;
 
@@ -93,109 +101,139 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	private int selectedDotIndex;
 
 	/**
-	 * The diameter to use for each unselected Dot.
+	 * The diameter to use for the unselected dots.
 	 */
 	private int unselectedDotDiameterPx;
 
 	/**
-	 * The diameter to use for the selected Dot.
+	 * The diameter to use for the selected dot.
 	 */
 	private int selectedDotDiameterPx;
 
 	/**
-	 * The ARGB hex code of the color to use for each unselected Dot.
+	 * The color to use for the unselected dots, as an ARGB hex code.
 	 */
 	private int unselectedDotColor;
 
 	/**
-	 * The ARGB hex code of the colour to use for the selected Dot.
+	 * The colour to use for the selected dot, as an ARGB hex code.
 	 */
 	private int selectedDotColor;
 
 	/**
-	 * The spacing between the edges of consecutive unselected dots.
+	 * The spacing between dots. The spacing is measured as the distance between the edges of
+	 * consecutive dots. The spacing is applied as if all dots are unselected, and when a dot
+	 * changes size to become selected, it stays fixed at its centre.
 	 */
 	private int spacingBetweenDotsPx;
 
 	/**
-	 * The length of time for transitioning a Dot between selected and unselected, measured in
+	 * The length of time for transitioning a dot between selected and unselected, measured in
 	 * milliseconds.
 	 */
 	private int dotTransitionDuration;
 
 	/**
-	 * The Dot elements shown in this View.
+	 * The dots shown in this View.
 	 */
 	private final ArrayList<Dot> dots = new ArrayList<>();
 
 	/**
-	 * Constructs a new SelectionIndicator instance. The following default parameters are used:<p/>
-	 * <li>numberOfDots: 1</li> <li>selectedDotIndex: 0</li> <li>unselectedDotDiameter: 6dp</li>
+	 * Constructs a new DotIndicator instance. The following default parameters are used:
+	 * <ul><li>numberOfDots: 1</li> <li>selectedDotIndex: 0</li> <li>unselectedDotDiameter: 6dp</li>
 	 * <li>selectedDotDiameter: 9dp</li> <li>unselectedDotColor: opaque white (i.e. ARGB
 	 * 0xFFFFFFFF)</li> <li>selectedDotColor: opaque white (i.e. ARGB 0xFFFFFFFF)</li>
-	 * <li>spacingBetweenDots: 7dp</li> <li>dotTransitionDuration: 200ms</li>
+	 * <li>spacingBetweenDots: 7dp</li> <li>dotTransitionDuration: 200ms</li></ul>
 	 *
 	 * @param context
-	 * 		the context in which this SelectionIndicator is operating
+	 * 		the Context in which this DotIndicator is operating, not null
 	 */
 	public DotIndicator(final Context context) {
 		super(context);
-		init(null);
+		init(null, 0, 0);
 	}
 
 	/**
-	 * Constructs a new SelectionIndicator instance. If an attribute specific to this class is not
-	 * provided, the relevant default is used. The defaults are:<p/> <li>numberOfDots: 1</li>
+	 * Constructs a new DotIndicator instance. If an attribute specific to this class is not
+	 * provided, the relevant default is used. The defaults are:<ul><li>numberOfDots: 1</li>
 	 * <li>selectedDotIndex: 0</li> <li>unselectedDotDiameter: 6dp</li> <li>selectedDotDiameter:
 	 * 9dp</li> <li>unselectedDotColor: opaque white (i.e. ARGB 0xFFFFFFFF)</li>
 	 * <li>selectedDotColor: opaque white (i.e. ARGB 0xFFFFFFFF)</li> <li>spacingBetweenDots:
-	 * 7dp</li> <li>dotTransitionDuration: 200ms</li>
+	 * 7dp</li> <li>dotTransitionDuration: 200ms</li></ul>
 	 *
 	 * @param context
-	 * 		the context in which this SelectionIndicator is operating
+	 * 		the Context in which this SelectionIndicator is operating, not null
 	 * @param attrs
-	 * 		configuration attributes
+	 * 		configuration attributes, null allowed
 	 */
 	public DotIndicator(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		init(attrs);
+		init(attrs, 0, 0);
 	}
 
 	/**
-	 * Constructs a new SelectionIndicator instance. If an attribute specific to this class is not
-	 * provided, the relevant default is used. The defaults are:<p/> <li>numberOfDots: 1</li>
+	 * Constructs a new DotIndicator instance. If an attribute specific to this class is not
+	 * provided, the relevant default is used. The defaults are:<ul><li>numberOfDots: 1</li>
 	 * <li>selectedDotIndex: 0</li> <li>unselectedDotDiameter: 6dp</li> <li>selectedDotDiameter:
 	 * 9dp</li> <li>unselectedDotColor: opaque white (i.e. ARGB 0xFFFFFFFF)</li>
 	 * <li>selectedDotColor: opaque white (i.e. ARGB 0xFFFFFFFF)</li> <li>spacingBetweenDots:
-	 * 7dp</li> <li>dotTransitionDuration: 200ms</li>
+	 * 7dp</li> <li>dotTransitionDuration: 200ms</li></ul>
 	 *
 	 * @param context
 	 * 		the context in which this SelectionIndicator is operating
 	 * @param attrs
-	 * 		configuration attributes
+	 * 		configuration attributes, null allowed
 	 * @param defStyleAttr
-	 * 		an attribute in the current theme that contains a reference to a style resource that
-	 * 		supplies defaults values for the StyledAttributes, or 0 to not look for defaults
+	 * 		an attribute in the current theme which supplies default attributes, pass 0	to ignore
 	 */
-	public DotIndicator(final Context context, final AttributeSet attrs, final int
-			defStyleAttr) {
+	public DotIndicator(final Context context, final AttributeSet attrs, final int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
-		init(attrs);
+		init(attrs, defStyleAttr, 0);
 	}
 
 	/**
-	 * Initialises this DotIndicator. The provided attributes are read and assigned to member
-	 * variables, and the UI is created. This method should only be invoked during construction.
+	 * Constructs a new DotIndicator instance. If an attribute specific to this class is not
+	 * provided, the relevant default is used. The defaults are:<ul><li>numberOfDots: 1</li>
+	 * <li>selectedDotIndex: 0</li> <li>unselectedDotDiameter: 6dp</li> <li>selectedDotDiameter:
+	 * 9dp</li> <li>unselectedDotColor: opaque white (i.e. ARGB 0xFFFFFFFF)</li>
+	 * <li>selectedDotColor: opaque white (i.e. ARGB 0xFFFFFFFF)</li> <li>spacingBetweenDots:
+	 * 7dp</li> <li>dotTransitionDuration: 200ms</li></ul>
+	 *
+	 * @param context
+	 * 		the context in which this SelectionIndicator is operating
+	 * @param attrs
+	 * 		configuration attributes, null allowed
+	 * @param defStyleAttr
+	 * 		an attribute in the current theme which supplies default attributes, pass 0	to ignore
+	 * @param defStyleRes
+	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is 0, pass
+	 * 		0 to ignore
+	 */
+	@TargetApi(21)
+	public DotIndicator(final Context context, final AttributeSet attrs, final int defStyleAttr,
+			final int defStyleRes) {
+		super(context, attrs, defStyleAttr, defStyleRes);
+		init(attrs, defStyleAttr, defStyleRes);
+	}
+
+	/**
+	 * Initialises the member variables of this DotIndicator and creates the UI. This method should
+	 * only be invoked during construction.
 	 *
 	 * @param attrs
-	 * 		configuration attributes
+	 * 		configuration attributes, null allowed
+	 * @param defStyleAttr
+	 * 		an attribute in the current theme which supplies default attributes, pass 0	to ignore
+	 * @param defStyleRes
+	 * 		a resource which supplies default attributes, only used if {@code defStyleAttr}	is 0, pass
+	 * 		0 to ignore
 	 */
-	private void init(final AttributeSet attrs) {
+	private void init(final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
 		// Use a TypedArray to process attrs
-		final TypedArray attributes =
-				getContext().obtainStyledAttributes(attrs, R.styleable.DotIndicator);
+		final TypedArray attributes = getContext().obtainStyledAttributes(attrs, R.styleable
+				.DotIndicator, defStyleAttr, defStyleRes);
 
-		// Need to convert all default dimensions to px from dp
+		// Need to convert all default dimensions to px
 		final int defaultSelectedDotDiameterPx =
 				DimensionHelper.dpToPx(DEFAULT_SELECTED_DOT_DIAMETER_DP, getContext());
 		final int defaultUnselectedDotDiameterPx = DimensionHelper.dpToPx(
@@ -203,7 +241,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 		final int defaultSpacingBetweenDotsPx =
 				DimensionHelper.dpToPx(DEFAULT_SPACING_BETWEEN_DOTS_DP, getContext());
 
-		// Assign attributes to member variables
+		// Assign provided attributes to member variables, or use the defaults if necessary
 		numberOfDots = attributes
 				.getInt(R.styleable.DotIndicator_numberOfDots, DEFAULT_NUMBER_OF_DOTS);
 		selectedDotIndex = attributes
@@ -237,51 +275,60 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Constructs and displays dots based on current member variables. Calling this method will
-	 * remove and recreate all existing dots.
+	 * Constructs and displays dots based on current member variables.
 	 */
 	private void reflectParametersInView() {
-		dots.clear();
+		// Reset the root View and the dot Collection so that the UI can be entirely recreated
 		removeAllViews();
+		dots.clear();
 
+		// Create the dots incrementally from left to right
 		for (int i = 0; i < numberOfDots; i++) {
-			Dot dot = new Dot(getContext());
-			dot.setInactiveDiameterPx(unselectedDotDiameterPx).setActiveDiameterPx(
-					selectedDotDiameterPx)
-					.setActiveColor(selectedDotColor).setInactiveColor(unselectedDotColor)
+			// Create a dot and set its properties
+			final Dot dot = new Dot(getContext());
+			dot.setInactiveDiameterPx(unselectedDotDiameterPx)
+					.setActiveDiameterPx(selectedDotDiameterPx)
+					.setActiveColor(selectedDotColor)
+					.setInactiveColor(unselectedDotColor)
 					.setTransitionDuration(dotTransitionDuration);
 
+
+			// Make the dot active if necessary
 			if (i == selectedDotIndex) {
 				dot.setActive(false);
 			} else {
 				dot.setInactive(false);
 			}
 
-			int maxDiameterDimension = Math.max(selectedDotDiameterPx, unselectedDotDiameterPx);
-			int startMargin = i * (spacingBetweenDotsPx + unselectedDotDiameterPx);
-			LayoutParams params = new LayoutParams(maxDiameterDimension, maxDiameterDimension);
+			// Create the positioning parameters
+			final int maxDiameterDim = Math.max(selectedDotDiameterPx, unselectedDotDiameterPx);
+			final int startMargin = i * (spacingBetweenDotsPx + unselectedDotDiameterPx);
+			LayoutParams params = new LayoutParams(maxDiameterDim, maxDiameterDim);
 			params.setMargins(startMargin, 0, 0, 0);
 
+			// RTL layout support
 			if (Build.VERSION.SDK_INT >= 17) {
 				params.setMarginStart(startMargin);
 			}
 
+			// Apply the positioning parameters and add the dot to the UI
 			dot.setLayoutParams(params);
-			dots.add(i, dot);
 			addView(dot);
+
+			// Keep a record of the dot for later use
+			dots.add(i, dot);
 		}
 	}
 
 	/**
-	 * Forces a redraw of all dots. All existing dots are destroyed and recreated. The new dots will
-	 * reflect the current parameters.
+	 * Destroys the UI and recreates it.
 	 */
 	public void redrawDots() {
 		reflectParametersInView();
 	}
 
 	/**
-	 * Sets the diameter to use for each unselected dot.
+	 * Sets the diameter to use for the unselected dots.
 	 *
 	 * @param unselectedDotDiameterPx
 	 * 		the diameter to use, measured in pixels
@@ -292,7 +339,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Sets the diameter to use for each unselected dot.
+	 * Sets the diameter to use for the unselected dots.
 	 *
 	 * @param unselectedDotDiameterDp
 	 * 		the diameter to use, measured in display-independent pixels
@@ -303,9 +350,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Returns the diameter currently used for each unselected dot.
-	 *
-	 * @return the diameter currently used, measured in pixels
+	 * @return the current unselected dot diameter, measured in pixels
 	 */
 	public int getUnselectedDotDiameter() {
 		return unselectedDotDiameterPx;
@@ -334,16 +379,14 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Returns the diameter currently used for the selected dot.
-	 *
-	 * @return the diameter currently used, measured in pixels
+	 * @return the current selected dot diameter, measured in pixels
 	 */
 	public int getSelectedDotDiameter() {
 		return selectedDotDiameterPx;
 	}
 
 	/**
-	 * Sets the color to use for each unselected dot.
+	 * Sets the color to use for the unselected dots.
 	 *
 	 * @param unselectedDotColor
 	 * 		the color to use, as an ARGB hex code
@@ -354,9 +397,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Returns the color currently used for each unselected dot.
-	 *
-	 * @return the color currently used, as an ARGB hex code
+	 * @return the current unselected dot color, as an ARGB hex code
 	 */
 	public int getUnselectedDotColor() {
 		return unselectedDotColor;
@@ -374,17 +415,16 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Returns the color currently used for the selected dot.
-	 *
-	 * @return the color currently used, as an ARGB hex code
+	 * @return the current unselected dot color, as an ARGB hex code
 	 */
 	public int getSelectedDotColor() {
 		return selectedDotColor;
 	}
 
 	/**
-	 * Sets the spacing between consecutive dots, as measured from the edges of the unselected
-	 * dots.
+	 * Sets the spacing between dots. The spacing is measured as the distance between the edges of
+	 * consecutive unselected dots. The spacing is applied as if all dots are unselected, and when a
+	 * dot changes size to become selected, it stays fixed at its centre.
 	 *
 	 * @param spacingBetweenDotsPx
 	 * 		the spacing to use, measured in pixels
@@ -395,8 +435,9 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Sets the spacing between consecutive dots, as measured from the edges of the unselected
-	 * dots.
+	 * Sets the spacing between dots. The spacing is measured as the distance between the edges of
+	 * consecutive unselected dots. The spacing is applied as if all dots are unselected, and when a
+	 * dot changes size to become selected, it stays fixed at its centre.
 	 *
 	 * @param spacingBetweenDotsDp
 	 * 		the spacing to use, measured in display-independent pixels
@@ -407,8 +448,9 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 	}
 
 	/**
-	 * Returns the spacing between consecutive dots, as measured from the edges of the unselected
-	 * dots.
+	 * Returns the current spacing between dots. The spacing is measured as the distance between the
+	 * edges of consecutive unselected dots. The spacing is applied as if all dots are unselected,
+	 * and when a dot changes size to become selected, it stays fixed at its centre.
 	 *
 	 * @return the current spacing, measured in pixels
 	 */
@@ -416,26 +458,16 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 		return spacingBetweenDotsPx;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @throws IndexOutOfBoundsException
-	 * 		if {@code index} is too large for the current indicator size
-	 * @throws IllegalArgumentException
-	 * 		if {@code index} is less than 0
-	 */
 	@Override
 	public void setSelectedItem(final int index, final boolean animate) {
-		if (selectedDotIndex < 0) {
-			throw new IllegalArgumentException("newActiveItemIndex must be greater than 0");
-		}
-
 		try {
 			dots.get(this.selectedDotIndex).setInactive(animate);
 			dots.get(index).setActive(animate);
 		} catch (IndexOutOfBoundsException e) {
+			// Catch and rethrow the exception to avoid showing the internal implementation
 			throw new IndexOutOfBoundsException();
 		}
+
 		this.selectedDotIndex = index;
 	}
 
@@ -446,7 +478,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 
 	@Override
 	public void setNumberOfItems(final int numberOfItems) {
-		this.numberOfDots = numberOfItems;
+		numberOfDots = numberOfItems;
 		reflectParametersInView();
 	}
 
@@ -457,7 +489,7 @@ public class DotIndicator extends RelativeLayout implements SelectionIndicator {
 
 	@Override
 	public void setTransitionDuration(final int transitionDurationMs) {
-		this.dotTransitionDuration = transitionDurationMs;
+		dotTransitionDuration = transitionDurationMs;
 		reflectParametersInView();
 	}
 
