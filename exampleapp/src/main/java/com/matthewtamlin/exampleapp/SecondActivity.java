@@ -20,22 +20,30 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 
-public class SecondActivity extends AppCompatActivity implements View.OnClickListener {
-
+public class SecondActivity extends AppCompatActivity {
 	@Override
+	@SuppressWarnings("ConstantConditions")
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_second);
-		findViewById(R.id.clear_shared_prefs).setOnClickListener(this);
+
+		// When pressed, allow the introduction screen to show again
+		findViewById(R.id.clear_shared_prefs_button).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					allowIntroductionToShowAgain();
+				}
+			});
 	}
 
-	@Override
-	public void onClick(View v) {
-		if (v.getId() == R.id.clear_shared_prefs) {
-			final SharedPreferences sp =
-					getSharedPreferences(ExampleActivity.DONT_DISPLAY_AGAIN_NAME, MODE_PRIVATE);
-			sp.edit().putBoolean(ExampleActivity.DONT_DISPLAY_AGAIN_KEY, false).apply();
-		}
+	/**
+	 * Clears the shared preferences flag which prevents the introduction from being shown twice.
+	 */
+	private void allowIntroductionToShowAgain() {
+		final SharedPreferences sp = getSharedPreferences(ExampleActivity.DISPLAY_ONCE_PREFS,
+				MODE_PRIVATE);
+		sp.edit().putBoolean(ExampleActivity.DISPLAY_ONCE_KEY, false).apply();
 	}
 }
