@@ -40,7 +40,7 @@ import java.util.Collection;
  */
 public class ExampleActivity extends IntroActivity {
 	/**
-	 * Colors to use for the blended background.
+	 * Colors to use for the blended background: blue, pink, purple.
 	 */
 	private static final int[] BACKGROUND_COLORS = {0xff304FFE, 0xffcc0066, 0xff9900ff};
 
