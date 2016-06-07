@@ -93,6 +93,7 @@ public class TestSinglePageBehaviour extends IntroActivity {
 		final ParallaxPage p = new ParallaxPage();
 		p.setFrontImage(frontDots);
 		p.setBackImage(backDots);
+		pages.add(p);
 
 		return pages;
 	}
