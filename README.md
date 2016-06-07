@@ -11,7 +11,7 @@ Releases are made available through jCentre. Add `compile 'com.matthew-tamlin:sl
 
 IntroActivity is an abstract class, therefore to use it you must create a subclass and implement both `generatePages()` and `generateFinalButtonBehaviour()`. These methods are called by `onCreate()` to define the activity's appearance and behaviour. The pages to display are created in `generatePages()`, and the Behaviour of the final button is created in `generateFinalButtonBehaviour()`. A Behaviour is just a Runnable which holds a reference to an IntroActivity, which allows it to manipulate the activity when run. This is further explained in the IntroButton section below. 
 
-The other methods of the `IntroActivity` class provide further customisation options, such as:
+The other methods of the IntroActivity class provide further customisation options, such as:
 - Hiding/showing the status bar.
 - Programatically changing the page.
 - Locking the page to touch events and/or programmatic commands (such as button presses).
@@ -29,12 +29,11 @@ The other notable components of this library are:
 - [SelectionIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/indicators/SelectionIndicator.java)
 - [BackgroundManager](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/background/BackgroundManager.java) 
 - [AnimatorFactory](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/buttons/AnimatorFactory.java)
-- [MultiViewParallaxTransformer](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/transformers/MultiViewParallaxTransformer.java)
 
 ### IntroButton
 The IntroButton class has two important properties: appearance and behaviour. These properties define how the button displays and how it behaves when pressed. Separating appearance and behaviour from the button itself allows buttons to be configured dynamically, and avoids boilerplate code. The appearance of a button is defined using the `IntroButton.Appearance` enum, and the behaviour of a button is defined using the `IntroButton.Behaviour` interface.
 
-The appearance of an `IntroButton` defines how text and icons are displayed within the button. The appearance can be set to show just text, just an icon, or both. In the case of both, the appearance also defines whether the icon shows to the left or the right of the text. Using an Appearance object to configure how the button displays has advantages over manually changing the text/icon. The IntroButton class is designed to store text and icons internally, so that these resources do not need to be externally cached. When the Appearance changes to display an icon, the icon is loaded from inside the button. This reduces boilerplate code, eliminates the need to externally cache resources, and reduces occportunities for bugs to occur.
+The appearance of an IntroButton defines how text and icons are displayed within the button. The appearance can be set to show just text, just an icon, or both. In the case of both, the appearance also defines whether the icon shows to the left or the right of the text. Using an Appearance object to configure how the button displays has advantages over manually changing the text/icon. The IntroButton class is designed to store text and icons internally, so that these resources do not need to be externally cached. When the Appearance changes to display an icon, the icon is loaded from inside the button. This reduces boilerplate code, eliminates the need to externally cache resources, and reduces occportunities for bugs to occur.
 
 The behaviour of an IntroButton defines the actions to take when the button is clicked. The behaviour of an IntroButton is set by passing the button an implementation of the Behaviour interface. Using a separate object to define the behaviour decouples the on-click actions from the buttons, and makes code more reusable. The Behaviour interface extends the Runnable interface and has two extra methods: `IntroActivity getActivity()` and `void setActivity(IntroActivity)`. Using these extra methods, the `run()` method can obtain a reference to an IntroActivity to manipulate. Passing Behaviours to the navigation buttons of an IntroActivity is the simplest way to manipulate the IntroActivity when the buttons are pressed. The following concrete implementations of the Behaviour interface meet the most common needs:
 - `IntroButton.GoToPreviousPage` makes the target IntroActivity display the previous page (unless the first page is currently displayed).
@@ -46,14 +45,14 @@ The behaviour of an IntroButton defines the actions to take when the button is c
 - `IntroButton.RequestPermissions` displays the standard permission request dialog to the user. The exact permissions to request are provided to the constructor, along with a request code to use when receiving the result.
 - `IntroButton.ProgressToNextActivity` ends the introduction and progresses to the next Activity in the app.
 
-The `ProgressToNextActivity` is one of the most useful classes in the library. The default constructor accepts a `SharedPreferences.Editor` paramater which can be used to make sure the introduction is only shown once. Any pending changes in the editor are committed when the next activity is successfully launched, which allows a shared preferences flag to be automatically set when the introduction completes. By checking the status of this flag each time the IntroActivity is created, the introduction can be skipped if the user has previously completed it. The class also contains a method called `shouldLaunchActivity()` which defines validation logic. By default this method returns true, but subclasses can override it to define conditions which must pass before the next activity is launched.
+The ProgressToNextActivity class is one of the most useful classes in the library. The default constructor accepts a `SharedPreferences.Editor` paramater which can be used to make sure the introduction is only shown once. Any pending changes in the editor are committed when the next activity is successfully launched, which allows a shared preferences flag to be automatically set when the introduction completes. By checking the status of this flag each time the IntroActivity is created, the introduction can be skipped if the user has previously completed it. The class also contains a method called `shouldLaunchActivity()` which defines validation logic. By default this method returns true, but subclasses can override it to define conditions which must pass before the next activity is launched.
 
 If the above implementations are not sufficient, the interface can be directly implemented or the `IntroButton.BehaviourAdapter` class can be extended. The adapter class provides a simple getter/setter mechanism for `getActivity()` and `setActivity()`, and declares `run()` as abstract. This removes the need to write the same getter/setter boilerplate code for each Behaviour. The `run()` implementation simply needs to call `getActivity()` and perform the desired action on the retured activity (after doing a null check).
 
 ### SelectionIndicator
 In the centre of the navigation bar within each IntroActivity is a SelectionIndicator. This is a visual element which displays the user's current progress through the introduction. The IntroActivity class provides methods for setting a new indicator, or modifying the existing one. SelectionIndicator itself is an interface, therfore custom indicators can be used. By default, a [DotIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/indicators/DotIndicator.java) is used, as shown in the above example image.
 
-The `DotIndicator` class does not need to be used in an IntroActivity. To create a `DotIndicator` in any layout, just add the following XML:
+DotIndicator does not need to be used in an IntroActivity. To create a DotIndicator in any layout, just add the following XML:
 ```xml
 <com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator>
             android:layout_width="wrap_content"
@@ -62,7 +61,7 @@ The `DotIndicator` class does not need to be used in an IntroActivity. To create
             app:selectedDotIndex=YOUR_INT_HERE/>
 ```
 
-By default, the `DotIndicator` replicates the functionality of similar indicators in Google-made apps. The following attributes can be added to the XML declaration to customise the indicator:
+DotIndicator has been designed to replicate the appearance and functionality of similar indicators in Google-made apps. The following attributes can be added to the XML declaration to customise the indicator:
 - `app:unselectedDotDiameter` and `app:selectedDotDiameter` to set the dot diameterss.
 - `app:unselectedDotColor` and `app:selectedDotColor `to set the dot colors.
 - `app:dotTransitionDuration` to set the animation time when transitioning dots between selected and unselected.
