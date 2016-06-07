@@ -22,6 +22,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
 
@@ -460,15 +461,18 @@ public final class DotIndicator extends RelativeLayout implements SelectionIndic
 
 	@Override
 	public void setSelectedItem(final int index, final boolean animate) {
-		try {
-			dots.get(this.selectedDotIndex).setInactive(animate);
-			dots.get(index).setActive(animate);
-		} catch (IndexOutOfBoundsException e) {
-			// Catch and rethrow the exception to avoid showing the internal implementation
-			throw new IndexOutOfBoundsException();
-		}
+		// If there are no dots, it doesn't make sense to perform an update
+		if (dots.size() > 0) {
+			try {
+				dots.get(this.selectedDotIndex).setInactive(animate);
+				dots.get(index).setActive(animate);
+			} catch (IndexOutOfBoundsException e) {
+				// Catch and rethrow the exception to avoid showing the internal implementation
+				throw new IndexOutOfBoundsException();
+			}
 
-		this.selectedDotIndex = index;
+			this.selectedDotIndex = index;
+		}
 	}
 
 	@Override
