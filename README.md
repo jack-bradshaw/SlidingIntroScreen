@@ -4,7 +4,7 @@ A library designed to simplify the creation of introduction screens in Android a
 ![Example of an introduction screen](exampleapp/example.png)
 
 ## Installation
-Releases are made available through jCentre. Add `compile 'com.matthew-tamlin:sliding-intro-screen:3.0.0'` to your gradle build file to use the latest version. Older versions are available in the [maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen/view).
+Releases are made available through jCentre. Add `compile 'com.matthew-tamlin:sliding-intro-screen:3.0.1'` to your gradle build file to use the latest version. Older versions are available in the [maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen/view).
 
 ## Quick Start
 [IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/core/IntroActivity.java) is the primary class of this library because it coordinates and displays all the other components. The UI features two main components: a series of Fragments (referred to as pages) hosted in a ViewPager, and a navigation bar. The pages display the content of the introduction screen, and the navigation bar displays the user's progress through the introduction. The navigation bar contains three configurable buttons known as the left button, right button and final button. The left and right buttons are shown on all but the last page, and the final button is shown on only the last page. 
