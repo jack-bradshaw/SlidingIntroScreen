@@ -25,12 +25,11 @@ import com.matthewtamlin.sliding_intro_screen_library.R;
 import java.util.HashMap;
 
 /**
- * This class is deprecated, use {@link MultiViewParallaxTransformer} instead.
- * <p/>
  * Transforms a ParallaxPage by translating its views left and right when scrolling. Front images
  * are translated faster than back images, which creates a parallax scrolling effect. This class is
  * designed to function with ParallaxPage elements. Use with other types of pages will yield default
  * ViewPager scrolling behaviour.
+ * @deprecated use {@link MultiViewParallaxTransformer} instead
  */
 @Deprecated
 public final class ParallaxTransformer implements ViewPager.PageTransformer {
