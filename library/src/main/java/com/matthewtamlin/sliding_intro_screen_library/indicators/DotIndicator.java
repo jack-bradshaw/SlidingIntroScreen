@@ -464,14 +464,18 @@ public final class DotIndicator extends RelativeLayout implements SelectionIndic
 		// If there are no dots, it doesn't make sense to perform an update
 		if (dots.size() > 0) {
 			try {
-				dots.get(this.selectedDotIndex).setInactive(animate);
+				// The previously selected dot may no longer exist if the number of dots has changed
+				if (selectedDotIndex < dots.size()) {
+					dots.get(selectedDotIndex).setInactive(animate);
+				}
+
 				dots.get(index).setActive(animate);
 			} catch (IndexOutOfBoundsException e) {
 				// Catch and rethrow the exception to avoid showing the internal implementation
 				throw new IndexOutOfBoundsException();
 			}
 
-			this.selectedDotIndex = index;
+			selectedDotIndex = index;
 		}
 	}
 
