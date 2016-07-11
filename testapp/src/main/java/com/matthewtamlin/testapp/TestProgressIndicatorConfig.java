@@ -70,8 +70,29 @@ public class TestProgressIndicatorConfig extends ThreePageTestBase {
 	 */
 	private static final int TRANSITION_DURATION = 2000;
 
+	/**
+	 * The number of dots to use when testing that the indicator shrinks properly.
+	 */
+	private static final int NUMBER_OF_ITEMS_SMALLER = 2;
+
+	/**
+	 * The number of dots to use when testing that the indicator grows properly.
+	 */
+	private static final int NUMBER_OF_ITEMS_LARGER = 4;
+
+	/**
+	 * The unselected dot diameter, converted to pixels.
+	 */
 	int unselectedDiameterPx;
+
+	/**
+	 * The selected dot diameter, converted to pixels.
+	 */
 	int selectedDiameterPx;
+
+	/**
+	 * The spacing between dots, converted to pixels.
+	 */
 	int spacingPx;
 
 	@Override
@@ -170,6 +191,48 @@ public class TestProgressIndicatorConfig extends ThreePageTestBase {
 				indicator.setTransitionDuration(TRANSITION_DURATION);
 
 				checkChangeAssumptions();
+			}
+		});
+
+		Button shrinkIndicator = new Button(this);
+		layout.addView(shrinkIndicator);
+		shrinkIndicator.setText("reduce number of dots");
+		shrinkIndicator.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.d(TAG, "[on click] [change number of dots]");
+
+				resetIndicator();
+
+				assertThat("tests are designed to be used with a DotIndicator and cannot run " +
+						"otherwise", getProgressIndicator() instanceof DotIndicator);
+
+				DotIndicator indicator = (DotIndicator) getProgressIndicator();
+				indicator.setNumberOfItems(NUMBER_OF_ITEMS_SMALLER);
+
+				assertThat("incorrect number of dots shown", indicator.getNumberOfItems() ==
+						NUMBER_OF_ITEMS_SMALLER);
+			}
+		});
+
+		Button growIndicator = new Button(this);
+		layout.addView(growIndicator);
+		growIndicator.setText("increase number of dots");
+		growIndicator.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Log.d(TAG, "[on click] [change number of dots]");
+
+				resetIndicator();
+
+				assertThat("tests are designed to be used with a DotIndicator and cannot run " +
+						"otherwise", getProgressIndicator() instanceof DotIndicator);
+
+				DotIndicator indicator = (DotIndicator) getProgressIndicator();
+				indicator.setNumberOfItems(NUMBER_OF_ITEMS_LARGER);
+
+				assertThat("incorrect number of dots shown", indicator.getNumberOfItems() ==
+						NUMBER_OF_ITEMS_LARGER);
 			}
 		});
 
