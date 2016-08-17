@@ -17,12 +17,16 @@
 package com.matthewtamlin.testapp;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -40,6 +44,8 @@ public class TestPageChange extends ThreePageTestBase {
 	 * Used to identify this class during testing.
 	 */
 	private static final String TAG = "[TestProgrammatical...]";
+
+	private static final int NUMBER_OF_PAGES = 3; // to use background from superclass
 
 	private LinearLayout controlButtons;
 
@@ -212,5 +218,15 @@ public class TestPageChange extends ThreePageTestBase {
 
 		assertThat("locking conditions passed", didChange == shouldHaveChanged);
 		Log.d(TAG, "[validate locking conditions] [assertions passed]");
+	}
+
+	@Override
+	protected Collection<Fragment> generatePages(Bundle savedInstanceState) {
+		Collection<Fragment> fragments = new ArrayList<>();
+
+		for (int i = 0; i < NUMBER_OF_PAGES; i++) {
+			fragments.add(new ButtonFragment());
+		}
+		return fragments;
 	}
 }
