@@ -84,14 +84,23 @@ public class LockableViewPager extends ViewPager {
 
 	@Override
 	public boolean onInterceptTouchEvent(final MotionEvent ev) {
+		if (lockMode.allowsTouch()) {
+			super.onInterceptTouchEvent(ev);
+		} else {
+			return false;
+		}
+
 		// Uses the current lock mode to prevent touch events if necessary
 		return !lockMode.allowsTouch() || super.onInterceptTouchEvent(ev);
 	}
 
 	@Override
-	public boolean onTouchEvent(final MotionEvent ev) {
-		// Uses the current lock mode to prevent touch events if necessary
-		return !lockMode.allowsTouch() || super.onTouchEvent(ev);
+	public boolean onTouchEvent(MotionEvent ev) {
+		if (lockMode.allowsTouch()) {
+			return super.onTouchEvent(ev);
+		} else {
+			return false;
+		}
 	}
 
 	@Override
