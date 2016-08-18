@@ -294,7 +294,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 				leftButtonAccessor.getAppearance().equals(LEFT_BUTTON_APPEARANCE));
 		assertThat("left button text size not set/returned correctly",
 				leftButtonAccessor.getTextSize() ==
-						DimensionHelper.spToPx(LEFT_BUTTON_TEXT_SIZE_SP, TestButtonConfig.this));
+						DimensionHelper.spToPx(TestButtonConfig.this, LEFT_BUTTON_TEXT_SIZE_SP));
 
 		// Check that right button properties changed correctly
 		final IntroButtonAccessor rightButtonAccessor = getRightButtonAccessor();
@@ -315,7 +315,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 				rightButtonAccessor.getAppearance().equals(RIGHT_BUTTON_APPEARANCE));
 		assertThat("right button text size not set/returned correctly",
 				rightButtonAccessor.getTextSize() ==
-						DimensionHelper.spToPx(RIGHT_BUTTON_TEXT_SIZE_SP, TestButtonConfig.this));
+						DimensionHelper.spToPx(TestButtonConfig.this, RIGHT_BUTTON_TEXT_SIZE_SP));
 
 		// Check that final button properties changed correctly
 		final IntroButtonAccessor finalButtonAccessor = getFinalButtonAccessor();
@@ -336,7 +336,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 				finalButtonAccessor.getAppearance().equals(FINAL_BUTTON_APPEARANCE));
 		assertThat("final button text size not set/returned correctly",
 				finalButtonAccessor.getTextSize() ==
-						DimensionHelper.spToPx(FINAL_BUTTON_TEXT_SIZE_SP, TestButtonConfig.this));
+						DimensionHelper.spToPx(TestButtonConfig.this, FINAL_BUTTON_TEXT_SIZE_SP));
 
 		Log.d(TAG, "[checkChanges] [assertions passed]");
 	}
