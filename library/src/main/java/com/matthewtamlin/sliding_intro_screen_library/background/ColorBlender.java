@@ -67,6 +67,6 @@ public class ColorBlender implements BackgroundManager {
 		final int colorRight = isLast ? colors[index] : colors[index + 1];
 
 		// Blend the colors to make the final background color
-		background.setBackgroundColor(ColorHelper.blendColors(colorLeft, colorRight, 1f - offset));
+		background.setBackgroundColor(ColorHelper.blendColors(colorLeft, colorRight, offset));
 	}
 }

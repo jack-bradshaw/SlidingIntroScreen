@@ -222,10 +222,10 @@ public final class Dot extends RelativeLayout {
 				.obtainStyledAttributes(attrs, R.styleable.Dot, defStyleAttr, defStyleRes);
 
 		// Convert default dimensions to px
-		final int defaultActiveDiameterPx = DimensionHelper.dpToPx(DEFAULT_ACTIVE_DIAMETER_DP,
-				getContext());
+		final int defaultActiveDiameterPx = DimensionHelper.dpToPx(getContext(),
+				DEFAULT_ACTIVE_DIAMETER_DP);
 		final int defaultInactiveDiameterPx =
-				DimensionHelper.dpToPx(DEFAULT_INACTIVE_DIAMETER_DP, getContext());
+				DimensionHelper.dpToPx(getContext(), DEFAULT_INACTIVE_DIAMETER_DP);
 
 		// Assign provided attributes to member variables, or use the defaults if necessary
 		inactiveDiameterPx = attributes
@@ -435,7 +435,7 @@ public final class Dot extends RelativeLayout {
 			throw new IllegalArgumentException("inactiveDiameterDp cannot be less than 0");
 		}
 
-		setInactiveDiameterPx(DimensionHelper.dpToPx(inactiveDiameterDp, getContext()));
+		setInactiveDiameterPx(DimensionHelper.dpToPx(getContext(), inactiveDiameterDp));
 		return this;
 	}
 
