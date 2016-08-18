@@ -23,10 +23,10 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 
-import com.matthewtamlin.android_utilities_library.helpers.BitmapHelper;
+import com.matthewtamlin.android_utilities_library.helpers.BitmapEfficiencyHelper;
 import com.matthewtamlin.android_utilities_library.helpers.ScreenSizeHelper;
-import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
+import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
 import com.matthewtamlin.sliding_intro_screen_library.pages.ParallaxPage;
 
 import java.util.ArrayList;
@@ -80,15 +80,13 @@ public class TestSinglePageBehaviour extends IntroActivity {
 	protected Collection<Fragment> generatePages(Bundle savedInstanceState) {
 		ArrayList<Fragment> pages = new ArrayList<>();
 
-		final int screenWidth = ScreenSizeHelper.getScreenWidth(getWindowManager());
-		final int screenHeight = ScreenSizeHelper.getScreenHeight(getWindowManager());
+		final int screenWidth = ScreenSizeHelper.getScreenWidthPx(this);
+		final int screenHeight = ScreenSizeHelper.getScreenHeightPx(this);
 
-		final Bitmap frontDots = BitmapHelper
-				.decodeSampledBitmapFromResource(getResources(), R.raw.front, screenWidth,
-						screenHeight);
-		final Bitmap backDots = BitmapHelper
-				.decodeSampledBitmapFromResource(getResources(), R.raw.back, screenWidth,
-						screenHeight);
+		final Bitmap frontDots = BitmapEfficiencyHelper.decodeResource(this, R.raw.front,
+				screenWidth, screenHeight);
+		final Bitmap backDots = BitmapEfficiencyHelper.decodeResource(this, R.raw.back,
+				screenWidth, screenHeight);
 
 		final ParallaxPage p = new ParallaxPage();
 		p.setFrontImage(frontDots);
