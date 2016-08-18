@@ -249,12 +249,12 @@ public class TestProgressIndicatorConfig extends ThreePageTestBase {
 	}
 
 	private void initialisePxDimensions() {
-		unselectedDiameterPx = DimensionHelper.dpToPx(UNSELECTED_DIAMETER_DP,
-				TestProgressIndicatorConfig.this);
-		selectedDiameterPx = DimensionHelper.dpToPx(SELECTED_DIAMETER_DP,
-				TestProgressIndicatorConfig.this);
-		spacingPx = DimensionHelper.dpToPx(SPACING_BETWEEN_DOTS_DP,
-				TestProgressIndicatorConfig.this);
+		unselectedDiameterPx = DimensionHelper.dpToPx(TestProgressIndicatorConfig.this,
+				UNSELECTED_DIAMETER_DP);
+		selectedDiameterPx = DimensionHelper.dpToPx(TestProgressIndicatorConfig.this,
+				SELECTED_DIAMETER_DP);
+		spacingPx = DimensionHelper.dpToPx(TestProgressIndicatorConfig.this,
+				SPACING_BETWEEN_DOTS_DP);
 	}
 
 	/**
