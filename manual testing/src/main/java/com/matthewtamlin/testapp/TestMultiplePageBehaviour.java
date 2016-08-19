@@ -40,7 +40,7 @@ public class TestMultiplePageBehaviour extends ThreePageTestBase {
 
 	@Override
 	protected IntroButton.Behaviour generateFinalButtonBehaviour() {
-		final Intent i = new Intent(this, PostActivity.class);
+		final Intent i = new Intent(this, EndActivity.class);
 
 		final ProgressToNextActivity progressBehaviour = new ProgressToNextActivity(i, null) {
 			@Override

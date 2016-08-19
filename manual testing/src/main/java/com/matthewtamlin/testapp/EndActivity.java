@@ -19,10 +19,10 @@ package com.matthewtamlin.testapp;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-public class PostActivity extends AppCompatActivity {
+public class EndActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_post);
+		setContentView(R.layout.activity_end);
 	}
 }
