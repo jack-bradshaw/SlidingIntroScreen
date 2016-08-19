@@ -93,8 +93,8 @@ public class TestDot {
 		context = RuntimeEnvironment.application.getApplicationContext();
 		dot = new Dot(context);
 
-		INACTIVE_DIAMETER_PX = DimensionHelper.dpToPx(INACTIVE_DIAMETER_DP, context);
-		ACTIVE_DIAMETER_PX = DimensionHelper.dpToPx(ACTIVE_DIAMETER_DP, context);
+		INACTIVE_DIAMETER_PX = DimensionHelper.dpToPx(context, INACTIVE_DIAMETER_DP);
+		ACTIVE_DIAMETER_PX = DimensionHelper.dpToPx(context, ACTIVE_DIAMETER_DP);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -107,10 +107,10 @@ public class TestDot {
 		// Check variables
 		assertThat("inactive diameter was not initialised to default",
 				dot.getInactiveDiameter() ==
-						DimensionHelper.dpToPx(dot.getDefaultInactiveDiameterDp(), context));
+						DimensionHelper.dpToPx(context, dot.getDefaultInactiveDiameterDp()));
 		assertThat("active diameter was not initialised to default",
 				dot.getActiveDiameter() ==
-						DimensionHelper.dpToPx(dot.getDefaultActiveDiameterDp(), context));
+						DimensionHelper.dpToPx(context, dot.getDefaultActiveDiameterDp()));
 		assertThat("inactive color was not initialised to default",
 				dot.getInactiveColor() == dot.getDefaultInactiveColor());
 		assertThat("active color was not initialised to default",

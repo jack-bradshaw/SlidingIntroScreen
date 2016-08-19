@@ -22,7 +22,6 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
 
@@ -236,11 +235,11 @@ public final class DotIndicator extends RelativeLayout implements SelectionIndic
 
 		// Need to convert all default dimensions to px
 		final int defaultSelectedDotDiameterPx =
-				DimensionHelper.dpToPx(DEFAULT_SELECTED_DOT_DIAMETER_DP, getContext());
-		final int defaultUnselectedDotDiameterPx = DimensionHelper.dpToPx(
-				DEFAULT_UNSELECTED_DOT_DIAMETER_DP, getContext());
+				DimensionHelper.dpToPx(getContext(), DEFAULT_SELECTED_DOT_DIAMETER_DP);
+		final int defaultUnselectedDotDiameterPx = DimensionHelper.dpToPx(getContext(),
+				DEFAULT_UNSELECTED_DOT_DIAMETER_DP);
 		final int defaultSpacingBetweenDotsPx =
-				DimensionHelper.dpToPx(DEFAULT_SPACING_BETWEEN_DOTS_DP, getContext());
+				DimensionHelper.dpToPx(getContext(), DEFAULT_SPACING_BETWEEN_DOTS_DP);
 
 		// Assign provided attributes to member variables, or use the defaults if necessary
 		numberOfDots = attributes
@@ -346,7 +345,7 @@ public final class DotIndicator extends RelativeLayout implements SelectionIndic
 	 * 		the diameter to use, measured in display-independent pixels
 	 */
 	public void setUnselectedDotDiameterDp(final int unselectedDotDiameterDp) {
-		final int diameterPx = DimensionHelper.dpToPx(unselectedDotDiameterDp, getContext());
+		final int diameterPx = DimensionHelper.dpToPx(getContext(), unselectedDotDiameterDp);
 		setUnselectedDotDiameterPx(diameterPx);
 	}
 
@@ -375,7 +374,7 @@ public final class DotIndicator extends RelativeLayout implements SelectionIndic
 	 * 		the diameter to use, measured in display-independent pixels
 	 */
 	public void setSelectedDotDiameterDp(final int selectedDotDiameterDp) {
-		final int diameterPx = DimensionHelper.dpToPx(selectedDotDiameterDp, getContext());
+		final int diameterPx = DimensionHelper.dpToPx(getContext(), selectedDotDiameterDp);
 		setSelectedDotDiameterPx(diameterPx);
 	}
 
@@ -444,7 +443,7 @@ public final class DotIndicator extends RelativeLayout implements SelectionIndic
 	 * 		the spacing to use, measured in display-independent pixels
 	 */
 	public void setSpacingBetweenDotsDp(final int spacingBetweenDotsDp) {
-		final int spacingPx = DimensionHelper.dpToPx(spacingBetweenDotsDp, getContext());
+		final int spacingPx = DimensionHelper.dpToPx(getContext(), spacingBetweenDotsDp);
 		setSpacingBetweenDotsPx(spacingPx);
 	}
 

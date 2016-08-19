@@ -29,8 +29,8 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks;
-import com.matthewtamlin.android_utilities_library.helpers.ColorHelper;
 import com.matthewtamlin.android_utilities_library.helpers.StatusBarHelper;
+import com.matthewtamlin.android_utilities_library.helpers.ThemeColorHelper;
 import com.matthewtamlin.sliding_intro_screen_library.R;
 import com.matthewtamlin.sliding_intro_screen_library.background.BackgroundManager;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.AnimatorFactory;
@@ -680,7 +680,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * status bar will be colored black.
 	 */
 	public final void showStatusBar() {
-		final int statusBarColor = ColorHelper.getPrimaryDarkColor(this, Color.BLACK);
+		final int statusBarColor = ThemeColorHelper.getPrimaryDarkColor(this, Color.BLACK);
 		StatusBarHelper.showStatusBar(getWindow(), statusBarColor);
 	}
 

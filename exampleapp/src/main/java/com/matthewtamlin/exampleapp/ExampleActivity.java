@@ -22,7 +22,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.matthewtamlin.android_utilities_library.helpers.BitmapHelper;
+import com.matthewtamlin.android_utilities_library.helpers.BitmapEfficiencyHelper;
 import com.matthewtamlin.android_utilities_library.helpers.ScreenSizeHelper;
 import com.matthewtamlin.sliding_intro_screen_library.background.BackgroundManager;
 import com.matthewtamlin.sliding_intro_screen_library.background.ColorBlender;
@@ -90,14 +90,14 @@ public class ExampleActivity extends IntroActivity {
 		final ArrayList<Fragment> pages = new ArrayList<>();
 
 		// Get the screen dimensions so that Bitmaps can be loaded efficiently
-		final int screenWidth = ScreenSizeHelper.getScreenWidth(getWindowManager());
-		final int screenHeight = ScreenSizeHelper.getScreenHeight(getWindowManager());
+		final int screenWidth = ScreenSizeHelper.getScreenWidthPx(this);
+		final int screenHeight = ScreenSizeHelper.getScreenHeightPx(this);
 
 		// Load the Bitmap resources into memory
-		final Bitmap frontDots = BitmapHelper.decodeSampledBitmapFromResource(getResources(),
-				R.raw.front, screenWidth, screenHeight);
-		final Bitmap backDots = BitmapHelper.decodeSampledBitmapFromResource(getResources(),
-				R.raw.back, screenWidth, screenHeight);
+		final Bitmap frontDots = BitmapEfficiencyHelper.decodeResource(this, R.raw.front,
+				screenWidth, screenHeight);
+		final Bitmap backDots = BitmapEfficiencyHelper.decodeResource(this, R.raw.back,
+				screenWidth, screenHeight);
 
 		// Create as many pages as there are background colors
 		for (int i = 0; i < BACKGROUND_COLORS.length; i++) {
