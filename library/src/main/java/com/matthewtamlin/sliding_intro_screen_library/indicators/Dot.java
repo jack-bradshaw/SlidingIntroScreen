@@ -363,7 +363,7 @@ public final class Dot extends RelativeLayout {
 			}
 		});
 
-		ValueAnimator transitionColor = ValueAnimator.ofFloat(1f, 0f);
+		ValueAnimator transitionColor = ValueAnimator.ofFloat(0f, 1f);
 		transitionColor.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 			@Override
 			public void onAnimationUpdate(ValueAnimator animation) {
