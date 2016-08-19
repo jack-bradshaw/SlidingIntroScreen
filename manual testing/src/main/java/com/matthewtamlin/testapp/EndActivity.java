@@ -19,6 +19,13 @@ package com.matthewtamlin.testapp;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
+
+/**
+ * This Activity should be displayed after each tests which invokes the {@link
+ * IntroButton.ProgressToNextActivity} behaviour. The Activity displays a visual cue to indicate
+ * that the Behaviour worked
+ */
 public class EndActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
