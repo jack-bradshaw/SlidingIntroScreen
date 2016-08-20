@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void testProgressIndicatorConfig(View v) {
-		Intent i = new Intent(this, TestProgressIndicatorConfig.class);
+		Intent i = new Intent(this, TestSelectionIndicatorConfig.class);
 		startActivity(i);
 	}
 
