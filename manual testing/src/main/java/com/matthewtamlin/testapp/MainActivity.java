@@ -28,13 +28,9 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_test_selector);
 	}
 
+
 	public void testButtonConfig(View v) {
 		Intent i = new Intent(this, TestButtonConfig.class);
-		startActivity(i);
-	}
-
-	public void testDefaults(View v) {
-		Intent i = new Intent(this, TestDefaults.class);
 		startActivity(i);
 	}
 
