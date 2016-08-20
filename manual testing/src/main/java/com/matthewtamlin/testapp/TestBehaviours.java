@@ -17,17 +17,19 @@
 package com.matthewtamlin.testapp;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Behaviour;
+import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.ProgressToNextActivity;
+import com.matthewtamlin.sliding_intro_screen_library.indicators.SelectionIndicator;
 
 /**
- * Tests the ability to set behaviours, and tests the behaviours themselves.
+ * Tests the Behaviours.
  */
 public class TestBehaviours extends ThreePageTestBase {
 	/**
@@ -50,49 +52,197 @@ public class TestBehaviours extends ThreePageTestBase {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		final LinearLayout layout = new LinearLayout(this);
-		layout.setOrientation(LinearLayout.VERTICAL);
-		getRootView().addView(layout);
+		// The left button is used as the test trigger, so make sure it is always available
+		disableLeftButtonOnLastPage(false);
+		disableLeftButton(false);
 
-		Button testCustomBehaviour = new Button(this);
-		layout.addView(testCustomBehaviour);
-		testCustomBehaviour.setText("Test custom behaviour");
-		testCustomBehaviour.setOnClickListener(new View.OnClickListener() {
+		// Create a layout to display the control buttons over the ViewPager
+		final LinearLayout controlButtonHolder = new LinearLayout(this);
+		controlButtonHolder.setOrientation(LinearLayout.VERTICAL);
+		getRootView().addView(controlButtonHolder);
+
+		// Add the test buttons to the control layout
+		controlButtonHolder.addView(createGoToPreviousPageButton());
+		controlButtonHolder.addView(createGoToNextPageButton());
+		controlButtonHolder.addView(createGoToFirstPageButton());
+		controlButtonHolder.addView(createGoToLastPageButton());
+		controlButtonHolder.addView(createProgressToNextActivityButton());
+		controlButtonHolder.addView(createDoNothingButton());
+		controlButtonHolder.addView(createCloseAppButton());
+		controlButtonHolder.addView(createRequestPermissionButton());
+		controlButtonHolder.addView(createCustomBehaviourButton());
+	}
+
+	/**
+	 * @return a Button which sets the left button to use the GoToPreviousPage behaviour
+	 */
+	private Button createGoToPreviousPageButton() {
+		final Button button = new Button(this);
+		button.setText("Test go to previous page behaviour");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getLeftButtonAccessor().setBehaviour(new IntroButton.GoToPreviousPage());
+				getLeftButtonAccessor().setText("Prev page", null);
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * @return a Button which sets the left button to use the GoToNextPage behaviour
+	 */
+	private Button createGoToNextPageButton() {
+		final Button button = new Button(this);
+		button.setText("Test go to next page behaviour");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getLeftButtonAccessor().setBehaviour(new IntroButton.GoToNextPage());
+				getLeftButtonAccessor().setText("Next page", null);
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * @return a Button which sets the left button to use the GoToFirstPage behaviour
+	 */
+	private Button createGoToFirstPageButton() {
+		final Button button = new Button(this);
+		button.setText("Test go to first page behaviour");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getLeftButtonAccessor().setBehaviour(new IntroButton.GoToFirstPage());
+				getLeftButtonAccessor().setText("First page", null);
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * @return a Button which sets the left button to use the GoToLastPage behaviour
+	 */
+	private Button createGoToLastPageButton() {
+		final Button button = new Button(this);
+		button.setText("Test go to last page behaviour");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getLeftButtonAccessor().setBehaviour(new IntroButton.GoToLastPage());
+				getLeftButtonAccessor().setText("Last page", null);
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * @return a Button which sets the left button to use the ProgressToNextActivity behaviour
+	 */
+	private Button createProgressToNextActivityButton() {
+		final Button button = new Button(this);
+		button.setText("Test progress to next activity");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				final Intent nextActivity = new Intent(TestBehaviours.this, EndActivity.class);
+				final Behaviour behaviour = new ProgressToNextActivity(nextActivity, null);
+				getLeftButtonAccessor().setBehaviour(behaviour);
+				getLeftButtonAccessor().setText("Next activity", null);
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * @return a Button which sets the left button to use the DoNothing behaviour
+	 */
+	private Button createDoNothingButton() {
+		final Button button = new Button(this);
+		button.setText("Test do nothing");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getLeftButtonAccessor().setBehaviour(new IntroButton.DoNothing());
+				getLeftButtonAccessor().setText("Do nothing", null);
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * @return a Button which sets the left button to use the CloseApp behaviour
+	 */
+	private Button createCloseAppButton() {
+		final Button button = new Button(this);
+		button.setText("Test close app");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getLeftButtonAccessor().setBehaviour(new IntroButton.CloseApp());
+				getLeftButtonAccessor().setText("Close app", null);
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * @return a Button which sets the left button to use the RequestPermission behaviour
+	 */
+	private Button createRequestPermissionButton() {
+		final Button button = new Button(this);
+		button.setText("Test request permission behaviour");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getFinalButtonAccessor().setBehaviour(
+						new IntroButton.RequestPermissions(PERMISSIONS, PERM_REQUEST_CODE));
+				getFinalButtonAccessor().setText("Grant perms", null);
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * @return a Button which sets the left button to use a custom behaviour which toggles the
+	 * visibility of the SelectionIndicator
+	 */
+	private Button createCustomBehaviourButton() {
+		final Button button = new Button(this);
+		button.setText("Test custom behaviour");
+
+		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				getLeftButtonAccessor().setBehaviour(new IntroButton.BehaviourAdapter() {
 					@Override
 					public void run() {
-						getActivity().goToPage(0);
+						final SelectionIndicator indicator = getActivity().getProgressIndicator();
+						indicator.setVisibility(!indicator.isVisible()); // Toggle current state
 					}
 				});
 
-				getLeftButtonAccessor().setText("Go to 0 ", null);
-				disableLeftButtonOnLastPage(false);
+				getLeftButtonAccessor().setText("Toggle indicator", null);
 			}
 		});
 
-		Button testPermissionBehaviour = new Button(this);
-		layout.addView(testPermissionBehaviour);
-		testPermissionBehaviour.setText("Test permission behaviour");
-		testPermissionBehaviour.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				getFinalButtonAccessor().setBehaviour(
-						new IntroButton.RequestPermissions(PERMISSIONS, PERM_REQUEST_CODE));
-				getFinalButtonAccessor().setText("REQUEST PERMS", null);
-			}
-		});
-	}
-
-	@Override
-	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[]
-			grantResults) {
-
-		// Assume that grantResults will always have the same length as permissions
-		for (int i = 0; i < grantResults.length; i++) {
-			Log.d(TAG, "[Permission " + permissions[i] + " was granted: " + (grantResults[i] ==
-					PackageManager.PERMISSION_GRANTED) + "]");
-		}
+		return button;
 	}
 }
