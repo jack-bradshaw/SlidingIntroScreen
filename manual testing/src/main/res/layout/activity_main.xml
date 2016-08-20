@@ -32,13 +32,13 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="testProgressIndicatorConfig"
+        android:onClick="testSelectionIndicatorConfig"
         android:text="Test selection indicator config"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="testProgrammaticallyChangePage"
+        android:onClick="testPageLock"
         android:text="Test page lock"/>
 
     <Button
