@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
 	 * @param v
 	 * 		the View which was clicked to launch the test
 	 */
-	public void testButtonConfig(View v) {
-		Intent i = new Intent(this, TestButtonConfig.class);
-		startActivity(i);
+	public void testButtonConfig(final View v) {
+		final Intent testActivity = new Intent(this, TestButtonConfig.class);
+		startActivity(testActivity);
 	}
 
 	/**
@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
 	 * @param v
 	 * 		the View which was clicked to launch the test
 	 */
-	public void testMultiplePageBehaviour(View v) {
-		Intent i = new Intent(this, TestMultiplePageBehaviour.class);
-		startActivity(i);
+	public void testMultiplePageBehaviour(final View v) {
+		final Intent testActivity = new Intent(this, TestMultiplePageBehaviour.class);
+		startActivity(testActivity);
 	}
 
 	/**
@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
 	 * @param v
 	 * 		the View which was clicked to launch the test
 	 */
-	public void testSinglePageBehaviour(View v) {
-		Intent i = new Intent(this, TestSinglePageBehaviour.class);
-		startActivity(i);
+	public void testSinglePageBehaviour(final View v) {
+		final Intent testActivity = new Intent(this, TestSinglePageBehaviour.class);
+		startActivity(testActivity);
 	}
 
 	/**
@@ -70,9 +70,9 @@ public class MainActivity extends AppCompatActivity {
 	 * @param v
 	 * 		the View which was clicked to launch the test
 	 */
-	public void testSelectionIndicatorConfig(View v) {
-		Intent i = new Intent(this, TestSelectionIndicatorConfig.class);
-		startActivity(i);
+	public void testSelectionIndicatorConfig(final View v) {
+		final Intent testActivity = new Intent(this, TestSelectionIndicatorConfig.class);
+		startActivity(testActivity);
 	}
 
 	/**
@@ -81,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
 	 * @param v
 	 * 		the View which was clicked to launch the test
 	 */
-	public void testPageLock(View v) {
-		Intent i = new Intent(this, TestPageLock.class);
-		startActivity(i);
+	public void testPageLock(final View v) {
+		final Intent testActivity = new Intent(this, TestPageLock.class);
+		startActivity(testActivity);
 	}
 
 	/**
@@ -92,9 +92,9 @@ public class MainActivity extends AppCompatActivity {
 	 * @param v
 	 * 		the View which was clicked to launch the test
 	 */
-	public void testTransformer(View v) {
-		Intent i = new Intent(this, TestTransformer.class);
-		startActivity(i);
+	public void testTransformer(final View v) {
+		final Intent testActivity = new Intent(this, TestTransformer.class);
+		startActivity(testActivity);
 	}
 
 	/**
@@ -103,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
 	 * @param v
 	 * 		the View which was clicked to launch the test
 	 */
-	public void testHideStatusBar(View v) {
-		Intent i = new Intent(this, TestHideStatusBar.class);
-		startActivity(i);
+	public void testHideStatusBar(final View v) {
+		final Intent testActivity = new Intent(this, TestHideStatusBar.class);
+		startActivity(testActivity);
 	}
 
 	/**
@@ -114,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
 	 * @param v
 	 * 		the View which was clicked to launch the test
 	 */
-	public void testBehaviours(View v) {
-		Intent i = new Intent(this, TestBehaviours.class);
-		startActivity(i);
+	public void testBehaviours(final View v) {
+		final Intent testActivity = new Intent(this, TestBehaviours.class);
+		startActivity(testActivity);
 	}
 }
