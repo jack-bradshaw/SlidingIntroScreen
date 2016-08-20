@@ -30,5 +30,6 @@
 		<activity android:name=".TestPageLock"/>
 		<activity android:name=".TestHideStatusBar"/>
 		<activity android:name=".TestBehaviours"/>
+		<activity android:name=".TestDotIndicator"/>
 	</application>
 </manifest>
