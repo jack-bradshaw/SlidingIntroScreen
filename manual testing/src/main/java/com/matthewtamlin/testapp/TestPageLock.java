@@ -35,20 +35,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class TestPageLock extends ThreePageTestBase {
 	/**
-	 * The index of the page to go to.
+	 * The index of the page to navigate to when the "go to specific page" button is clicked.
 	 */
-	private static final int GO_TO_PAGE_INDEX = 1;
+	private static final int SPECIFIC_PAGE = 1;
 
 	/**
 	 * Used to identify this class during testing.
 	 */
-	private static final String TAG = "[TestProgrammatical...]";
+	@SuppressWarnings("unused")
+	private static final String TAG = "[TestPageLock]";
 
-	private static final int NUMBER_OF_PAGES = 3; // to use background from superclass
-
-	private LinearLayout controlButtons;
-
-	private LinearLayout lockButtons;
+	/**
+	 * The number of pages to display, must match the number of pages in the superclass to that the
+	 * superclass background manager can be used.
+	 */
+	private static final int NUMBER_OF_PAGES = 3;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,137 +60,198 @@ public class TestPageLock extends ThreePageTestBase {
 	}
 
 	private void initialiseLayouts() {
-		final LinearLayout outerLayout = new LinearLayout(this);
-		outerLayout.setOrientation(LinearLayout.HORIZONTAL);
-		getRootView().addView(outerLayout);
+		// Create a layout to display the control buttons over the ViewPager
+		final LinearLayout controlButtonHolder = new LinearLayout(this);
+		controlButtonHolder.setOrientation(LinearLayout.HORIZONTAL);
+		getRootView().addView(controlButtonHolder);
 
-		controlButtons = new LinearLayout(this);
-		controlButtons.setOrientation(LinearLayout.VERTICAL);
-		outerLayout.addView(controlButtons);
+		// Create a layout to display buttons for changing the page
+		final LinearLayout pageChangeButtonHolder = new LinearLayout(this);
+		pageChangeButtonHolder.setOrientation(LinearLayout.VERTICAL);
+		controlButtonHolder.addView(pageChangeButtonHolder);
 
-		lockButtons = new LinearLayout(this);
-		lockButtons.setOrientation(LinearLayout.VERTICAL);
-		outerLayout.addView(lockButtons);
+		// Create a layout to display buttons for locking the ViewPager
+		final LinearLayout pageLockButtonHolder = new LinearLayout(this);
+		pageLockButtonHolder.setOrientation(LinearLayout.VERTICAL);
+		controlButtonHolder.addView(pageLockButtonHolder);
+
+		// Create the button for changing the page
+		pageChangeButtonHolder.addView(createGoToFirstPageButton());
+		pageChangeButtonHolder.addView(createGoToLastPageButton());
+		pageChangeButtonHolder.addView(createGoToPreviousPageButton());
+		pageChangeButtonHolder.addView(createGoToNextPageButton());
+		pageChangeButtonHolder.addView(createGoToSpecificPageButton());
+
+		// Create the buttons for locking the page
+		pageLockButtonHolder.addView(createLockTouchButton());
+		pageLockButtonHolder.addView(createLockCommandButton());
+		pageLockButtonHolder.addView(createLockAllButton());
+		pageLockButtonHolder.addView(createUnlockButton());
 	}
 
-	private void initialiseControlButtons() {
-		final Button goToFirst = new Button(this);
-		controlButtons.addView(goToFirst);
-		goToFirst.setText("Go to first page");
-		goToFirst.setOnClickListener(new View.OnClickListener() {
+	/**
+	 * @return creates a Button which navigates to the first page
+	 */
+	private Button createGoToFirstPageButton() {
+		final Button button = new Button(this);
+		button.setText("Go to first page");
+
+		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.d(TAG, "[on click] [go to first page]");
-
 				final int startIndex = getIndexOfCurrentPage();
 				goToFirstPage();
 				validateLockingConditions(startIndex, 0);
 			}
 		});
 
-		final Button goToLast = new Button(this);
-		controlButtons.addView(goToLast);
-		goToLast.setText("Go to last page");
-		goToLast.setOnClickListener(new View.OnClickListener() {
+		return button;
+	}
+
+	/**
+	 * @return creates a Button which navigates to the last page
+	 */
+	private Button createGoToLastPageButton() {
+		final Button button = new Button(this);
+		button.setText("Go to last page");
+
+		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.d(TAG, "[on click] [go to last page]");
-
 				final int startIndex = getIndexOfCurrentPage();
 				goToLastPage();
 				validateLockingConditions(startIndex, numberOfPages() - 1);
 			}
 		});
 
-		final Button goToPrevious = new Button(this);
-		controlButtons.addView(goToPrevious);
-		goToPrevious.setText("Go to previous page");
-		goToPrevious.setOnClickListener(new View.OnClickListener() {
+		return button;
+	}
+
+	/**
+	 * @return creates a Button which navigates to the previous page
+	 */
+	private Button createGoToPreviousPageButton() {
+		final Button button = new Button(this);
+		button.setText("Go to previous page");
+
+		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.d(TAG, "[on click] [go to previous page]");
-
 				final int startIndex = getIndexOfCurrentPage();
 				goToPreviousPage();
 				validateLockingConditions(startIndex, startIndex == 0 ? 0 : startIndex - 1);
 			}
 		});
 
-		final Button goToNext = new Button(this);
-		controlButtons.addView(goToNext);
-		goToNext.setText("Go to next page");
-		goToNext.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Log.d(TAG, "[on click] [go to next page]");
-
-				final int startIndex = getIndexOfCurrentPage();
-				goToNextPage();
-				final int lastIndex = numberOfPages() - 1;
-				validateLockingConditions(startIndex,
-						startIndex == lastIndex ? lastIndex : startIndex + 1);
-			}
-		});
-
-		final Button goToPage = new Button(this);
-		controlButtons.addView(goToPage);
-		goToPage.setText("Go to page " + (GO_TO_PAGE_INDEX + 1));
-		goToPage.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Log.d(TAG, "[on click] [go to page]");
-
-				final int startIndex = getIndexOfCurrentPage();
-				goToPage(GO_TO_PAGE_INDEX);
-				validateLockingConditions(startIndex, GO_TO_PAGE_INDEX);
-			}
-		});
+		return button;
 	}
 
-	private void initialiseLockButtons() {
-		final Button lockRightSwipe = new Button(this);
-		lockButtons.addView(lockRightSwipe);
-		lockRightSwipe.setText("Lock swipe");
-		lockRightSwipe.setOnClickListener(new View.OnClickListener() {
+	/**
+	 * @return creates a Button which navigates to the next page
+	 */
+	private Button createGoToNextPageButton() {
+		final Button button = new Button(this);
+		button.setText("Go to next page");
+
+		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.d(TAG, "[on click] [lock right (drag)]");
+				final int startIndex = getIndexOfCurrentPage();
+				goToNextPage();
+				validateLockingConditions(startIndex, startIndex == 0 ? 0 : startIndex - 1);
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * @param pageIndex
+	 * 		the index of the page to change to
+	 * @return creates a Button which navigates to a specific page
+	 */
+	private Button createGoToSpecificPageButton(final int pageIndex) {
+		final Button button = new Button(this);
+		button.setText("Go to page " + (pageIndex + 1));
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				final int startIndex = getIndexOfCurrentPage();
+				goToPage(pageIndex);
+				validateLockingConditions(startIndex, pageIndex);
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * @return creates a Button which locks the ViewPager from touch events
+	 */
+	private Button createLockTouchButton() {
+		final Button button = new Button(this);
+		button.setText("Lock to touch");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
 				setPagingLockMode(LockableViewPager.LockMode.TOUCH_LOCKED);
 			}
 		});
 
-		final Button lockRightCommand = new Button(this);
-		lockButtons.addView(lockRightCommand);
-		lockRightCommand.setText("Lock commands");
-		lockRightCommand.setOnClickListener(new View.OnClickListener() {
+		return button;
+	}
+
+	/**
+	 * @return creates a Button which locks the ViewPager from commands
+	 */
+	private Button createLockCommandButton() {
+		final Button button = new Button(this);
+		button.setText("Lock to commands");
+
+		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.d(TAG, "[on click] [lock left (commands)]");
 				setPagingLockMode(LockableViewPager.LockMode.COMMAND_LOCKED);
 			}
 		});
 
-		final Button lockRightAll = new Button(this);
-		lockButtons.addView(lockRightAll);
-		lockRightAll.setText("Lock all");
-		lockRightAll.setOnClickListener(new View.OnClickListener() {
+		return button;
+	}
+
+	/**
+	 * @return creates a Button which locks the ViewPager form touch events and commands
+	 */
+	private Button createLockAllButton() {
+		final Button button = new Button(this);
+		button.setText("Lock all");
+
+		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.d(TAG, "[on click] [lock left (all)]");
 				setPagingLockMode(LockableViewPager.LockMode.FULLY_LOCKED);
 			}
 		});
 
-		final Button unlockRight = new Button(this);
-		lockButtons.addView(unlockRight);
-		unlockRight.setText("Unlock");
-		unlockRight.setOnClickListener(new View.OnClickListener() {
+		return button;
+	}
+
+	/**
+	 * @return creates a Button which unlocks the ViewPager
+	 */
+	private Button createUnlockButton() {
+		final Button button = new Button(this);
+		button.setText("Unlock");
+
+		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.d(TAG, "[on click] [unlock right]");
 				setPagingLockMode(LockableViewPager.LockMode.UNLOCKED);
 			}
 		});
+
+		return button;
 	}
 
 	/**
