@@ -211,9 +211,9 @@ public class TestBehaviours extends ThreePageTestBase {
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getFinalButtonAccessor().setBehaviour(
+				getLeftButtonAccessor().setBehaviour(
 						new IntroButton.RequestPermissions(PERMISSIONS, PERM_REQUEST_CODE));
-				getFinalButtonAccessor().setText("Grant perms", null);
+				getLeftButtonAccessor().setText("Grant perms", null);
 			}
 		});
 
