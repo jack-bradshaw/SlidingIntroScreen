@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.matthewtamlin.testapp;
+package com.matthewtamlin.sliding_intro_screen_manual_testing;
 
 import android.graphics.Color;
 import android.graphics.Typeface;

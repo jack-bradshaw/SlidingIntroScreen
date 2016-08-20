@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
-	package="com.matthewtamlin.testapp"
+	package="com.matthewtamlin.sliding_intro_screen_manual_testing"
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -14,22 +14,22 @@
 		android:theme="@style/AppTheme">
 
 		<activity
-			android:name=".MainActivity">
+			android:name="com.matthewtamlin.sliding_intro_screen_manual_testing.MainActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
 
-		<activity android:name=".EndActivity"/>
-		<activity android:name=".TestSinglePageBehaviour"/>
-		<activity android:name=".TestMultiplePageBehaviour"/>
-		<activity android:name=".TestButtonConfig"/>
-		<activity android:name=".TestTransformer"/>
-		<activity android:name=".TestPageLock"/>
-		<activity android:name=".TestHideStatusBar"/>
-		<activity android:name=".TestBehaviours"/>
-		<activity android:name=".TestDotIndicator"/>
-		<activity android:name=".TestSelectionIndicatorConfig"/>
+		<activity android:name="com.matthewtamlin.sliding_intro_screen_manual_testing.EndActivity"/>
+		<activity android:name="com.matthewtamlin.sliding_intro_screen_manual_testing.TestSinglePageBehaviour"/>
+		<activity android:name="com.matthewtamlin.sliding_intro_screen_manual_testing.TestMultiplePageBehaviour"/>
+		<activity android:name="com.matthewtamlin.sliding_intro_screen_manual_testing.TestButtonConfig"/>
+		<activity android:name="com.matthewtamlin.sliding_intro_screen_manual_testing.TestTransformer"/>
+		<activity android:name="com.matthewtamlin.sliding_intro_screen_manual_testing.TestPageLock"/>
+		<activity android:name="com.matthewtamlin.sliding_intro_screen_manual_testing.TestHideStatusBar"/>
+		<activity android:name="com.matthewtamlin.sliding_intro_screen_manual_testing.TestBehaviours"/>
+		<activity android:name="com.matthewtamlin.sliding_intro_screen_manual_testing.TestDotIndicator"/>
+		<activity android:name="com.matthewtamlin.sliding_intro_screen_manual_testing.TestSelectionIndicatorConfig"/>
 	</application>
 </manifest>

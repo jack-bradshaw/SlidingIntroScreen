@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.matthewtamlin.testapp;
+package com.matthewtamlin.sliding_intro_screen_manual_testing;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

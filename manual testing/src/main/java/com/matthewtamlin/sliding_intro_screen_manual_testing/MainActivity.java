@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.matthewtamlin.testapp;
+package com.matthewtamlin.sliding_intro_screen_manual_testing;
 
 import android.content.Intent;
 import android.os.Bundle;
