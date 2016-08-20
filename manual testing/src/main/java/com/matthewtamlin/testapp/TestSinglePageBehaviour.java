@@ -17,82 +17,45 @@
 package com.matthewtamlin.testapp;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.View;
 
-import com.matthewtamlin.android_utilities_library.helpers.BitmapEfficiencyHelper;
-import com.matthewtamlin.android_utilities_library.helpers.ScreenSizeHelper;
+import com.matthewtamlin.sliding_intro_screen_library.background.ColorBlender;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
 import com.matthewtamlin.sliding_intro_screen_library.core.IntroActivity;
-import com.matthewtamlin.sliding_intro_screen_library.pages.ParallaxPage;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Test the activity when multiple pages are shown. The activity should show: <li>Window: Status bar
- * shown.</li> <li>Pages: 1.</li> <li>Background: Blue.</li> <li>Transformation: Not
- * applicable.</li> <li>Page indicator: Shown with 1 dot. Animations not applicable.</li> <li>Left
- * button: Not displayed.</li> <li>Right button: Not displayed.</li> <li>Final button: Displayed on
- * last page. Displays "FINAL" with no icon.</li>
+ * Test the activity when multiple pages are shown. The activity should be displayed as follows:
+ * <ul> <li>Window: Status bar shown.</li> <li>Pages: 1.</li> <li>Background: Blue.</li>
+ * <li>Transformation: Not applicable.</li> <li>Page indicator: Shown with 1 dot.</li>
+ * <li>Animations: Not applicable.</li> <li>Left button: Not displayed.</li> <li>Right button: Not
+ * displayed.</li> <li>Final button: Displayed, showing "FINAL" with no icon.</li> </ul>
  */
 public class TestSinglePageBehaviour extends IntroActivity {
 	/**
 	 * Used to identify this class during debugging.
 	 */
+	@SuppressWarnings("unused")
 	private static final String TAG = "[TestSinglePageBeha...]";
 
 	/**
 	 * The desired background color of the page.
 	 */
-	private static final int color = 0xff3366cc;
+	private static final int BACKGROUND_COLOR = 0xff3366cc; // Blue
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		getLeftButtonAccessor().setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Log.d(TAG, "[on click] [left button]");
-			}
-		});
-
-		getRightButtonAccessor().setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Log.d(TAG, "[on click] [right button]");
-			}
-		});
-
-		getFinalButtonAccessor().setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Log.d(TAG, "[on click] [final button]");
-			}
-		});
+		setBackgroundManager(new ColorBlender(new int[]{BACKGROUND_COLOR}));
 	}
 
 	@Override
 	protected Collection<Fragment> generatePages(Bundle savedInstanceState) {
-		ArrayList<Fragment> pages = new ArrayList<>();
-
-		final int screenWidth = ScreenSizeHelper.getScreenWidthPx(this);
-		final int screenHeight = ScreenSizeHelper.getScreenHeightPx(this);
-
-		final Bitmap frontDots = BitmapEfficiencyHelper.decodeResource(this, R.raw.front,
-				screenWidth, screenHeight);
-		final Bitmap backDots = BitmapEfficiencyHelper.decodeResource(this, R.raw.back,
-				screenWidth, screenHeight);
-
-		final ParallaxPage p = new ParallaxPage();
-		p.setFrontImage(frontDots);
-		p.setBackImage(backDots);
-		pages.add(p);
-
+		final ArrayList<Fragment> pages = new ArrayList<>();
+		pages.add(new Fragment());
 		return pages;
 	}
 
