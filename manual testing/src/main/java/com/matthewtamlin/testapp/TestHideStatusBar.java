@@ -28,19 +28,22 @@ public class TestHideStatusBar extends ThreePageTestBase {
 	/**
 	 * Used to identify this class during testing.
 	 */
+	@SuppressWarnings("unused")
 	private static final String TAG = "[TestHideStatusBar]";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		LinearLayout layout = new LinearLayout(this);
-		layout.setOrientation(LinearLayout.VERTICAL);
-		getRootView().addView(layout);
+		// Create a layout to display the control buttons over the ViewPager
+		LinearLayout controlButtonHolder = new LinearLayout(this);
+		controlButtonHolder.setOrientation(LinearLayout.VERTICAL);
+		getRootView().addView(controlButtonHolder);
 
-		Button hideStatusBar = new Button(this);
-		layout.addView(hideStatusBar);
-		hideStatusBar.setText("hide status bar");
+		// Add a button for hiding the status bar to the control layout
+		final Button hideStatusBar = new Button(this);
+		controlButtonHolder.addView(hideStatusBar);
+		hideStatusBar.setText("Hide status bar");
 		hideStatusBar.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -48,9 +51,10 @@ public class TestHideStatusBar extends ThreePageTestBase {
 			}
 		});
 
-		Button showStatusBar = new Button(this);
-		layout.addView(showStatusBar);
-		showStatusBar.setText("show status bar");
+		// Add a button for show the status bar to the control layout
+		final Button showStatusBar = new Button(this);
+		controlButtonHolder.addView(showStatusBar);
+		showStatusBar.setText("Show status bar");
 		showStatusBar.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
