@@ -23,33 +23,26 @@ import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.ProgressToNextActivity;
 
 /**
- * Test the activity when multiple pages are shown. The activity should show: <li>Window: Status bar
- * shown.</li> <li>Pages: 3.</li> <li>Background: Blue, pink and purple for the pages
- * respectively.</li> <li>Transformation: All elements in a page scroll together (i.e. no parallax
- * effect).</li> <li>Page indicator: Shown with 3 dots. Animations are enabled.</li> <li>Left
- * button: Displayed on first two pages. Displays "SKIP" and no icon. Skips to last page.</li>
- * <li>Right button: Displayed on first two pages. Displays no text and has a right carat. Moves to
- * next page.</li> <li>Final button: Displayed on last page. Displays "FINAL" with no icon. Advances
- * to main activity when pressed.</li>
+ * Test the IntroActivity and its sub-components when multiple pages are shown. The activity should
+ * display as follows: <ul> <li>Window: Status bar shown.</li> <li>Pages: 3.</li> <li>Background:
+ * Blue, pink and purple for the pages respectively.</li> <li>Transformation: No parallax
+ * effect.</li> <li>Page indicator: Shown with 3 dots. Animations are enabled.</li> <li>Left button:
+ * Displayed on first two pages. Displays "SKIP" and no icon. Skips to last page.</li> <li>Right
+ * button: Displayed on first two pages. Displays no text and has a right carat. Moves to next
+ * page.</li> <li>Final button: Displayed on last page. Displays "FINAL" with no icon. Advances to
+ * end activity when pressed.</li> </ul>
  */
 public class TestMultiplePageBehaviour extends ThreePageTestBase {
 	/**
 	 * Used to identify this class during debugging.
 	 */
+	@SuppressWarnings("unused")
 	private static final String TAG = "[TestMultiplePageBe...]";
 
 	@Override
 	protected IntroButton.Behaviour generateFinalButtonBehaviour() {
-		final Intent i = new Intent(this, EndActivity.class);
-
-		final ProgressToNextActivity progressBehaviour = new ProgressToNextActivity(i, null) {
-			@Override
-			public boolean shouldLaunchActivity() {
-				return true;
-			}
-		};
-
-		return progressBehaviour;
+		final Intent nextActivity = new Intent(this, EndActivity.class);
+		return new ProgressToNextActivity(nextActivity, null);
 	}
 
 	@Override
