@@ -41,7 +41,7 @@ public class TestBehaviours extends ThreePageTestBase {
 	 * The permissions to request from the user.
 	 */
 	private static final String[] PERMISSIONS =
-			{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CHANGE_NETWORK_STATE};
+			{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.PROCESS_OUTGOING_CALLS};
 
 	/**
 	 * Identifies the permissions request when the result is received.
