@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void testProgrammaticallyChangePage(View v) {
-		Intent i = new Intent(this, TestPageChange.class);
+		Intent i = new Intent(this, TestPageLock.class);
 		startActivity(i);
 	}
 

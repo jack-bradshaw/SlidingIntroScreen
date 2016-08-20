@@ -31,10 +31,9 @@ import java.util.Collection;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Tests the ability to programmatically change the page without swiping. Each button should change
- * the page respectively.
+ * Tests the ability to lock the page.
  */
-public class TestPageChange extends ThreePageTestBase {
+public class TestPageLock extends ThreePageTestBase {
 	/**
 	 * The index of the page to go to.
 	 */

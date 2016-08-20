@@ -28,7 +28,7 @@
         <activity android:name=".TestButtonConfig"/>
         <activity android:name=".TestTransformer"/>
         <activity android:name=".TestProgressIndicatorConfig"/>
-        <activity android:name=".TestPageChange"/>
+        <activity android:name=".TestPageLock"/>
         <activity android:name=".TestHideStatusBar"/>
         <activity android:name=".TestBehaviours"/>
     </application>
