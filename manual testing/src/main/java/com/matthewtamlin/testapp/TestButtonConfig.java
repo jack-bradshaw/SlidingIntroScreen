@@ -35,21 +35,21 @@ import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButtonAccesso
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Test the ability to change button appearance and behaviour. When the button is pressed: <li>The
- * left button acts as restart.</li> <li>The left button displays "Restart"</li> <li>The left button
- * text color is black.</li> <li>The left button text size is 30sp (big)</li> <li>The left button
- * displays a "<<" icon to the left of the text.</li> <li>The left button is displayed on all
- * pages.</li> <li>The right button acts as back.</li> <li>The right button displays "Back"</li>
- * <li>The right button text color is blue.</li> <li>The right button text size is 10sp
- * (small).</li> <li>The right button displays a "<" icon to the left of the text.</li> <li>The
- * right button is displayed on all pages but the last.</li> <li>The final button closes the
- * app.</li> <li>The final button displays "Close".</li> <li>The final button text color is
- * green.</li> <li>The final button text size is 15sp (moderate).</li> <li>The final button displays
- * a ">" icon to the right of the text.</li> <li>The final button is displayed only on the last
- * page.</li>
- * <p/>
- * When the show/hide buttons are pressed, the respective navigation bar buttons should be
- * affected.
+ * Tests to verify that the IntroButtons can be configured correctly.
+ * <p>
+ * When the test is triggered, the buttons should have the following properties:<ul><li>The left
+ * button moves the user to the first page.</li> <li>The left button displays "Restart"</li> <li>The
+ * left button text color is black.</li> <li>The left button text size is 30sp (big)</li> <li>The
+ * left button displays a "<<" icon to the left of the text.</li> <li>The right button moves the
+ * user to the previous page.</li> <li>The right button displays "Back"</li> <li>The right button
+ * text color is blue.</li> <li>The right button text size is 10sp (small).</li> <li>The right
+ * button displays a "<" icon to the left of the text.</li> <li>The final button does nothing.</li>
+ * <li>The final button displays "Nill".</li> <li>The final button text color is green.</li> <li>The
+ * final button text size is 15sp (moderate).</li> <li>The final button displays a ">" icon to the
+ * right of the text.</li> </ul>
+ * <p>
+ * Additionally, there are buttons to test that the navigation buttons can be shown/hidden
+ * correctly.
  */
 public class TestButtonConfig extends ThreePageTestBase {
 	/**
@@ -70,7 +70,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 	/**
 	 * Text to display in the final button after triggering.
 	 */
-	private static final String FINAL_BUTTON_TEXT = "Close";
+	private static final String FINAL_BUTTON_TEXT = "Nill";
 
 	/**
 	 * Behaviour to use for the left button after triggering.
@@ -85,7 +85,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 	/**
 	 * Behaviour to use for the final button after triggering.
 	 */
-	private static final Behaviour FINAL_BUTTON_BEHAVIOUR = new IntroButton.CloseApp();
+	private static final Behaviour FINAL_BUTTON_BEHAVIOUR = new IntroButton.DoNothing();
 
 	/**
 	 * Appearance to use for the left button after triggering.
@@ -306,7 +306,8 @@ public class TestButtonConfig extends ThreePageTestBase {
 		assertThat("right button icon not set/returned correctly when using implicit behaviour",
 				rightButtonAccessor.getIcon(null).equals(rightDrawable));
 		assertThat("right button icon not set/returned correctly when using explicit behaviour",
-				rightButtonAccessor.getIcon(RIGHT_BUTTON_BEHAVIOUR.getClass()).equals(rightDrawable));
+				rightButtonAccessor.getIcon(RIGHT_BUTTON_BEHAVIOUR.getClass())
+						.equals(rightDrawable));
 		assertThat("right button color not set/returned correctly",
 				rightButtonAccessor.getTextColor() == RIGHT_BUTTON_COLOR);
 		assertThat("right button behaviour not set/returned correctly",
@@ -327,7 +328,8 @@ public class TestButtonConfig extends ThreePageTestBase {
 		assertThat("final button icon not set/returned correctly when using implicit behaviour",
 				finalButtonAccessor.getIcon(null).equals(finalDrawable));
 		assertThat("final button icon not set/returned correctly when using explicit behaviour",
-				finalButtonAccessor.getIcon(FINAL_BUTTON_BEHAVIOUR.getClass()).equals(finalDrawable));
+				finalButtonAccessor.getIcon(FINAL_BUTTON_BEHAVIOUR.getClass())
+						.equals(finalDrawable));
 		assertThat("final button color not set/returned correctly",
 				finalButtonAccessor.getTextColor() == FINAL_BUTTON_COLOR);
 		assertThat("final button behaviour not set/returned correctly",
