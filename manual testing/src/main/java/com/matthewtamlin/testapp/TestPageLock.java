@@ -18,7 +18,6 @@ package com.matthewtamlin.testapp;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -28,10 +27,12 @@ import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Tests the ability to lock the page.
+ * Tests the ability to lock the page to either touch, commands or both. The tests also ensure that
+ * locking to touch does not prevent elements in the current page from receiving touch events.
  */
 public class TestPageLock extends ThreePageTestBase {
 	/**
@@ -54,12 +55,7 @@ public class TestPageLock extends ThreePageTestBase {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		initialiseLayouts();
-		initialiseControlButtons();
-		initialiseLockButtons();
-	}
 
-	private void initialiseLayouts() {
 		// Create a layout to display the control buttons over the ViewPager
 		final LinearLayout controlButtonHolder = new LinearLayout(this);
 		controlButtonHolder.setOrientation(LinearLayout.HORIZONTAL);
@@ -80,7 +76,7 @@ public class TestPageLock extends ThreePageTestBase {
 		pageChangeButtonHolder.addView(createGoToLastPageButton());
 		pageChangeButtonHolder.addView(createGoToPreviousPageButton());
 		pageChangeButtonHolder.addView(createGoToNextPageButton());
-		pageChangeButtonHolder.addView(createGoToSpecificPageButton());
+		pageChangeButtonHolder.addView(createGoToSpecificPageButton(SPECIFIC_PAGE));
 
 		// Create the buttons for locking the page
 		pageLockButtonHolder.addView(createLockTouchButton());
@@ -101,7 +97,7 @@ public class TestPageLock extends ThreePageTestBase {
 			public void onClick(View v) {
 				final int startIndex = getIndexOfCurrentPage();
 				goToFirstPage();
-				validateLockingConditions(startIndex, 0);
+				validateCommandPageChange(startIndex, 0);
 			}
 		});
 
@@ -120,7 +116,7 @@ public class TestPageLock extends ThreePageTestBase {
 			public void onClick(View v) {
 				final int startIndex = getIndexOfCurrentPage();
 				goToLastPage();
-				validateLockingConditions(startIndex, numberOfPages() - 1);
+				validateCommandPageChange(startIndex, numberOfPages() - 1);
 			}
 		});
 
@@ -139,7 +135,7 @@ public class TestPageLock extends ThreePageTestBase {
 			public void onClick(View v) {
 				final int startIndex = getIndexOfCurrentPage();
 				goToPreviousPage();
-				validateLockingConditions(startIndex, startIndex == 0 ? 0 : startIndex - 1);
+				validateCommandPageChange(startIndex, startIndex == 0 ? 0 : startIndex - 1);
 			}
 		});
 
@@ -158,7 +154,7 @@ public class TestPageLock extends ThreePageTestBase {
 			public void onClick(View v) {
 				final int startIndex = getIndexOfCurrentPage();
 				goToNextPage();
-				validateLockingConditions(startIndex, startIndex == 0 ? 0 : startIndex - 1);
+				validateCommandPageChange(startIndex, startIndex == 0 ? 0 : startIndex - 1);
 			}
 		});
 
@@ -179,7 +175,7 @@ public class TestPageLock extends ThreePageTestBase {
 			public void onClick(View v) {
 				final int startIndex = getIndexOfCurrentPage();
 				goToPage(pageIndex);
-				validateLockingConditions(startIndex, pageIndex);
+				validateCommandPageChange(startIndex, pageIndex);
 			}
 		});
 
@@ -255,39 +251,42 @@ public class TestPageLock extends ThreePageTestBase {
 	}
 
 	/**
-	 * Checks that the page has changed only if the locking conditions allow. An assertion exception
-	 * is thrown if the conditions are violated.
+	 * Checks that the page changed correctly when using commands, taking into account the current
+	 * locking conditions.
 	 *
 	 * @param originalPage
-	 * 		the index of the page which was active before the change page request
+	 * 		the index of the page which was active when the change page request occurred
 	 * @param triedChangingTo
 	 * 		the index of the page the change attempted to move to
 	 */
-	private void validateLockingConditions(final int originalPage, final int triedChangingTo) {
+	private void validateCommandPageChange(final int originalPage, final int triedChangingTo) {
 		final boolean didChange = (originalPage != getIndexOfCurrentPage());
 		final boolean shouldHaveChanged;
 
-
-		if (triedChangingTo != originalPage) {
-			shouldHaveChanged = getPagingLockMode().allowsCommands();
-		} else {
+		if (triedChangingTo == originalPage) {
+			// The page can never change if the requested page is the current page
 			shouldHaveChanged = false;
+		} else {
+			// The page should only have changed if the locking mode allows it to
+			shouldHaveChanged = getPagingLockMode().allowsCommands();
 		}
 
-		Log.d("[should have changed]", "" + shouldHaveChanged);
-		Log.d("[did change]", "" + didChange);
-
-		assertThat("locking conditions passed", didChange == shouldHaveChanged);
-		Log.d(TAG, "[validate locking conditions] [assertions passed]");
+		assertThat("locking conditions passed", didChange, is(shouldHaveChanged));
 	}
 
+	/*
+	 * This method is overridden to return fragments with an interactive element. This allows
+	 * testing to ensure that elements in the page still receive touch events when the page is
+	 * touch locked.
+	 */
 	@Override
 	protected Collection<Fragment> generatePages(Bundle savedInstanceState) {
-		Collection<Fragment> fragments = new ArrayList<>();
+		final Collection<Fragment> fragments = new ArrayList<>();
 
 		for (int i = 0; i < NUMBER_OF_PAGES; i++) {
 			fragments.add(new ButtonFragment());
 		}
+
 		return fragments;
 	}
 }
