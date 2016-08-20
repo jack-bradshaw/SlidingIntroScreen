@@ -26,7 +26,6 @@
 		<activity android:name=".TestMultiplePageBehaviour"/>
 		<activity android:name=".TestButtonConfig"/>
 		<activity android:name=".TestTransformer"/>
-		<activity android:name=".TestProgressIndicatorConfig"/>
 		<activity android:name=".TestPageLock"/>
 		<activity android:name=".TestHideStatusBar"/>
 		<activity android:name=".TestBehaviours"/>
