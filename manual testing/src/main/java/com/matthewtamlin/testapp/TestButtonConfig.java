@@ -37,19 +37,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 /**
  * Tests to verify that the IntroButtons can be configured correctly.
  * <p>
- * When the test is triggered, the buttons should have the following properties:<ul><li>The left
- * button moves the user to the first page.</li> <li>The left button displays "Restart"</li> <li>The
- * left button text color is black.</li> <li>The left button text size is 30sp (big)</li> <li>The
- * left button displays a "<<" icon to the left of the text.</li> <li>The right button moves the
- * user to the previous page.</li> <li>The right button displays "Back"</li> <li>The right button
- * text color is blue.</li> <li>The right button text size is 10sp (small).</li> <li>The right
- * button displays a "<" icon to the left of the text.</li> <li>The final button does nothing.</li>
- * <li>The final button displays "Nill".</li> <li>The final button text color is green.</li> <li>The
- * final button text size is 15sp (moderate).</li> <li>The final button displays a ">" icon to the
- * right of the text.</li> </ul>
- * <p>
- * Additionally, there are buttons to test that the navigation buttons can be shown/hidden
- * correctly.
+ * When the change behaviour/appearance test is triggered, the buttons should have the following
+ * properties:<ul><li>The left button moves the user to the first page.</li> <li>The left button
+ * displays "Restart"</li> <li>The left button text color is black.</li> <li>The left button text
+ * size is 30sp (big)</li> <li>The left button displays a "<<" icon to the left of the text.</li>
+ * <li>The right button moves the user to the previous page.</li> <li>The right button displays
+ * "Back"</li> <li>The right button text color is blue.</li> <li>The right button text size is 10sp
+ * (small).</li> <li>The right button displays a "<" icon to the left of the text.</li> <li>The
+ * final button does nothing.</li> <li>The final button displays "Nill".</li> <li>The final button
+ * text color is green.</li> <li>The final button text size is 15sp (moderate).</li> <li>The final
+ * button displays a ">" icon to the right of the text.</li> </ul>
  */
 public class TestButtonConfig extends ThreePageTestBase {
 	/**
@@ -150,82 +147,24 @@ public class TestButtonConfig extends ThreePageTestBase {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		createControlButtons();
+		initialiseDrawables(); // Needed before tests can run
+
+		// Create a layout to display the control buttons over the ViewPager
+		final LinearLayout controlButtonHolder = new LinearLayout(this);
+		controlButtonHolder.setOrientation(LinearLayout.VERTICAL);
+		getRootView().addView(controlButtonHolder);
+
+		// Add the test buttons to the control layout
+		controlButtonHolder.addView(createModifyAppearanceAndBehaviourButton());
+		controlButtonHolder.addView(createToggleLeftButtonButton());
+		controlButtonHolder.addView(createToggleRightButtonButton());
+		controlButtonHolder.addView(createToggleFinalButtonButton());
+		controlButtonHolder.addView(createShowLeftButtonOnLastPageButton());
 	}
 
 	/**
-	 * Creates the buttons which control the test.
-	 */
-	private void createControlButtons() {
-		final LinearLayout layout = new LinearLayout(this);
-		layout.setOrientation(LinearLayout.VERTICAL);
-		getRootView().addView(layout);
-
-		Button modifyButtons = new Button(this);
-		layout.addView(modifyButtons);
-		modifyButtons.setText("change buttons");
-		modifyButtons.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Log.d(TAG, "[on click] [modify buttons]");
-				initialiseDrawables();
-				makeChanges();
-				checkChanges();
-			}
-		});
-
-		Button showHideLeft = new Button(this);
-		layout.addView(showHideLeft);
-		showHideLeft.setText("Enable/disable left button");
-		showHideLeft.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				boolean initiallyDisabled = leftButtonIsEntirelyDisabled();
-				disableLeftButton(!initiallyDisabled);
-				assertThat("left button didn't disable/enable correctly",
-						initiallyDisabled != leftButtonIsEntirelyDisabled());
-			}
-		});
-
-		Button showHideRight = new Button(this);
-		layout.addView(showHideRight);
-		showHideRight.setText("Enable/disable right button");
-		showHideRight.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				boolean initiallyDisabled = rightButtonIsDisabled();
-				disableRightButton(!initiallyDisabled);
-				assertThat("right button didn't disable/enable correctly",
-						initiallyDisabled != rightButtonIsDisabled());
-			}
-		});
-
-		Button showHideFinal = new Button(this);
-		layout.addView(showHideFinal);
-		showHideFinal.setText("Enable/disable final button");
-		showHideFinal.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				boolean initiallyDisabled = finalButtonIsDisabled();
-				disableFinalButton(!initiallyDisabled);
-				assertThat("left button didn't disable/enable correctly",
-						initiallyDisabled != finalButtonIsDisabled());
-			}
-		});
-
-		Button toggleLeftVisibility = new Button(this);
-		layout.addView(toggleLeftVisibility);
-		toggleLeftVisibility.setText("Show/hide left on last page");
-		toggleLeftVisibility.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				disableLeftButtonOnLastPage(!leftButtonIsDisabledOnLastPage());
-			}
-		});
-	}
-
-	/**
-	 * Initialise the drawables to display in the buttons after triggering.
+	 * Initialise the drawables to display in the navigation buttons after the appearance/behaviour
+	 * change is triggered.
 	 */
 	private void initialiseDrawables() {
 		leftDrawable = ContextCompat.getDrawable(TestButtonConfig.this,
@@ -237,10 +176,106 @@ public class TestButtonConfig extends ThreePageTestBase {
 	}
 
 	/**
-	 * Modify the buttons.
+	 * @return a Button which modifies the appearance/behaviour of the buttons and verifies that the
+	 * changes are correct
+	 */
+	private Button createModifyAppearanceAndBehaviourButton() {
+		final Button button = new Button(this);
+		button.setText("Modify appearance and behaviour");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				makeChanges();
+				checkChanges();
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * @return a Button which enables/disables the left button
+	 */
+	private Button createToggleLeftButtonButton() {
+		final Button button = new Button(this);
+		button.setText("Enable/disable left button");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				final boolean initiallyDisabled = leftButtonIsEntirelyDisabled();
+				disableLeftButton(!initiallyDisabled);
+				assertThat("left button didn't disable/enable correctly",
+						initiallyDisabled != leftButtonIsEntirelyDisabled());
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * @return a Button which enables/disables the right button
+	 */
+	private Button createToggleRightButtonButton() {
+		final Button button = new Button(this);
+		button.setText("Enable/disable right button");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				final boolean initiallyDisabled = rightButtonIsDisabled();
+				disableRightButton(!initiallyDisabled);
+				assertThat("right button didn't disable/enable correctly",
+						initiallyDisabled != rightButtonIsDisabled());
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * @return a Button which enables/disables the final button
+	 */
+	private Button createToggleFinalButtonButton() {
+		final Button button = new Button(this);
+		button.setText("Enable/disable final button");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				final boolean initiallyDisabled = finalButtonIsDisabled();
+				disableFinalButton(!initiallyDisabled);
+				assertThat("left button didn't disable/enable correctly",
+						initiallyDisabled != finalButtonIsDisabled());
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * @return a Button which enables/disables the left button on the last page
+	 */
+	private Button createShowLeftButtonOnLastPageButton() {
+		final Button button = new Button(this);
+		button.setText("Enable/disable left on last page");
+
+		button.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				disableLeftButtonOnLastPage(!leftButtonIsDisabledOnLastPage());
+			}
+		});
+
+		return button;
+	}
+
+	/**
+	 * Modifies the Behaviour and Appearance of the buttons.
 	 */
 	private void makeChanges() {
-		// Modify left button
+		// Modify the left button
 		final IntroButtonAccessor leftButtonAccessor = getLeftButtonAccessor();
 		leftButtonAccessor.setBehaviour(LEFT_BUTTON_BEHAVIOUR);
 		leftButtonAccessor.setAppearance(LEFT_BUTTON_APPEARANCE);
@@ -250,7 +285,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 		leftButtonAccessor.setTextSize(LEFT_BUTTON_TEXT_SIZE_SP);
 		leftButtonAccessor.setTypeface(Typeface.DEFAULT_BOLD);
 
-		// Modify right button
+		// Modify the right button
 		final IntroButtonAccessor rightButtonAccessor = getRightButtonAccessor();
 		rightButtonAccessor.setBehaviour(RIGHT_BUTTON_BEHAVIOUR);
 		rightButtonAccessor.setAppearance(RIGHT_BUTTON_APPEARANCE);
@@ -260,7 +295,7 @@ public class TestButtonConfig extends ThreePageTestBase {
 		rightButtonAccessor.setTextSize(RIGHT_BUTTON_TEXT_SIZE_SP);
 		rightButtonAccessor.setTypeface(Typeface.MONOSPACE);
 
-		// Modify final button
+		// Modify the final button
 		final IntroButtonAccessor finalButtonAccessor = getFinalButtonAccessor();
 		finalButtonAccessor.setBehaviour(FINAL_BUTTON_BEHAVIOUR);
 		finalButtonAccessor.setAppearance(FINAL_BUTTON_APPEARANCE);
@@ -272,19 +307,19 @@ public class TestButtonConfig extends ThreePageTestBase {
 	}
 
 	/**
-	 * Check that the buttons were modified correctly.
+	 * Verifies that the buttons were modified correctly by {@link #makeChanges()}.
 	 */
 	private void checkChanges() {
 		// Check that left button properties changed correctly
 		final IntroButtonAccessor leftButtonAccessor = getLeftButtonAccessor();
-		assertThat("left button text not set/returned correctly when using implicit behaviour",
+		assertThat("left button text not set/returned correctly (implicit behaviour reference)",
 				leftButtonAccessor.getText(null).equals(LEFT_BUTTON_TEXT));
-		assertThat("left button text not set/returned correctly when using explicit behaviour",
+		assertThat("left button text not set/returned correctly (explicit behaviour reference)",
 				leftButtonAccessor.getText(LEFT_BUTTON_BEHAVIOUR.getClass())
 						.equals(LEFT_BUTTON_TEXT));
-		assertThat("left button icon not set/returned correctly when using implicit behaviour",
+		assertThat("left button icon not set/returned correctly (implicit behaviour reference)",
 				leftButtonAccessor.getIcon(null).equals(leftDrawable));
-		assertThat("left button icon not set/returned correctly when using explicit behaviour",
+		assertThat("left button icon not set/returned correctly (explicit behaviour reference)",
 				leftButtonAccessor.getIcon(LEFT_BUTTON_BEHAVIOUR.getClass()).equals(leftDrawable));
 		assertThat("left button color not set/returned correctly",
 				leftButtonAccessor.getTextColor() == LEFT_BUTTON_COLOR);
@@ -298,14 +333,14 @@ public class TestButtonConfig extends ThreePageTestBase {
 
 		// Check that right button properties changed correctly
 		final IntroButtonAccessor rightButtonAccessor = getRightButtonAccessor();
-		assertThat("right button text not set/returned correctly when using implicit behaviour",
+		assertThat("right button text not set/returned correctly (implicit behaviour reference)",
 				rightButtonAccessor.getText(null).equals(RIGHT_BUTTON_TEXT));
-		assertThat("right button text not set/returned correctly when using explicit behaviour",
+		assertThat("right button text not set/returned correctly (explicit behaviour reference)",
 				rightButtonAccessor.getText(RIGHT_BUTTON_BEHAVIOUR.getClass()).equals(
 						RIGHT_BUTTON_TEXT));
 		assertThat("right button icon not set/returned correctly when using implicit behaviour",
 				rightButtonAccessor.getIcon(null).equals(rightDrawable));
-		assertThat("right button icon not set/returned correctly when using explicit behaviour",
+		assertThat("right button icon not set/returned correctly (explicit behaviour reference)",
 				rightButtonAccessor.getIcon(RIGHT_BUTTON_BEHAVIOUR.getClass())
 						.equals(rightDrawable));
 		assertThat("right button color not set/returned correctly",
@@ -322,12 +357,12 @@ public class TestButtonConfig extends ThreePageTestBase {
 		final IntroButtonAccessor finalButtonAccessor = getFinalButtonAccessor();
 		assertThat("final button text not set/returned correctly when using implicit behaviour",
 				finalButtonAccessor.getText(null).equals(FINAL_BUTTON_TEXT));
-		assertThat("final button text not set/returned correctly when using explicit behaviour",
+		assertThat("final button text not set/returned correctly (explicit behaviour reference)",
 				finalButtonAccessor.getText(FINAL_BUTTON_BEHAVIOUR.getClass())
 						.equals(FINAL_BUTTON_TEXT));
 		assertThat("final button icon not set/returned correctly when using implicit behaviour",
 				finalButtonAccessor.getIcon(null).equals(finalDrawable));
-		assertThat("final button icon not set/returned correctly when using explicit behaviour",
+		assertThat("final button icon not set/returned correctly (explicit behaviour reference)",
 				finalButtonAccessor.getIcon(FINAL_BUTTON_BEHAVIOUR.getClass())
 						.equals(finalDrawable));
 		assertThat("final button color not set/returned correctly",
