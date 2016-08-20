@@ -24,11 +24,13 @@ import android.widget.LinearLayout;
 import com.matthewtamlin.sliding_intro_screen_library.transformers.MultiViewParallaxTransformer;
 
 /**
- * Test the activity when a parallax page transformer is set. The activity should show three
- * parallax pages, each with front and back images. When scrolled, the front image should scroll
- * faster than the other page elements.
+ * Tests to verify that parallax effects can be added to and removed from any View using the
+ * MultiViewParallaxTransformer class.
  */
 public class TestTransformer extends ThreePageTestBase {
+	/**
+	 * The transformer which applies the parallax effect.
+	 */
 	private MultiViewParallaxTransformer transformer;
 
 	@Override
