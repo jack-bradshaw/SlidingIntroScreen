@@ -135,7 +135,7 @@ public class TestPageLock extends ThreePageTestBase {
 			public void onClick(View v) {
 				final int startIndex = getIndexOfCurrentPage();
 				goToPreviousPage();
-				validateCommandPageChange(startIndex, startIndex == 0 ? 0 : startIndex - 1);
+				validateCommandPageChange(startIndex, (startIndex == 0) ? 0 : startIndex - 1);
 			}
 		});
 
@@ -154,7 +154,9 @@ public class TestPageLock extends ThreePageTestBase {
 			public void onClick(View v) {
 				final int startIndex = getIndexOfCurrentPage();
 				goToNextPage();
-				validateCommandPageChange(startIndex, startIndex == 0 ? 0 : startIndex - 1);
+				validateCommandPageChange(startIndex, (startIndex == NUMBER_OF_PAGES - 1) ?
+						NUMBER_OF_PAGES - 1 :
+						startIndex + 1);
 			}
 		});
 
