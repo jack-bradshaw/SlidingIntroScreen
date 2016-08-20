@@ -29,56 +29,93 @@ import com.matthewtamlin.sliding_intro_screen_library.transformers.MultiViewPara
  * faster than the other page elements.
  */
 public class TestTransformer extends ThreePageTestBase {
-	private final MultiViewParallaxTransformer transformer = new MultiViewParallaxTransformer();
+	private MultiViewParallaxTransformer transformer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		// Create a parallax transformer and assign it as the IntroActivity transformer
+		transformer = new MultiViewParallaxTransformer();
 		setPageTransformer(false, transformer);
 
-		LinearLayout layout = new LinearLayout(this);
-		layout.setOrientation(LinearLayout.VERTICAL);
-		getRootView().addView(layout);
+		// Create a layout to display the control buttons over the ViewPager
+		final LinearLayout controlButtonHolder = new LinearLayout(this);
+		controlButtonHolder.setOrientation(LinearLayout.VERTICAL);
+		getRootView().addView(controlButtonHolder);
 
-		Button addFrontImage = new Button(this);
-		layout.addView(addFrontImage);
-		addFrontImage.setText("Add front image parallax");
-		addFrontImage.setOnClickListener(new View.OnClickListener() {
+		// Add the test buttons to the control layout
+		controlButtonHolder.addView(createAddFrontParallaxEffectButton());
+		controlButtonHolder.addView(createAddBackParallaxEffectButton());
+		controlButtonHolder.addView(createRemoveFrontParallaxEffectButton());
+		controlButtonHolder.addView(createRemoveBackParallaxEffectButton());
+	}
+
+	/**
+	 * @return a Button which sets a parallax effect on the front image
+	 */
+	private Button createAddFrontParallaxEffectButton() {
+		final Button button = new Button(this);
+		button.setText("Add front image parallax effect");
+
+		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				transformer.withParallaxView(R.id.page_fragment_imageHolderFront, 1.2f);
 			}
 		});
 
-		Button addBackImage = new Button(this);
-		layout.addView(addBackImage);
-		addBackImage.setText("Add back image parallax");
-		addBackImage.setOnClickListener(new View.OnClickListener() {
+		return button;
+	}
+
+	/**
+	 * @return a Button which sets a parallax effect on the back image
+	 */
+	private Button createAddBackParallaxEffectButton() {
+		final Button button = new Button(this);
+		button.setText("Add back image parallax effect");
+
+		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				transformer.withParallaxView(R.id.page_fragment_imageHolderBack, 1.5f);
 			}
 		});
 
-		Button removeFrontImage = new Button(this);
-		layout.addView(removeFrontImage);
-		removeFrontImage.setText("Remove front image parallax");
-		removeFrontImage.setOnClickListener(new View.OnClickListener() {
+		return button;
+	}
+
+	/**
+	 * @return a Button which removes any parallax effect on the front image
+	 */
+	private Button createRemoveFrontParallaxEffectButton() {
+		final Button button = new Button(this);
+		button.setText("Remove front image parallax effect");
+
+		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				transformer.withoutParallaxView(R.id.page_fragment_imageHolderFront);
 			}
 		});
 
-		Button removeBackImage = new Button(this);
-		layout.addView(removeBackImage);
-		removeBackImage.setText("Remove back image parallax");
-		removeBackImage.setOnClickListener(new View.OnClickListener() {
+		return button;
+	}
+
+	/**
+	 * @return a Button which removes any parallax effect on the back image
+	 */
+	private Button createRemoveBackParallaxEffectButton() {
+		final Button button = new Button(this);
+		button.setText("Remove back image parallax effect");
+
+		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				transformer.withoutParallaxView(R.id.page_fragment_imageHolderBack);
 			}
 		});
+
+		return button;
 	}
 }
