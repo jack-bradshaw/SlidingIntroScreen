@@ -44,12 +44,12 @@ public class MainActivity extends AppCompatActivity {
 		startActivity(i);
 	}
 
-	public void testProgressIndicatorConfig(View v) {
+	public void testSelectionIndicatorConfig(View v) {
 		Intent i = new Intent(this, TestSelectionIndicatorConfig.class);
 		startActivity(i);
 	}
 
-	public void testProgrammaticallyChangePage(View v) {
+	public void testPageLock(View v) {
 		Intent i = new Intent(this, TestPageLock.class);
 		startActivity(i);
 	}
