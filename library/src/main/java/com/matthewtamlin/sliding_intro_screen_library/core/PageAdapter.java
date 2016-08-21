@@ -20,8 +20,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks;
-import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks.OnListChangedListener;
+import java.util.ArrayList;
 
 /**
  * Adapts a collection of Fragments so that they can be displayed in an {@link
@@ -38,30 +37,7 @@ public class PageAdapter extends FragmentPagerAdapter {
 	/**
 	 * The dataset of pages to adapt.
 	 */
-	private final ArrayListWithCallbacks<Fragment> pages;
-
-	/**
-	 * Receive list change events from the dataset. Using a delegate hides the internal
-	 * implementation from the public class signature.
-	 */
-	private final OnListChangedListener listChangeListener = new OnListChangedListener() {
-		@Override
-		public void onItemAdded(final ArrayListWithCallbacks list, final Object itemAdded,
-				final int index) {
-			notifyDataSetChanged();
-		}
-
-		@Override
-		public void onItemRemoved(final ArrayListWithCallbacks list, final Object itemRemoved,
-				final int index) {
-			notifyDataSetChanged();
-		}
-
-		@Override
-		public void onListCleared(final ArrayListWithCallbacks list) {
-			notifyDataSetChanged();
-		}
-	};
+	private final ArrayList<Fragment> pages;
 
 	/**
 	 * Constructs a new PageAdapter instance.
@@ -71,22 +47,20 @@ public class PageAdapter extends FragmentPagerAdapter {
 	 * @param pages
 	 * 		the dataset of pages to adapt, null for an empty dataset
 	 */
-	public PageAdapter(final FragmentManager fm, final ArrayListWithCallbacks<Fragment> pages) {
+	public PageAdapter(final FragmentManager fm, final ArrayList<Fragment> pages) {
 		super(fm);
 
 		if (pages == null) {
-			this.pages = new ArrayListWithCallbacks<>();
+			this.pages = new ArrayList<>();
 		} else {
 			this.pages = pages;
 		}
-
-		this.pages.addOnListChangedListener(listChangeListener);
 	}
 
 	/**
 	 * @return the dataset of this adapter, not null
 	 */
-	public ArrayListWithCallbacks<Fragment> getPages() {
+	public ArrayList<Fragment> getPages() {
 		return pages;
 	}
 

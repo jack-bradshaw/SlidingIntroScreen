@@ -28,7 +28,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks;
 import com.matthewtamlin.android_utilities_library.helpers.StatusBarHelper;
 import com.matthewtamlin.android_utilities_library.helpers.ThemeColorHelper;
 import com.matthewtamlin.sliding_intro_screen_library.R;
@@ -43,6 +42,7 @@ import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager.Loc
 import com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator;
 import com.matthewtamlin.sliding_intro_screen_library.indicators.SelectionIndicator;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -239,7 +239,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	/**
 	 * The pages to display.
 	 */
-	private final ArrayListWithCallbacks<Fragment> pages = new ArrayListWithCallbacks<>();
+	private final ArrayList<Fragment> pages = new ArrayList<>();
 
 	/**
 	 * Adapts the pages so that they can be displayed in the UI.
@@ -649,7 +649,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * 		#onSaveInstanceState(Bundle)}, otherwise null
 	 * @return the pages to display in the Activity, not null
 	 */
-	protected abstract Collection<Fragment> generatePages(Bundle savedInstanceState);
+	protected abstract Collection<? extends Fragment> generatePages(Bundle savedInstanceState);
 
 	/**
 	 * Called by {@link #onCreate(Bundle)} to generate the Behaviour of the final button. The {@link
@@ -668,7 +668,10 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * ViewGroups which declare the {@code android:fitsSystemWindows="false"} attribute will draw to
 	 * the top of the screen. The effect of this method varies depending on the current SDK
 	 * version.
+	 *
+	 * @deprecated use the AndroidUtilities library directly (com.matthewtamlin:android-utilities)
 	 */
+	@Deprecated
 	public final void hideStatusBar() {
 		StatusBarHelper.hideStatusBar(getWindow());
 	}
@@ -678,7 +681,10 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * The primary dark color of the current theme will be used for the status bar color (on SDK
 	 * version 21 and higher). If the current theme does not specify a primary dark color, the
 	 * status bar will be colored black.
+	 *
+	 * @deprecated use the AndroidUtilities library directly (com.matthewtamlin:android-utilities)
 	 */
+	@Deprecated
 	public final void showStatusBar() {
 		final int statusBarColor = ThemeColorHelper.getPrimaryDarkColor(this, Color.BLACK);
 		StatusBarHelper.showStatusBar(getWindow(), statusBarColor);
