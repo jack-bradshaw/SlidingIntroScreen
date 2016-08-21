@@ -54,7 +54,7 @@ import java.util.HashMap;
  * buttons for moving through the activity and performing other functions. It is recommended that
  * the manifest entry declare {@code android:noHistory="true"} to prevent the user from navigating
  * back to this activity once it is complete.
- * <p>
+ * <p/>
  * To use this class, subclass it and implement {@link #generatePages(Bundle)} and {@link
  * #generateFinalButtonBehaviour()}. The former method is called by onCreate method generates the
  * pages (i.e. Fragments) displayed in the introduction. Pages cannot be added or removed after this
@@ -62,7 +62,7 @@ import java.util.HashMap;
  * generate the Behaviour to assign to the button shown on the last page (see {@link IntroButton}).
  * It is recommended that an instance of the {@link IntroButton.ProgressToNextActivity} class be
  * used.
- * <p>
+ * <p/>
  * The navigation bar contains three buttons: a left button, a right button and a final button. By
  * default the left and right buttons are present on all pages but the last, and the final button is
  * displayed only on the last page. The left button can be displayed on the last page by calling
@@ -74,7 +74,7 @@ import java.util.HashMap;
  * The default animations cause the buttons to fade in and out, however this behaviour can be
  * changed by overriding {@code generateButtonAnimatorFactory()} and returning a custom
  * AnimatorFactory.
- * <p>
+ * <p/>
  * Unless the individual page Fragments define their own backgrounds, it is highly recommended that
  * the background of the IntroActivity be changed. The background of an IntroActivity can be changed
  * in two ways: by manually changing the root View (via {@link #getRootView()}), or by supplying a
@@ -83,7 +83,7 @@ import java.util.HashMap;
  * latter approach is ideal when a dynamic background is desired. The {@link
  * com.matthewtamlin.sliding_intro_screen_library.background.ColorBlender} class is provided to
  * simplify implementation of a dynamic background.
- * <p>
+ * <p/>
  * The methods of this activity provide the following additional customisation options:
  * <ul><li>Hiding/showing the status bar.</li> <li>Programmatically changing the page.</li>
  * <li>Locking the page.</li> <li>Modifying/replacing the progress indicator.</li> <li>Setting a
@@ -668,7 +668,10 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * ViewGroups which declare the {@code android:fitsSystemWindows="false"} attribute will draw to
 	 * the top of the screen. The effect of this method varies depending on the current SDK
 	 * version.
+	 *
+	 * @deprecated use the AndroidUtilities library directly (com.matthewtamlin:android-utilities)
 	 */
+	@Deprecated
 	public final void hideStatusBar() {
 		StatusBarHelper.hideStatusBar(getWindow());
 	}
@@ -678,7 +681,10 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * The primary dark color of the current theme will be used for the status bar color (on SDK
 	 * version 21 and higher). If the current theme does not specify a primary dark color, the
 	 * status bar will be colored black.
+	 *
+	 * @deprecated use the AndroidUtilities library directly (com.matthewtamlin:android-utilities)
 	 */
+	@Deprecated
 	public final void showStatusBar() {
 		final int statusBarColor = ThemeColorHelper.getPrimaryDarkColor(this, Color.BLACK);
 		StatusBarHelper.showStatusBar(getWindow(), statusBarColor);
