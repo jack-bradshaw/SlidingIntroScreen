@@ -18,7 +18,7 @@ package com.matthewtamlin.sliding_intro_screen_library.core;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.os.Build;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -29,6 +29,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.matthewtamlin.android_utilities_library.helpers.StatusBarHelper;
+import com.matthewtamlin.android_utilities_library.helpers.ThemeColorHelper;
 import com.matthewtamlin.sliding_intro_screen_library.R;
 import com.matthewtamlin.sliding_intro_screen_library.background.BackgroundManager;
 import com.matthewtamlin.sliding_intro_screen_library.buttons.AnimatorFactory;
@@ -669,18 +670,18 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * version.
 	 */
 	public final void hideStatusBar() {
-		if (Build.VERSION.SDK_INT >= 16) {
-			StatusBarHelper.showStatusBar(getWindow());
-		}
+		StatusBarHelper.hideStatusBar(getWindow());
 	}
 
 	/**
 	 * Shows the status bar background and prevents Views from being drawn behind the status bar.
+	 * The primary dark color of the current theme will be used for the status bar color (on SDK
+	 * version 21 and higher). If the current theme does not specify a primary dark color, the
+	 * status bar will be colored black.
 	 */
 	public final void showStatusBar() {
-		if (Build.VERSION.SDK_INT >= 16) {
-			StatusBarHelper.showStatusBar(getWindow());
-		}
+		final int statusBarColor = ThemeColorHelper.getPrimaryDarkColor(this, Color.BLACK);
+		StatusBarHelper.showStatusBar(getWindow(), statusBarColor);
 	}
 
 	/**
