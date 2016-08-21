@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 	 * 		the View which was clicked to launch the test
 	 */
 	public void testMultiplePageBehaviour(final View v) {
-		final Intent testActivity = new Intent(this, TestMultiplePageBehaviour.class);
+		final Intent testActivity = new Intent(this, TestMultiplePageActivity.class);
 		startActivity(testActivity);
 	}
 

@@ -32,7 +32,7 @@ import com.matthewtamlin.sliding_intro_screen_library.buttons.IntroButton.Progre
  * page.</li> <li>Final button: Displayed on last page. Displays "FINAL" with no icon. Advances to
  * end activity when pressed.</li> </ul>
  */
-public class TestMultiplePageBehaviour extends ThreePageTestBase {
+public class TestMultiplePageActivity extends ThreePageTestBase {
 	/**
 	 * Used to identify this class during debugging.
 	 */
