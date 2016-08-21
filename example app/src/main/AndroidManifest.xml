@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.matthewtamlin.exampleapp"
+<manifest package="com.matthewtamlin.sliding_intro_screen_example_app"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
