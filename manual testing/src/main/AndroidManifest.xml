@@ -1,35 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+Copyright 2016 Matthew Tamlin
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <manifest
-    package="com.matthewtamlin.testapp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+	package="com.matthewtamlin.sliding_intro_screen_manual_testing"
+	xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+	<uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
 
-    <application
-        android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/appName"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+	<application
+		android:allowBackup="false"
+		android:icon="@mipmap/ic_launcher"
+		android:label="Manual testing"
+		android:supportsRtl="true"
+		android:theme="@style/AppTheme">
 
-        <activity
-            android:name=".SelectorActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".PostActivity"/>
-        <activity android:name=".TestDefaults"/>
-        <activity android:name=".TestSinglePageBehaviour"/>
-        <activity android:name=".TestMultiplePageBehaviour"/>
-        <activity android:name=".TestButtonConfig"/>
-        <activity android:name=".TestTransformer"/>
-        <activity android:name=".TestProgressIndicatorConfig"/>
-        <activity android:name=".TestPageChange"/>
-        <activity android:name=".TestHideStatusBar"/>
-        <activity android:name=".TestBehaviours"/>
-    </application>
+		<activity
+			android:name=".MainActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+		</activity>
+
+		<activity android:name=".EndActivity"/>
+		<activity android:name=".TestSinglePageActivity"/>
+		<activity android:name=".TestMultiplePageActivity"/>
+		<activity android:name=".TestButtonConfig"/>
+		<activity android:name=".TestTransformer"/>
+		<activity android:name=".TestPageLock"/>
+		<activity android:name=".TestHideStatusBar"/>
+		<activity android:name=".TestBehaviours"/>
+		<activity android:name=".TestDotIndicator"/>
+		<activity android:name=".TestSelectionIndicatorConfig"/>
+	</application>
 </manifest>

@@ -5,7 +5,7 @@ android {
 	buildToolsVersion "23.0.3"
 
 	defaultConfig {
-		applicationId "com.matthewtamlin.testapp"
+		applicationId "com.matthewtamlin.sliding_intro_screen_manual_testing"
 		minSdkVersion 11
 		targetSdkVersion 23
 		versionCode 2
