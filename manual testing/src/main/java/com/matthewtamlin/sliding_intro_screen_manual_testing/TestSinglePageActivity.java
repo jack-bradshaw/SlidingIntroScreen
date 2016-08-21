@@ -34,7 +34,7 @@ import java.util.Collection;
  * <li>Animations: Not applicable.</li> <li>Left button: Not displayed.</li> <li>Right button: Not
  * displayed.</li> <li>Final button: Displayed, showing "FINAL" with no icon.</li> </ul>
  */
-public class TestSinglePageBehaviour extends IntroActivity {
+public class TestSinglePageActivity extends IntroActivity {
 	/**
 	 * Used to identify this class during debugging.
 	 */

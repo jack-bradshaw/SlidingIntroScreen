@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 	 * 		the View which was clicked to launch the test
 	 */
 	public void testSinglePageBehaviour(final View v) {
-		final Intent testActivity = new Intent(this, TestSinglePageBehaviour.class);
+		final Intent testActivity = new Intent(this, TestSinglePageActivity.class);
 		startActivity(testActivity);
 	}
 

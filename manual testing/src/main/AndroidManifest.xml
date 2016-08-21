@@ -39,7 +39,7 @@ limitations under the License.
 		</activity>
 
 		<activity android:name=".EndActivity"/>
-		<activity android:name=".TestSinglePageBehaviour"/>
+		<activity android:name=".TestSinglePageActivity"/>
 		<activity android:name=".TestMultiplePageActivity"/>
 		<activity android:name=".TestButtonConfig"/>
 		<activity android:name=".TestTransformer"/>
