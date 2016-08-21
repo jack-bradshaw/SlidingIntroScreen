@@ -28,7 +28,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.matthewtamlin.android_utilities_library.collections.ArrayListWithCallbacks;
 import com.matthewtamlin.android_utilities_library.helpers.StatusBarHelper;
 import com.matthewtamlin.sliding_intro_screen_library.R;
 import com.matthewtamlin.sliding_intro_screen_library.background.BackgroundManager;
@@ -42,6 +41,7 @@ import com.matthewtamlin.sliding_intro_screen_library.core.LockableViewPager.Loc
 import com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator;
 import com.matthewtamlin.sliding_intro_screen_library.indicators.SelectionIndicator;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -53,7 +53,7 @@ import java.util.HashMap;
  * buttons for moving through the activity and performing other functions. It is recommended that
  * the manifest entry declare {@code android:noHistory="true"} to prevent the user from navigating
  * back to this activity once it is complete.
- * <p/>
+ * <p>
  * To use this class, subclass it and implement {@link #generatePages(Bundle)} and {@link
  * #generateFinalButtonBehaviour()}. The former method is called by onCreate method generates the
  * pages (i.e. Fragments) displayed in the introduction. Pages cannot be added or removed after this
@@ -61,7 +61,7 @@ import java.util.HashMap;
  * generate the Behaviour to assign to the button shown on the last page (see {@link IntroButton}).
  * It is recommended that an instance of the {@link IntroButton.ProgressToNextActivity} class be
  * used.
- * <p/>
+ * <p>
  * The navigation bar contains three buttons: a left button, a right button and a final button. By
  * default the left and right buttons are present on all pages but the last, and the final button is
  * displayed only on the last page. The left button can be displayed on the last page by calling
@@ -73,7 +73,7 @@ import java.util.HashMap;
  * The default animations cause the buttons to fade in and out, however this behaviour can be
  * changed by overriding {@code generateButtonAnimatorFactory()} and returning a custom
  * AnimatorFactory.
- * <p/>
+ * <p>
  * Unless the individual page Fragments define their own backgrounds, it is highly recommended that
  * the background of the IntroActivity be changed. The background of an IntroActivity can be changed
  * in two ways: by manually changing the root View (via {@link #getRootView()}), or by supplying a
@@ -82,7 +82,7 @@ import java.util.HashMap;
  * latter approach is ideal when a dynamic background is desired. The {@link
  * com.matthewtamlin.sliding_intro_screen_library.background.ColorBlender} class is provided to
  * simplify implementation of a dynamic background.
- * <p/>
+ * <p>
  * The methods of this activity provide the following additional customisation options:
  * <ul><li>Hiding/showing the status bar.</li> <li>Programmatically changing the page.</li>
  * <li>Locking the page.</li> <li>Modifying/replacing the progress indicator.</li> <li>Setting a
@@ -238,7 +238,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	/**
 	 * The pages to display.
 	 */
-	private final ArrayListWithCallbacks<Fragment> pages = new ArrayListWithCallbacks<>();
+	private final ArrayList<Fragment> pages = new ArrayList<>();
 
 	/**
 	 * Adapts the pages so that they can be displayed in the UI.
