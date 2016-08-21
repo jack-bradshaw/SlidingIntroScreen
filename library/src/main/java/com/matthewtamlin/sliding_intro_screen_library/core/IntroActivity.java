@@ -648,7 +648,7 @@ public abstract class IntroActivity extends AppCompatActivity {
 	 * 		#onSaveInstanceState(Bundle)}, otherwise null
 	 * @return the pages to display in the Activity, not null
 	 */
-	protected abstract Collection<Fragment> generatePages(Bundle savedInstanceState);
+	protected abstract Collection<? extends Fragment> generatePages(Bundle savedInstanceState);
 
 	/**
 	 * Called by {@link #onCreate(Bundle)} to generate the Behaviour of the final button. The {@link
