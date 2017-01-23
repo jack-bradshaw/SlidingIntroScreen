@@ -56,7 +56,7 @@ Unless the individual pages define their own backgrounds, it is highly recommend
 The BackgroundManager interface defines a single method: `updateBackground(View background, int index, float offset)`. This method is called by IntroActivity each time the scroll position changes, which allows the background to be dependent on the user's progress through the introduction. The [ColorBlender](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/background/ColorBlender.java) blends colors together to create a continuous color scrolling effect as the user progresses. An example of this background manager is shown in the above right image.
 
 ### AnimatorFactory
-The buttons of an IntroActivity must sometimes switch between enabled and disabled, such is the case when the last page is reached. By default, the left and right buttons are disabled on the last page and the final button is enabled. Rather than have a jarring transition between visible and invisible, the change is transitioned smoothly using Animators supplied by an a AnimatorFactory. The default AnimatorFactory causes the buttons to smoothly fade in and out, however custom implementations of the AnimatorFactory can be used by overriding `generateButtonAnimatorFactory()` in IntroActivity. To make sure the animations always display correctly, the AnimatorFactory cannot be changed after the activity is created.
+The buttons shown in the IntroActivity must sometimes be enabled and disabled, which requires their visibility to change. Rather than have a jarring instantaneous transition between visible and invisible, the change can be transitioned smoothly using Animators supplied by an a AnimatorFactory. The default AnimatorFactory causes the buttons to smoothly fade in and out, however custom implementations of the AnimatorFactory can be used by overriding `generateButtonAnimatorFactory()` in IntroActivity and returning a custom implementation. To make sure the animations are always displayed correctly, the AnimatorFactory cannot be changed after the activity is created.
 
 ## Licensing
 This library is licenced under the Apache v2.0 licence. Have a look at [the license](LICENSE) for details.
@@ -66,7 +66,7 @@ This library uses the following open source libraries as level 1 dependencies:
 - [Android Support Library](https://developer.android.com/topic/libraries/support-library/index.html), licensed under the Apache 2.0 license.
 - [Android Utilities](https://github.com/MatthewTamlin/AndroidUtilities), licensed under the Apache 2.0 license.
 
-The above left image depicts part of [an app](https://play.google.com/store/apps/details?id=com.mrd.food) which was created using this library. The content shown in the image is owned by the [Mr D Food](https://www.mrdfood.com) company, who has kindly allowed it to be used in this repository. As such, the associated files are strictly excluded from the terms of [the license](LICENSE).
+The above left image depicts part of [an app](https://play.google.com/store/apps/details?id=com.mrd.food) which was created using this library. The content shown in the image is owned by the [Mr D Food](https://www.mrdfood.com) company, who has kindly allowed its use in this repository. As such, the associated files are strictly excluded from the terms of [the license](LICENSE).
 
 ## Compatibility
 This library is compatible with Android 11 and up. The 3.0.0 update breaks compatibility with previous versions of the library. The 3.2.0 deprecates a few methods in IntroActivity.
