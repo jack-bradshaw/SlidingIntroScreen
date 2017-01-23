@@ -48,24 +48,7 @@ The last behaviour is worth further explanation as it is one of the most useful 
 If the provided implementations are not sufficient, the interface can be directly implemented or the `IntroButton.BehaviourAdapter` class can be extended.
 
 ### SelectionIndicator
-In the centre of the navigation bar within each IntroActivity is a SelectionIndicator. This is a visual element which displays the user's current progress through the introduction. The IntroActivity class provides methods for setting a new indicator, or modifying the existing one. SelectionIndicator itself is an interface, therfore custom indicators can be used. By default, a [DotIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/indicators/DotIndicator.java) is used, as shown in the above example image.
-
-DotIndicator does not need to be used in an IntroActivity. To create a DotIndicator in any layout, just add the following XML:
-```xml
-<com.matthewtamlin.sliding_intro_screen_library.indicators.DotIndicator>
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:numberOfDots=YOUR_INT_HERE
-            app:selectedDotIndex=YOUR_INT_HERE/>
-```
-
-DotIndicator has been designed to replicate the appearance and functionality of similar indicators in Google-made apps. The following attributes can be added to the XML declaration to customise the indicator:
-- `app:unselectedDotDiameter` and `app:selectedDotDiameter` to set the dot diameterss.
-- `app:unselectedDotColor` and `app:selectedDotColor `to set the dot colors.
-- `app:dotTransitionDuration` to set the animation time when transitioning dots between selected and unselected.
-- `add:spacingBetweenDots` to change the distance between each dot.
-
-Alternatively, the indicator can be created programmatically with `DotIndicator myIndicator = new DotIndicator(context);`. The class provides methods for modifying the properties, similar to the aforementioned attributes.
+The navigation bar visually displays the user's progress through the introduction in the form of a [DotIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/indicators/DotIndicator.java), which is an implementation of the SelectionIndicator interface. DotIndicator has been designed to replicate the appearance and functionality of such indicators in Google-made apps, however can be customised in several ways to meet the need.
 
 ### BackgroundManager
 Unless the individual pages define their own backgrounds, it is highly recommended that the background of the IntroActivity be changed (by default it is grey). The background of an IntroActivity can be changed in two ways: by manually changing the background color of the root View, or by supplying a BackgroundManager to the activity. The former approach is simpler and less error prone, and is ideal when a static background is all that is needed. The latter approach is ideal when a dynamic background is desired. 
