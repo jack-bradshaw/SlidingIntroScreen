@@ -41,8 +41,8 @@ public class SecondActivity extends AppCompatActivity {
 	 * Clears the shared preferences flag which prevents the introduction from being shown twice.
 	 */
 	private void allowIntroductionToShowAgain() {
-		final SharedPreferences sp = getSharedPreferences(ExampleActivity.DISPLAY_ONCE_PREFS,
+		final SharedPreferences sp = getSharedPreferences(DotsActivity.DISPLAY_ONCE_PREFS,
 				MODE_PRIVATE);
-		sp.edit().putBoolean(ExampleActivity.DISPLAY_ONCE_KEY, false).apply();
+		sp.edit().putBoolean(DotsActivity.DISPLAY_ONCE_KEY, false).apply();
 	}
 }

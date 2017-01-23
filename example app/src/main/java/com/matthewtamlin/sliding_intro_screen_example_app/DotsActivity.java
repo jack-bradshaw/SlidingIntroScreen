@@ -38,7 +38,7 @@ import java.util.Collection;
  * An example of how to use this library. This activity displays three pages with parallax dots in
  * the middle.
  */
-public class ExampleActivity extends IntroActivity {
+public class DotsActivity extends IntroActivity {
 	/**
 	 * Colors to use for the blended background: blue, pink, purple.
 	 */
