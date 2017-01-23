@@ -7,7 +7,7 @@ Your app should have a beginning which welcomes the user and makes them want to 
 Releases are made available through jCentre. Add `compile 'com.matthew-tamlin:sliding-intro-screen:3.2.0'` to your gradle build file to use the latest version. Older versions are available in the [maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen/view).
 
 ## Quick-start
-[IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/core/IntroActivity.java) is the primary class of this library because it coordinates and displays all the other components. The activity coordinates two main compoments: a standard Android ViewPager and a custom navigation bar. The view pager hosts several pages which in turn display the content of the introduction screen. The navigation bar displays the user's progress through the introduction, and provides three buttons for navigation. The left and right buttons are shown on all but the last page, and the final button is shown on only the last page. 
+[IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/core/IntroActivity.java) is the primary class of this library because it coordinates and displays all the other components. The activity coordinates two main components: a standard Android ViewPager and a custom navigation bar. The view pager hosts several pages which in turn display the content of the introduction screen. The navigation bar displays the user's progress through the introduction, and provides three buttons for navigation. The left and right buttons are shown on all but the last page, and the final button is shown on only the last page. 
 
 IntroActivity is an abstract class, therefore to use it you must create a subclass and implement some abstract methods. Implementing `generatePages()` allows you to define the content of the introduction screen, and implementing `generateFinalButtonBehaviour()` allows you to define what happens when the final button is clicked.
 
@@ -59,7 +59,7 @@ The BackgroundManager interface defines a single method: `updateBackground(View 
 The buttons shown in the IntroActivity must sometimes be enabled and disabled, which requires their visibility to change. Rather than have a jarring instantaneous transition between visible and invisible, the change can be transitioned smoothly using Animators supplied by an a AnimatorFactory. The default AnimatorFactory causes the buttons to smoothly fade in and out, however custom implementations of the AnimatorFactory can be used by overriding `generateButtonAnimatorFactory()` in IntroActivity and returning a custom implementation. To make sure the animations are always displayed correctly, the AnimatorFactory cannot be changed after the activity is created.
 
 ## Licensing
-This library is licenced under the Apache v2.0 licence. Have a look at [the license](LICENSE) for details.
+This library is licensed under the Apache v2.0 licence. Have a look at [the license](LICENSE) for details.
 
 ## Dependencies and Attribution
 This library uses the following open source libraries as level 1 dependencies:
