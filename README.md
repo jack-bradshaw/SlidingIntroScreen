@@ -31,23 +31,21 @@ The other notable components of this library are:
 - [AnimatorFactory](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/buttons/AnimatorFactory.java)
 
 ### IntroButton
-The IntroButton class has two important properties: appearance and behaviour. These properties define how the button displays and how it behaves when pressed. Separating appearance and behaviour from the button itself allows buttons to be configured dynamically, and avoids boilerplate code. The appearance of a button is defined using the `IntroButton.Appearance` enum, and the behaviour of a button is defined using the `IntroButton.Behaviour` interface.
+The IntroButton class has two important properties: appearance and behaviour. These properties define how the button is displayed and how it behaves when pressed. Separating appearance and behaviour allows buttons to be configured dynamically and avoids boilerplate code. The appearance is limited to the options defined by the `IntroButton.Appearance` enum, however the behaviour has no such limitations.
 
-The appearance of an IntroButton defines how text and icons are displayed within the button. The appearance can be set to show just text, just an icon, or both. In the case of both, the appearance also defines whether the icon shows to the left or the right of the text. Using an Appearance object to configure how the button displays has advantages over manually changing the text/icon. The IntroButton class is designed to store text and icons internally, so that these resources do not need to be externally cached. When the Appearance changes to display an icon, the icon is loaded from inside the button. This reduces boilerplate code, eliminates the need to externally cache resources, and reduces occportunities for bugs to occur.
+The behaviour of an IntroButton defines the actions to take when the button is clicked, and is set by passing an implementation of the Behaviour interface to the button. The Behaviour interface extends Runnable and has two extra methods: `IntroActivity getActivity()` and `void setActivity(IntroActivity)`. Using these extra methods, the `run()` method can get a reference to an IntroActivity and call upon it as desired. The following implementations of the Behaviour interface meet the most common needs:
+- `IntroButton.GoToPreviousPage`
+- `IntroButton.GoToNextPage`
+- `IntroButton.GoToFirstPage`
+- `IntroButton.GoToLastPage`
+- `IntroButton.DoNothing`
+- `IntroButton.CloseApp`
+- `IntroButton.RequestPermissions`
+- `IntroButton.ProgressToNextActivity`
 
-The behaviour of an IntroButton defines the actions to take when the button is clicked. The behaviour of an IntroButton is set by passing the button an implementation of the Behaviour interface. Using a separate object to define the behaviour decouples the on-click actions from the buttons, and makes code more reusable. The Behaviour interface extends the Runnable interface and has two extra methods: `IntroActivity getActivity()` and `void setActivity(IntroActivity)`. Using these extra methods, the `run()` method can obtain a reference to an IntroActivity to manipulate. Passing Behaviours to the navigation buttons of an IntroActivity is the simplest way to manipulate the IntroActivity when the buttons are pressed. The following concrete implementations of the Behaviour interface meet the most common needs:
-- `IntroButton.GoToPreviousPage` makes the target IntroActivity display the previous page (unless the first page is currently displayed).
-- `IntroButton.GoToNextPage` makes the target IntroActivity display the next page (unless the last page is currently displayed).
-- `IntroButton.GoToFirstPage` makes the target IntroActivity return to the first page.
-- `IntroButton.GoToLastPage` makes the target IntroActivity advance to the last page.
-- `IntroButton.DoNothing` performs no operation. 
-- `IntroButton.CloseApp` terminates the app affinity, effectively closing the app.
-- `IntroButton.RequestPermissions` displays the standard permission request dialog to the user. The exact permissions to request are provided to the constructor, along with a request code to use when receiving the result.
-- `IntroButton.ProgressToNextActivity` ends the introduction and progresses to the next Activity in the app.
+The last behaviour is worth further explanation as it is one of the most useful classes in the library. In addition to launching the next activity, the behaviour contains a mechanism for preventing the introduction from being shown again. The behaviour accepts a `SharedPreferences.Editor` at construction, and it commits any pending changes when the next activity is successfully launched. This mechanism can be used to set a shared preferences flag which indicates when the activity has completed. By checking for this flag each time the app is launched, the introduction can be skipped if already completed.
 
-The ProgressToNextActivity class is one of the most useful classes in the library. The default constructor accepts a `SharedPreferences.Editor` paramater which can be used to make sure the introduction is only shown once. Any pending changes in the editor are committed when the next activity is successfully launched, which allows a shared preferences flag to be automatically set when the introduction completes. By checking the status of this flag each time the IntroActivity is created, the introduction can be skipped if the user has previously completed it. The class also contains a method called `shouldLaunchActivity()` which defines validation logic. By default this method returns true, but subclasses can override it to define conditions which must pass before the next activity is launched.
-
-If the above implementations are not sufficient, the interface can be directly implemented or the `IntroButton.BehaviourAdapter` class can be extended. The adapter class provides a simple getter/setter mechanism for `getActivity()` and `setActivity()`, and declares `run()` as abstract. This removes the need to write the same getter/setter boilerplate code for each Behaviour. The `run()` implementation simply needs to call `getActivity()` and perform the desired action on the retured activity (after doing a null check).
+If the provided implementations are not sufficient, the interface can be directly implemented or the `IntroButton.BehaviourAdapter` class can be extended.
 
 ### SelectionIndicator
 In the centre of the navigation bar within each IntroActivity is a SelectionIndicator. This is a visual element which displays the user's current progress through the introduction. The IntroActivity class provides methods for setting a new indicator, or modifying the existing one. SelectionIndicator itself is an interface, therfore custom indicators can be used. By default, a [DotIndicator](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/indicators/DotIndicator.java) is used, as shown in the above example image.
