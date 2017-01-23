@@ -3,10 +3,10 @@ A library designed to simplify the creation of introduction screens in Android a
 
 <img src="https://raw.githubusercontent.com/MatthewTamlin/SlidingIntroScreen/master/artwork/mr-d-food-example.gif" width="425"/> <img src="https://raw.githubusercontent.com/MatthewTamlin/SlidingIntroScreen/master/artwork/dots-example.gif" width="425"/> 
 
-## Installation
+## Download
 Releases are made available through jCentre. Add `compile 'com.matthew-tamlin:sliding-intro-screen:3.2.0'` to your gradle build file to use the latest version. Older versions are available in the [maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen/view).
 
-## Quick Start
+## Quick-start
 [IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/core/IntroActivity.java) is the primary class of this library because it coordinates and displays all the other components. The UI features two main components: a series of Fragments (referred to as pages) hosted in a ViewPager, and a navigation bar. The pages display the content of the introduction screen, and the navigation bar displays the user's progress through the introduction. The navigation bar contains three configurable buttons known as the left button, right button and final button. The left and right buttons are shown on all but the last page, and the final button is shown on only the last page. 
 
 IntroActivity is an abstract class, therefore to use it you must create a subclass and implement both `generatePages()` and `generateFinalButtonBehaviour()`. These methods are called by `onCreate()` to define the activity's appearance and behaviour. The pages to display are created in `generatePages()`, and the Behaviour of the final button is created in `generateFinalButtonBehaviour()`. A Behaviour is just a Runnable which holds a reference to an IntroActivity, which allows it to manipulate the activity when run. This is further explained in the IntroButton section below. 
