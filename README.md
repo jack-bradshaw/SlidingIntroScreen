@@ -7,21 +7,21 @@ Your app should have a beginning which welcomes the user and makes them want to 
 Releases are made available through jCentre. Add `compile 'com.matthew-tamlin:sliding-intro-screen:3.2.0'` to your gradle build file to use the latest version. Older versions are available in the [maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen/view).
 
 ## Quick-start
-[IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/core/IntroActivity.java) is the primary class of this library because it coordinates and displays all the other components. The UI features two main components: a series of Fragments (referred to as pages) hosted in a ViewPager, and a navigation bar. The pages display the content of the introduction screen, and the navigation bar displays the user's progress through the introduction. The navigation bar contains three configurable buttons known as the left button, right button and final button. The left and right buttons are shown on all but the last page, and the final button is shown on only the last page. 
+[IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/core/IntroActivity.java) is the primary class of this library because it coordinates and displays all the other components. The activity coordinates two main compoments: a standard Android ViewPager and a custom navigation bar. The view pager hosts several pages which in turn display the content of the introduction screen. The navigation bar displays the user's progress through the introduction, and provides three buttons for navigation. The left and right buttons are shown on all but the last page, and the final button is shown on only the last page. 
 
-IntroActivity is an abstract class, therefore to use it you must create a subclass and implement both `generatePages()` and `generateFinalButtonBehaviour()`. These methods are called by `onCreate()` to define the activity's appearance and behaviour. The pages to display are created in `generatePages()`, and the Behaviour of the final button is created in `generateFinalButtonBehaviour()`. A Behaviour is just a Runnable which holds a reference to an IntroActivity, which allows it to manipulate the activity when run. This is further explained in the IntroButton section below. 
+IntroActivity is an abstract class, therefore to use it you must create a subclass and implement some abstract methods. Implementing `generatePages()` allows you to define the content of the introduction screen, and implementing `generateFinalButtonBehaviour()` allows you to define what happens when the final button is clicked.
 
 The other methods of the IntroActivity class provide further customisation options, such as:
-- Hiding/showing the status bar.
 - Programatically changing the page.
 - Locking the page to touch events and/or programmatic commands (such as button presses).
-- Hiding/showing the horizontal divider atop the navigation bar.
-- Changing the page transformer.
+- Hiding/showing the horizontal divider of the navigation bar.
+- Changing the page transformer (applies effects when scrolling).
+- Changing the background manager (responsible for updating the background when scrolling).
 - Adding/removing page change listeners.
-- Accessing the pages.
-- Hiding/showing the navigation buttons.
+- Getting references to the pages.
+- Toggling the visibility of the buttons.
 
-The Javadoc of the IntroActivity class contains further information, and the [example app](exampleapp/src/main/java/com/matthewtamlin/exampleapp/ExampleActivity.java) demonstrates how the class is used in practice.
+The Javadoc of the IntroActivity class contains further information, and the [example app](exampleapp/src/main/java/com/matthewtamlin/exampleapp/ExampleActivity.java) demonstrates how the class can be used in practice.
 
 ## Other Components
 The other notable components of this library are:
