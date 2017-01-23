@@ -8,8 +8,6 @@ android {
         applicationId "com.matthewtamlin.exampleapp"
         minSdkVersion 11
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
     }
 }
 
