@@ -69,4 +69,4 @@ This library uses the following open source libraries as level 1 dependencies:
 The above left image depicts part of [an app](https://play.google.com/store/apps/details?id=com.mrd.food) which was created using this library. The content shown in the image is owned by the [Mr D Food](https://www.mrdfood.com) company, who has kindly allowed its use in this repository. As such, the associated files are strictly excluded from the terms of [the license](LICENSE).
 
 ## Compatibility
-This library is compatible with Android 11 and up. The 3.0.0 update breaks compatibility with previous versions of the library. The 3.2.0 deprecates a few methods in IntroActivity.
+This library is compatible with Android 11 and up. The 3.0.0 update breaks compatibility with previous versions of the library. Several out of place methods were deprecated in version 3.2.0 and will no longer be supported.
