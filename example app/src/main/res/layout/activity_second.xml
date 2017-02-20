@@ -11,9 +11,11 @@
 		android:textSize="28sp"
 		android:layout_height="wrap_content"
 		android:gravity="center"
+		android:padding="8dp"
 		android:text="Second activity launched successfully"/>
 
 	<Button
+		android:layout_gravity="center_horizontal"
 		android:id="@+id/clear_shared_prefs_button"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
