@@ -76,12 +76,8 @@ The buttons shown in the IntroActivity must sometimes be enabled and disabled, w
 ## Licensing
 This library is licensed under the Apache v2.0 licence. Have a look at [the license](LICENSE) for details.
 
-## Dependencies and Attribution
-This library uses the following open source libraries as level 1 dependencies:
-- [Android Support Library](https://developer.android.com/topic/libraries/support-library/index.html), licensed under the Apache 2.0 license.
-- [Android Utilities](https://github.com/MatthewTamlin/AndroidUtilities), licensed under the Apache 2.0 license.
-
-The above left image depicts part of [an app](https://play.google.com/store/apps/details?id=com.mrd.food) which was created using this library. The content shown in the image is owned by the [Mr D Food](https://www.mrdfood.com) company, who has kindly allowed its use in this repository. As such, the associated files are strictly excluded from the terms of [the license](LICENSE).
+## Attribution
+This readme shows a screen from the [Mr D Food app](https://play.google.com/store/apps/details?id=com.mrd.food) which was created using this library. The content shown in the image is owned by the [Mr D Food](https://www.mrdfood.com) company, who has kindly allowed its use in this repository. As such, the associated files are strictly excluded from the terms of [the license](LICENSE).
 
 ## Compatibility
 This library is compatible with Android 11 and up. The 3.0.0 update breaks compatibility with previous versions of the library. Several out of place methods were deprecated in version 3.2.0 and will no longer be supported.
