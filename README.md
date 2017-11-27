@@ -3,8 +3,23 @@ Your app should have a beginning which welcomes the user and makes them want to 
 
 <img src="https://raw.githubusercontent.com/MatthewTamlin/SlidingIntroScreen/master/artwork/mr-d-food-example.gif" width="425"/> <img src="https://raw.githubusercontent.com/MatthewTamlin/SlidingIntroScreen/master/artwork/dots-example.gif" width="425"/> 
 
-## Download
-Releases are made available through jCentre. Add `compile 'com.matthew-tamlin:sliding-intro-screen:3.2.0'` to your gradle build file to use the latest version. Older versions are available in the [maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen/view).
+## Dependency
+To use the library, add the following to your gradle build file:
+```groovy
+repositories {
+	jcenter()
+}
+
+dependencies {
+	// For Android Gradle plugin 3.0.0+ projects:
+	implementation 'com.matthew-tamlin:sliding-intro-screen:3.2.0'
+
+	// For older projects:
+	compile 'com.matthew-tamlin:sliding-intro-screen:3.2.0'
+}
+```
+
+Older versions are available in [the Maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen).
 
 ## Quick-start
 [IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/core/IntroActivity.java) is the primary class of this library because it coordinates and displays all the other components. The activity coordinates two main components: a standard Android ViewPager and a custom navigation bar. The view pager hosts several pages which in turn display the content of the introduction screen. The navigation bar displays the user's progress through the introduction, and provides three buttons for navigation. The left and right buttons are shown on all but the last page, and the final button is shown on only the last page. 
