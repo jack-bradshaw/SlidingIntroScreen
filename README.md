@@ -80,4 +80,4 @@ This library is licensed under the Apache v2.0 licence. Have a look at [the lice
 This readme shows a screen from the [Mr D Food app](https://play.google.com/store/apps/details?id=com.mrd.food) which was created using this library. The content shown in the image is owned by the [Mr D Food](https://www.mrdfood.com) company, who has kindly allowed its use in this repository. As such, the associated files are strictly excluded from the terms of [the license](LICENSE).
 
 ## Compatibility
-This library is compatible with Android 11 and up. The 3.0.0 update breaks compatibility with previous versions of the library. Several out of place methods were deprecated in version 3.2.0 and will no longer be supported.
+This library is compatible with Android 11 and up.
