@@ -32,7 +32,7 @@ The other methods of the IntroActivity class provide further customisation optio
 - Getting references to the pages.
 - Toggling the visibility of the buttons.
 
-The Javadoc of the IntroActivity class contains further information, and the [example app](exampleapp/src/main/java/com/matthewtamlin/exampleapp/ExampleActivity.java) demonstrates how the class can be used in practice.
+The Javadoc of the IntroActivity class contains further information, and the [example app](/example app/src/main/java/com/matthewtamlin/sliding_intro_screen_example_app/DotsActivity.java) demonstrates how the class can be used in practice.
 
 ## Other Components
 The other notable components of this library are:
