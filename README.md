@@ -17,6 +17,8 @@ dependencies {
 
 Older versions are available in [the Maven repo](https://bintray.com/matthewtamlin/maven/SlidingIntroScreen).
 
+**SUPPORT NOTICE: This library is now STABLE. It is no longer under active development, however pull requests from others are still being accepted.**
+
 ## Quick-start
 [IntroActivity](library/src/main/java/com/matthewtamlin/sliding_intro_screen_library/core/IntroActivity.java) is the primary class of this library because it coordinates and displays all the other components. The activity coordinates two main components: a standard Android ViewPager and a custom navigation bar. The view pager hosts several pages which in turn display the content of the introduction screen. The navigation bar displays the user's progress through the introduction, and provides three buttons for navigation. The left and right buttons are shown on all but the last page, and the final button is shown on only the last page. 
 
